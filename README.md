@@ -17,30 +17,3 @@ The methods in this static class provide the ability to iterate over power sets.
 ## Qtfy.QMath.SeriesExpansions
 
 The methods in this static class provide the ability calculate the series expansion approximations of the natural logarithm of a BigRational number and the exponent of a BigRational number.
-
-# Building and Testing
-
-## Debug Build
-```
-git clone git@github.com:QuantifEye/Qtfy.QMath.git
-cd Qtfy.QMath
-dotnet restore
-dotnet build -c Debug
-```
-
-## Release Build
-```
-git clone git@github.com:QuantifEye/Qtfy.QMath.git
-cd Qtfy.QMath
-dotnet restore
-dotnet build -c Release
-```
-
-## Run Tests
-
-```
-git clone git@github.com:QuantifEye/Qtfy.QMath.git
-cd Qtfy.QMath
-dotnet restore
-dotnet test
-```
