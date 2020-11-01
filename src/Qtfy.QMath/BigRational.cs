@@ -422,6 +422,64 @@ namespace Qtfy.QMath
         }
 
         /// <summary>
+        /// Converts a <see cref="BigRational"/> to a <see cref="double"/>.
+        /// </summary>
+        /// <param name="value">
+        /// The <see cref="BigRational"/> to convert.
+        /// </param>
+        /// <returns>
+        /// <see cref="double.PositiveInfinity"/> if value is greater than <see cref="double.MaxValue"/>,
+        /// <see cref="double.NegativeInfinity"/> if value is smaller than <see cref="double.MinValue"/>,
+        /// negative zero if value is smaller than <see cref="double.Epsilon"/> and greater than 0,
+        /// positive zero if value is greater than negative <see cref="double.Epsilon"/> and smaller than 0,
+        /// otherwise the nearest possible double precision value is returned using
+        /// bankers rounding (round to nearest, ties to even).
+        /// </returns>
+        public static explicit operator double(BigRational value)
+        {
+            if (value > double.MaxValue)
+            {
+                return double.PositiveInfinity;
+            }
+
+            if (value < double.MinValue)
+            {
+                return double.NegativeInfinity;
+            }
+
+            if (value.IsInteger)
+            {
+                return (double)value.Numerator;
+            }
+
+            bool isPositive = value.IsPositive;
+
+            if (isPositive)
+            {
+                if (value < double.Epsilon)
+                {
+                    // should this perform bankers rounding and check if the
+                    // number is half way between 0 and -epsilon?
+                    return 0d;
+                }
+            }
+            else
+            {
+                if (value > -double.Epsilon)
+                {
+                    // should this perform bankers rounding and check if the
+                    // number is half way between 0 and -epsilon?
+                    return -0d;
+                }
+            }
+
+            throw new NotImplementedException(@"
+                The implementation should be consistent with the function
+                static PyObject *long_true_divide(PyObject *v, PyObject *w)
+                from the file https://github.com/python/cpython/blob/master/Objects/longobject.c");
+        }
+
+        /// <summary>
         /// Converts a <see cref="BigRational"/> to a <see cref="decimal"/>.
         /// </summary>
         /// <param name="value">
