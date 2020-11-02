@@ -7,6 +7,7 @@ namespace Qtfy.QMath
 {
     using System;
     using System.Numerics;
+    using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
     using System.Xml;
     using System.Xml.Schema;
@@ -437,46 +438,7 @@ namespace Qtfy.QMath
         /// </returns>
         public static explicit operator double(BigRational value)
         {
-            if (value > double.MaxValue)
-            {
-                return double.PositiveInfinity;
-            }
-
-            if (value < double.MinValue)
-            {
-                return double.NegativeInfinity;
-            }
-
-            if (value.IsInteger)
-            {
-                return (double)value.Numerator;
-            }
-
-            bool isPositive = value.IsPositive;
-
-            if (isPositive)
-            {
-                if (value < double.Epsilon)
-                {
-                    // should this perform bankers rounding and check if the
-                    // number is half way between 0 and -epsilon?
-                    return 0d;
-                }
-            }
-            else
-            {
-                if (value > -double.Epsilon)
-                {
-                    // should this perform bankers rounding and check if the
-                    // number is half way between 0 and -epsilon?
-                    return -0d;
-                }
-            }
-
-            throw new NotImplementedException(@"
-                The implementation should be consistent with the function
-                static PyObject *long_true_divide(PyObject *v, PyObject *w)
-                from the file https://github.com/python/cpython/blob/master/Objects/longobject.c");
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -1076,6 +1038,72 @@ namespace Qtfy.QMath
         }
 
         /// <summary>
+        /// Converts a BigRational to a <see cref="double"/>, rounding toward zero if the conversion is not exact.
+        /// </summary>
+        /// <param name="value">
+        /// The <see cref="BigRational"/> to convert to a <see cref="double"/>.
+        /// </param>
+        /// <returns>
+        /// A floating point value obtained by converting the provided rational to a double precision number,
+        /// rounding toward zero.
+        /// </returns>
+        public static double ToDoubleTowardZero(BigRational value)
+        {
+            if (value.IsInteger)
+            {
+                return (double)value.Numerator;
+            }
+
+            bool isPositive = value.IsPositive;
+
+            if (isPositive)
+            {
+                if (value > double.MaxValue)
+                {
+                    return double.PositiveInfinity;
+                }
+                else if (value < double.Epsilon)
+                {
+                    return 0d;
+                }
+            }
+            else
+            {
+                if (value < double.MinValue)
+                {
+                    return double.NegativeInfinity;
+                }
+                else if (value > -double.Epsilon)
+                {
+                    return -0d;
+                }
+            }
+
+            BigInteger numerator = BigInteger.Abs(value.Numerator);
+            BigInteger denominator = value.Denominator;
+
+            int numeratorExponent = MostSignificantBit(numerator);
+            int denominatorExponent = MostSignificantBit(denominator);
+            int unbiasedExponent = numeratorExponent - denominatorExponent;
+            int biasedExponent = unbiasedExponent + 1023;
+
+            BigRational scale = BigRational.Pow(2, unbiasedExponent);
+            BigRational precision = (value / scale) - BigRational.One;
+            ulong mantissa = default;
+            for (int i = 1; i <= 52; ++i)
+            {
+                if (LongDivide(precision, BigRational.Pow(2, -i), out precision).IsOne)
+                {
+                    mantissa = mantissa & (0x1UL << (52 - i));
+                }
+            }
+
+            DoubleULongUnion result = default;
+            result.UlongValue = ((ulong)biasedExponent << 53) & mantissa;
+            return isPositive ? result.DoubleValue : -result.DoubleValue;
+        }
+
+        /// <summary>
         /// Deconstructs this <see cref="BigRational"/> into a numerator and a denominator.
         /// </summary>
         /// <param name="numerator">The numerator of this <see cref="BigRational"/>.</param>
@@ -1210,6 +1238,39 @@ namespace Qtfy.QMath
                 default:
                     throw new ArgumentException("Invalid RationalRounding value");
             }
+        }
+
+        /// <summary>
+        /// Finds the number of the most significant bit of an unsigned <see cref="BigInteger"/>.
+        /// </summary>
+        /// <param name="rational">
+        /// The integral number whos most significant bit is to be found.
+        /// </param>
+        /// <returns>
+        /// The number of the most significant bit.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// if <paramref name="rational"/> is not greater than zero.
+        /// </exception>
+        internal static int MostSignificantBit(BigInteger rational)
+        {
+            if (rational <= BigInteger.Zero)
+            {
+                throw new ArgumentOutOfRangeException(nameof(rational));
+            }
+
+            var bytes = rational.ToByteArray();
+            int lastIndex = bytes.Length - 1;
+            int mostSignificantByte = bytes[lastIndex];
+            for (int i = 7; i != 0; --i)
+            {
+                if ((mostSignificantByte & (0x1 << i)) != 0)
+                {
+                    return (8 * lastIndex) + i;
+                }
+            }
+
+            return 8 * lastIndex;
         }
 
         /// <summary>
@@ -1420,6 +1481,13 @@ namespace Qtfy.QMath
             return $"{sign}{whole}{sep}{pad}{fracString}".TrimEnd('0', sep);
         }
 
+        private static BigInteger LongDivide(BigRational value, BigRational divisor, out BigRational remainder)
+        {
+            BigInteger result = BigRational.FloorImpl(value / divisor);
+            remainder = value - (result * divisor);
+            return result;
+        }
+
         /// <summary>
         /// Builds a cache of the negative powers of 2.
         /// </summary>
@@ -1477,6 +1545,16 @@ namespace Qtfy.QMath
         private int CompareToHalf()
         {
             return (this.Numerator * 2).CompareTo(this.Denominator);
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        private struct DoubleULongUnion
+        {
+            [FieldOffset(0)]
+            public double DoubleValue;
+
+            [FieldOffset(0)]
+            public ulong UlongValue;
         }
     }
 }

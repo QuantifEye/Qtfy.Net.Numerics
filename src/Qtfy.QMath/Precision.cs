@@ -6,6 +6,7 @@
 namespace Qtfy.QMath
 {
     using System;
+    using System.Numerics;
 
     /// <summary>
     /// Utility methods related to the precision of floating point values.
