@@ -42,5 +42,37 @@ namespace Qtfy.QMath.Tests.BigRationalTests
             Assert.AreEqual((BigInteger)1, rational.Numerator);
             Assert.AreEqual((BigInteger)2, rational.Denominator);
         }
+
+        [Test]
+        public void DoublePositiveEpsilon()
+        {
+            var expectedPositive = (BigRational)double.Epsilon;
+            var actualPositive = BigRational.DoubleEpsilon;
+            Assert.AreEqual(expectedPositive, actualPositive);
+        }
+
+        [Test]
+        public void DoubleNegativeEpsilon()
+        {
+            var expectedNegative = (BigRational)(-double.Epsilon);
+            var actualNegative = BigRational.DoubleNegativeEpsilon;
+            Assert.AreEqual(expectedNegative, actualNegative);
+        }
+
+        [Test]
+        public void DoubleMax()
+        {
+            var expectedMax = (BigRational)double.MaxValue;
+            var actualMax = (BigRational)BigRational.DoubleMax;
+            Assert.AreEqual(expectedMax, actualMax);
+        }
+
+        [Test]
+        public void DoubleMin()
+        {
+            var expectedMin = (BigRational)double.MinValue;
+            var actualMin = (BigRational)BigRational.DoubleMin;
+            Assert.AreEqual(expectedMin, actualMin);
+        }
     }
 }
