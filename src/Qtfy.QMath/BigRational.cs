@@ -6,8 +6,9 @@
 namespace Qtfy.QMath
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Numerics;
-    using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
     using System.Xml;
     using System.Xml.Schema;
@@ -52,6 +53,33 @@ namespace Qtfy.QMath
         /// The smallest value a <see cref="decimal"/> value can have as a <see cref="BigInteger"/>.
         /// </summary>
         public static readonly BigInteger DecimalMin = (BigInteger)decimal.MinValue;
+
+        /// <summary>
+        /// The greatest value a <see cref="double"/> value can have as a <see cref="BigInteger"/>.
+        /// </summary>
+        public static readonly BigInteger DoubleMax = (BigInteger)double.MaxValue;
+
+        /// <summary>
+        /// The smallest value a <see cref="double"/> value can have as a <see cref="BigInteger"/>.
+        /// </summary>
+        public static readonly BigInteger DoubleMin = (BigInteger)double.MinValue;
+
+        /// <summary>
+        /// The smallest number greater than zero that can expressed exactly as a <see cref="double"/> as a <see cref="BigRational"/>.
+        /// </summary>
+        public static readonly BigRational DoubleEpsilon = new BigRational(
+            numerator: BigInteger.Parse("4503599627370497"),
+            denominator: BigInteger.Parse(
+                "4048045066146212367049906934378346140991132995282842367138027160548606791" +
+                "3599069378392076740287424899037415572863362382277961747477158695373402679" +
+                "9881477019843034848553132722728933815484186432682479535356945490137124014" +
+                "9668493853972362067112983191126816201130247175391046668292304610050643726" +
+                "55017292012526615415482186989568"));
+
+        /// <summary>
+        /// The greatest number smaller than zero that can expressed exactly as a <see cref="double"/> as a <see cref="BigRational"/>.
+        /// </summary>
+        public static readonly BigRational DoubleNegativeEpsilon = -DoubleEpsilon;
 
         /// <summary>
         /// The name used for the numerator field for binary serialization.
@@ -153,22 +181,22 @@ namespace Qtfy.QMath
         /// </exception>
         private BigRational(SerializationInfo info, StreamingContext context)
         {
-            var numerator = (BigInteger)info.GetValue(NumeratorName, typeof(BigInteger));
-            var denominator = (BigInteger)info.GetValue(DenominatorName, typeof(BigInteger));
+            var numeratorValue = (BigInteger)info.GetValue(NumeratorName, typeof(BigInteger));
+            var denominatorValue = (BigInteger)info.GetValue(DenominatorName, typeof(BigInteger));
 
-            if (denominator <= 0)
+            if (denominatorValue <= 0)
             {
                 throw new SerializationException("Invalid denominator, denominator must positive.");
             }
 
-            if (!BigInteger.GreatestCommonDivisor(numerator, denominator).IsOne)
+            if (!BigInteger.GreatestCommonDivisor(numeratorValue, denominatorValue).IsOne)
             {
                 throw new SerializationException(
                     "Invalid rational representation. Numerator and denominator must be coprime.");
             }
 
-            this.numerator = numerator;
-            this.denominator = denominator;
+            this.numerator = numeratorValue;
+            this.denominator = denominatorValue;
         }
 
         /// <summary>
@@ -429,16 +457,92 @@ namespace Qtfy.QMath
         /// The <see cref="BigRational"/> to convert.
         /// </param>
         /// <returns>
-        /// <see cref="double.PositiveInfinity"/> if value is greater than <see cref="double.MaxValue"/>,
-        /// <see cref="double.NegativeInfinity"/> if value is smaller than <see cref="double.MinValue"/>,
-        /// negative zero if value is smaller than <see cref="double.Epsilon"/> and greater than 0,
-        /// positive zero if value is greater than negative <see cref="double.Epsilon"/> and smaller than 0,
-        /// otherwise the nearest possible double precision value is returned using
-        /// bankers rounding (round to nearest, ties to even).
+        /// The value of the provided <see cref="BigRational"/> converted to a <see cref="double"/>.
         /// </returns>
+        /// <remarks>
+        /// The implementation gets the string representation of <see cref="BigRational"/> with at least 20
+        /// decimal digits of precision, and is then parsed as a <see cref="double"/>.
+        /// </remarks>
         public static explicit operator double(BigRational value)
         {
-            throw new NotImplementedException();
+            bool isPositive = value.IsPositive;
+            if (isPositive)
+            {
+                if (value > BigRational.DoubleMax)
+                {
+                    return double.PositiveInfinity;
+                }
+
+                if (value < BigRational.DoubleEpsilon)
+                {
+                    return 0d;
+                }
+            }
+            else
+            {
+                if (value < BigRational.DoubleMin)
+                {
+                    return double.NegativeInfinity;
+                }
+
+                if (value > BigRational.DoubleNegativeEpsilon)
+                {
+                    return -0d;
+                }
+            }
+
+            if (value.IsInteger)
+            {
+                return (double)value.Numerator;
+            }
+
+            var absoluteValue = BigRational.Abs(value);
+            var wholePart = BigRational.FloorImpl(absoluteValue);
+            var fractionalPart = absoluteValue - wholePart;
+            int digit = default;
+            var d = new List<char>();
+
+            void StripDigit()
+            {
+                fractionalPart *= 10;
+                var floor = FloorImpl(fractionalPart);
+                fractionalPart -= floor;
+                digit = (int)floor;
+                d.Add(digit.ToString()[0]);
+            }
+
+            do
+            {
+                StripDigit();
+            }
+            while (digit == 0);
+
+            for (var i = 20; i != 0 && !fractionalPart.IsZero; --i)
+            {
+                StripDigit();
+            }
+
+            return double.Parse(isPositive
+                ? $@"{wholePart}.{new string(d.ToArray())}"
+                : $@"-{wholePart}.{new string(d.ToArray())}");
+        }
+
+        /// <summary>
+        /// Converts a <see cref="BigRational"/> to a <see cref="float"/>.
+        /// </summary>
+        /// <param name="value">
+        /// The <see cref="BigRational"/> to convert.
+        /// </param>
+        /// <returns>
+        /// The value of the provided <see cref="BigRational"/> converted to a float.
+        /// </returns>
+        /// <remarks>
+        /// The implementation relies on the implementation of the conversion operator that converts
+        /// a <see cref="BigRational"/> to a double.
+        /// </remarks>
+        public static explicit operator float(BigRational value)
+        {
+            return (float)(double)value;
         }
 
         /// <summary>
@@ -1038,72 +1142,6 @@ namespace Qtfy.QMath
         }
 
         /// <summary>
-        /// Converts a BigRational to a <see cref="double"/>, rounding toward zero if the conversion is not exact.
-        /// </summary>
-        /// <param name="value">
-        /// The <see cref="BigRational"/> to convert to a <see cref="double"/>.
-        /// </param>
-        /// <returns>
-        /// A floating point value obtained by converting the provided rational to a double precision number,
-        /// rounding toward zero.
-        /// </returns>
-        public static double ToDoubleTowardZero(BigRational value)
-        {
-            if (value.IsInteger)
-            {
-                return (double)value.Numerator;
-            }
-
-            bool isPositive = value.IsPositive;
-
-            if (isPositive)
-            {
-                if (value > double.MaxValue)
-                {
-                    return double.PositiveInfinity;
-                }
-                else if (value < double.Epsilon)
-                {
-                    return 0d;
-                }
-            }
-            else
-            {
-                if (value < double.MinValue)
-                {
-                    return double.NegativeInfinity;
-                }
-                else if (value > -double.Epsilon)
-                {
-                    return -0d;
-                }
-            }
-
-            BigInteger numerator = BigInteger.Abs(value.Numerator);
-            BigInteger denominator = value.Denominator;
-
-            int numeratorExponent = MostSignificantBit(numerator);
-            int denominatorExponent = MostSignificantBit(denominator);
-            int unbiasedExponent = numeratorExponent - denominatorExponent;
-            int biasedExponent = unbiasedExponent + 1023;
-
-            BigRational scale = BigRational.Pow(2, unbiasedExponent);
-            BigRational precision = (value / scale) - BigRational.One;
-            ulong mantissa = default;
-            for (int i = 1; i <= 52; ++i)
-            {
-                if (LongDivide(precision, BigRational.Pow(2, -i), out precision).IsOne)
-                {
-                    mantissa = mantissa & (0x1UL << (52 - i));
-                }
-            }
-
-            DoubleULongUnion result = default;
-            result.UlongValue = ((ulong)biasedExponent << 53) & mantissa;
-            return isPositive ? result.DoubleValue : -result.DoubleValue;
-        }
-
-        /// <summary>
         /// Deconstructs this <see cref="BigRational"/> into a numerator and a denominator.
         /// </summary>
         /// <param name="numerator">The numerator of this <see cref="BigRational"/>.</param>
@@ -1145,6 +1183,24 @@ namespace Qtfy.QMath
         public override string ToString()
         {
             return $"{this.Numerator}/{this.Denominator}";
+        }
+
+        /// <summary>
+        /// Converts the numeric value of the current <see cref="BigRational"/> object to
+        /// its equivalent string representation by using the specified format.
+        /// </summary>
+        /// <param name="format">
+        /// A standard or custom numeric format string.
+        /// </param>
+        /// <returns>
+        /// The string representation of the current BigInteger value in the format specified by the format parameter.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// format is not a valid format string.
+        /// </exception>
+        public string ToString(string format)
+        {
+            return $"{this.Numerator.ToString(format)}/{this.Denominator.ToString(format)}";
         }
 
         /// <inheritdoc />
@@ -1481,13 +1537,6 @@ namespace Qtfy.QMath
             return $"{sign}{whole}{sep}{pad}{fracString}".TrimEnd('0', sep);
         }
 
-        private static BigInteger LongDivide(BigRational value, BigRational divisor, out BigRational remainder)
-        {
-            BigInteger result = BigRational.FloorImpl(value / divisor);
-            remainder = value - (result * divisor);
-            return result;
-        }
-
         /// <summary>
         /// Builds a cache of the negative powers of 2.
         /// </summary>
@@ -1545,16 +1594,6 @@ namespace Qtfy.QMath
         private int CompareToHalf()
         {
             return (this.Numerator * 2).CompareTo(this.Denominator);
-        }
-
-        [StructLayout(LayoutKind.Explicit)]
-        private struct DoubleULongUnion
-        {
-            [FieldOffset(0)]
-            public double DoubleValue;
-
-            [FieldOffset(0)]
-            public ulong UlongValue;
         }
     }
 }
