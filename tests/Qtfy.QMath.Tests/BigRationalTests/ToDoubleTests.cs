@@ -6,7 +6,6 @@
 namespace Qtfy.QMath.Tests.BigRationalTests
 {
     using NUnit.Framework;
-    using System.Numerics;
 
     [TestOf(typeof(BigRational))]
     public class ToDoubleTests
@@ -19,29 +18,30 @@ namespace Qtfy.QMath.Tests.BigRationalTests
         [TestCase(2UL << 8, 1 + 8)]
         [TestCase(3UL << 8, 1 + 8)]
         [TestCase(4UL << 8, 2 + 8)]
-        public void TestMostSignificantBit(ulong intgral, int expected)
+        public void TestMostSignificantBit(ulong integral, int expected)
         {
-            var actual = BigRational.MostSignificantBit(intgral);
+            var actual = BigRational.MostSignificantBit(integral);
             Assert.AreEqual(actual, expected);
         }
 
-        [TestCase(5d)]
-        [TestCase(-5d)]
         [TestCase(0d)]
-        public void TestToDoubleTowardZeroInt(double value)
+        [TestCase(1d)]
+        [TestCase(2d)]
+        [TestCase(-1d)]
+        [TestCase(-2d)]
+        [TestCase(0.5d)]
+        [TestCase(-0.5d)]
+        [TestCase(0.25d)]
+        [TestCase(-0.25d)]
+        [TestCase(0.1d)]
+        [TestCase(-0.1d)]
+        [TestCase(0.000000000000000000005d)]
+        [TestCase(-0.000000000000000000005d)]
+        [TestCase(0.000000000000000000001d)]
+        [TestCase(-0.000000000000000000001d)]
+        public void CastToDoubleRoundTrip(double expected)
         {
-            var rational = (BigRational)value;
-            var expected = value;
-            var actual = BigRational.ToDoubleTowardZero(rational);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void TestToDoubleTowardZeroRoundTrip()
-        {
-            var rational = new BigRational(1, 2);
-            var expected = 0.5d;
-            var actual = BigRational.ToDoubleTowardZero(rational);
+            var actual = (double)(BigRational)expected;
             Assert.AreEqual(expected, actual);
         }
     }
