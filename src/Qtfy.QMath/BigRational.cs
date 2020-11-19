@@ -7,6 +7,7 @@ namespace Qtfy.QMath
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Numerics;
     using System.Runtime.Serialization;
     using System.Xml;
@@ -464,66 +465,68 @@ namespace Qtfy.QMath
         /// </remarks>
         public static explicit operator double(BigRational value)
         {
-            bool isPositive = value.IsPositive;
-            if (isPositive)
+            const int maxExp = 1023;
+            const int minExp = -1022;
+            const int exponentBits = 11;
+            const int fractionBits = 52;
+            const long fractionBitsMask = (1L << fractionBits) - 1L;
+            const int extraBits = 8;
+            const int extraBitsMask = (1 << extraBits) - 1;
+
+            int sign = value.Sign;
+            if (value.denominator.IsZero)
             {
-                if (value > BigRational.DoubleMax)
+                throw new DivideByZeroException();
+            }
+
+            if (value.numerator.IsZero)
+            {
+                // TODO: negative zero
+                return 0d;
+            }
+
+            var a = BigInteger.Abs(value.numerator);
+            var b = BigInteger.Abs(value.denominator);
+            var aBits = a.GetBitLength();
+            var bBits = b.GetBitLength();
+
+            if (aBits - bBits > maxExp)
+            {
+                return sign * double.PositiveInfinity;
+            }
+
+            if (aBits - bBits < minExp)
+            {
+                return 0d / sign;
+            }
+
+            int shift = (int)(aBits - bBits) - fractionBits - extraBits;
+            var x = (long)((shift <= 0 ? a << -shift : a >> shift) / b);
+            long extra = x & extraBitsMask;
+            x = (x >> extraBits) - (1L << fractionBits);
+            Debug.Assert(x <= fractionBitsMask, "1 <= x 2 ^ -52 < 2");
+
+            if ((extra >> (extraBits - 1) == 1) && ((extra > (1 << (extraBits - 1))) || ((x & 1) == 1)))
+            {
+                ++x;
+            }
+
+            if (x >> fractionBits != 0)
+            {
+                ++aBits;
+                if (aBits - bBits > maxExp)
                 {
-                    return double.PositiveInfinity;
-                }
-
-                if (value < BigRational.DoubleEpsilon)
-                {
-                    return 0d;
-                }
-            }
-            else
-            {
-                if (value < BigRational.DoubleMin)
-                {
-                    return double.NegativeInfinity;
-                }
-
-                if (value > BigRational.DoubleNegativeEpsilon)
-                {
-                    return -0d;
+                    return sign * double.PositiveInfinity;
                 }
             }
 
-            if (value.IsInteger)
+            long dbl = x | ((aBits - bBits - minExp + 1) << fractionBits);
+            if (sign == -1)
             {
-                return (double)value.Numerator;
+                dbl |= 1L << (fractionBits + exponentBits);
             }
 
-            var absoluteValue = BigRational.Abs(value);
-            var wholePart = BigRational.FloorImpl(absoluteValue);
-            var fractionalPart = absoluteValue - wholePart;
-            int digit = default;
-            var d = new List<char>();
-
-            void StripDigit()
-            {
-                fractionalPart *= 10;
-                var floor = FloorImpl(fractionalPart);
-                fractionalPart -= floor;
-                digit = (int)floor;
-                d.Add(digit.ToString()[0]);
-            }
-
-            do
-            {
-                StripDigit();
-            }
-            while (digit == 0);
-
-            for (var i = 20; i != 0 && !fractionalPart.IsZero; --i)
-            {
-                StripDigit();
-            }
-
-            return double.Parse(isPositive
-                ? $@"{wholePart}.{new string(d.ToArray())}"
-                : $@"-{wholePart}.{new string(d.ToArray())}");
+            return BitConverter.Int64BitsToDouble(dbl);
         }
 
         /// <summary>
@@ -1593,6 +1596,34 @@ namespace Qtfy.QMath
         private int CompareToHalf()
         {
             return (this.Numerator * 2).CompareTo(this.Denominator);
+        }
+    }
+
+    internal static class BigIntegerExtensions
+    {
+        internal static long GetBitLength(this BigInteger self)
+        {
+            var value = BigInteger.Abs(self);
+            if (self.IsZero || (self.Sign == -1 && value.IsOne))
+            {
+                return 0L;
+            }
+
+            var bytes = value.ToByteArray();
+            var byteLength = bytes.Length;
+            byte significantByte;
+            while ((significantByte = bytes[byteLength - 1]) == 0)
+            {
+                --byteLength;
+            }
+
+            var bitLength = 8;
+            while (((significantByte << (8 - bitLength)) & 0x80) == 0x00)
+            {
+                --bitLength;
+            }
+
+            return (8 * (byteLength - 1)) + bitLength;
         }
     }
 }
