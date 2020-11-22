@@ -1598,32 +1598,4 @@ namespace Qtfy.QMath
             return (this.Numerator * 2).CompareTo(this.Denominator);
         }
     }
-
-    internal static class BigIntegerExtensions
-    {
-        internal static long GetBitLength(this BigInteger self)
-        {
-            var value = BigInteger.Abs(self);
-            if (self.IsZero || (self.Sign == -1 && value.IsOne))
-            {
-                return 0L;
-            }
-
-            var bytes = value.ToByteArray();
-            var byteLength = bytes.Length;
-            byte significantByte;
-            while ((significantByte = bytes[byteLength - 1]) == 0)
-            {
-                --byteLength;
-            }
-
-            var bitLength = 8;
-            while (((significantByte << (8 - bitLength)) & 0x80) == 0x00)
-            {
-                --bitLength;
-            }
-
-            return (8 * (byteLength - 1)) + bitLength;
-        }
-    }
 }

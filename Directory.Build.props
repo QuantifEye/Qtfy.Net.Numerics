@@ -2,6 +2,8 @@
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
