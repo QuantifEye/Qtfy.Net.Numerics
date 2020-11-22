@@ -15,8 +15,8 @@ namespace Qtfy.QMath.Tests.SeriesExpansionsTests
         public void TestLog(double x)
         {
             var log = Math.Log(x);
-            BigRational upper = log.Increment();
-            BigRational lower = log.Decrement();
+            BigRational upper = Math.BitIncrement(log);
+            BigRational lower = Math.BitDecrement(log);
             BigRational actual = SeriesExpansions.Log(x, 1000);
             Assert.True(actual < upper);
             Assert.True(actual > lower);

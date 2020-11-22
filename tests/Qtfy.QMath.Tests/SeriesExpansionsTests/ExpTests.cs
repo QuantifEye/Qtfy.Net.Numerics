@@ -39,8 +39,8 @@ namespace Qtfy.QMath.Tests.SeriesExpansionsTests
         public void TestExp(double x)
         {
             var exp = Math.Exp(x);
-            BigRational upper = exp.Increment();
-            BigRational lower = exp.Decrement();
+            BigRational lower = Math.BitDecrement(exp);
+            BigRational upper = Math.BitIncrement(exp);
             BigRational actual = SeriesExpansions.Exp(x, 500);
             Assert.True(actual < upper);
             Assert.True(actual > lower);
