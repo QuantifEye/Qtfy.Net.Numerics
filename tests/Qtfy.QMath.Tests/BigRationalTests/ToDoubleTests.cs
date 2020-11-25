@@ -11,20 +11,6 @@ namespace Qtfy.QMath.Tests.BigRationalTests
     [TestOf(typeof(BigRational))]
     public class ToDoubleTests
     {
-        [TestCase(1UL, 0)]
-        [TestCase(2UL, 1)]
-        [TestCase(3UL, 1)]
-        [TestCase(4UL, 2)]
-        [TestCase(1UL << 8, 0 + 8)]
-        [TestCase(2UL << 8, 1 + 8)]
-        [TestCase(3UL << 8, 1 + 8)]
-        [TestCase(4UL << 8, 2 + 8)]
-        public void TestMostSignificantBit(ulong integral, int expected)
-        {
-            var actual = BigRational.MostSignificantBit(integral);
-            Assert.AreEqual(actual, expected);
-        }
-
         [TestCase(0d)]
         [TestCase(1d)]
         [TestCase(2d)]
