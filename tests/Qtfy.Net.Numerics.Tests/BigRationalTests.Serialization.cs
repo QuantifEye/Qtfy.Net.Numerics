@@ -34,6 +34,7 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase(1, 2)]
         public void TestXmlSerialise(int n, int d)
         {
+            var enc = new UTF8Encoding(false);
             var rational = new BigRational(n, d);
             var serializer = new XmlSerializer(typeof(BigRational));
             var num = rational.Numerator;
@@ -42,7 +43,7 @@ namespace Qtfy.Net.Numerics.Tests
             var expected = $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{nl}<BigRational>{num}/{den}</BigRational>";
             string actual;
             using (var memoryStream = new MemoryStream())
-            using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
+            using (var streamWriter = new StreamWriter(memoryStream, enc))
             {
                 serializer.Serialize(streamWriter, rational);
                 actual = Encoding.UTF8.GetString(memoryStream.ToArray());

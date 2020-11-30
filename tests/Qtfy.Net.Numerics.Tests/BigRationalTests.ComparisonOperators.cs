@@ -86,7 +86,7 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(right < left, expected);
         }
 
-        [TestCase("1/2", "1/2", false)]
+        [TestCase("1/2", "1/2", true)]
         [TestCase("1/4", "1/2", false)]
         public void GreaterThanOrEqualBigRationalOperator(string leftString, string rightString, bool expected)
         {
