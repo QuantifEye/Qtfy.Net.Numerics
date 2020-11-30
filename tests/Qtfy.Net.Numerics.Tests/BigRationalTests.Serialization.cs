@@ -39,7 +39,7 @@ namespace Qtfy.Net.Numerics.Tests
             var num = rational.Numerator;
             var den = rational.Denominator;
             var nl = Environment.NewLine;
-            var expected = $" <?xml version=\"1.0\" encoding=\"utf-8\"?>{nl}<BigRational>{num}/{den}</BigRational>";
+            var expected = $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{nl}<BigRational>{num}/{den}</BigRational>";
             string actual;
             using (var memoryStream = new MemoryStream())
             using (var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))

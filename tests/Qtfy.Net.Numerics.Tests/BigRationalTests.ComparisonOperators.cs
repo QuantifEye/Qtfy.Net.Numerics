@@ -20,39 +20,12 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "1", false)]
-        public void EqualitySignedIntegerOperator(string leftString, string rightString, bool expected)
+        public void EqualityBigIntegerOperator(string leftString, string rightString, bool expected)
         {
             var left = BigRational.Parse(leftString);
             var right = BigInteger.Parse(rightString);
             Assert.AreEqual(left == right, expected);
             Assert.AreEqual(right == left, expected);
-
-            Assert.AreEqual(left == (long)right, expected);
-            Assert.AreEqual((long)right == left, expected);
-            Assert.AreEqual(left == (int)right, expected);
-            Assert.AreEqual((int)right == left, expected);
-            Assert.AreEqual(left == (short)right, expected);
-            Assert.AreEqual((short)right == left, expected);
-            Assert.AreEqual(left == (sbyte)right, expected);
-            Assert.AreEqual((sbyte)right == left, expected);
-        }
-
-        [TestCase("1/2", "1", false)]
-        public void EqualityUnsignedIntegerOperator(string leftString, string rightString, bool expected)
-        {
-            var left = BigRational.Parse(leftString);
-            var right = BigInteger.Parse(rightString);
-            Assert.AreEqual(left == right, expected);
-            Assert.AreEqual(right == left, expected);
-
-            Assert.AreEqual(left == (ulong)right, expected);
-            Assert.AreEqual((ulong)right == left, expected);
-            Assert.AreEqual(left == (uint)right, expected);
-            Assert.AreEqual((uint)right == left, expected);
-            Assert.AreEqual(left == (ushort)right, expected);
-            Assert.AreEqual((ushort)right == left, expected);
-            Assert.AreEqual(left == (byte)right, expected);
-            Assert.AreEqual((byte)right == left, expected);
         }
 
         [TestCase("1/2", "1/2", false)]
@@ -64,7 +37,7 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(right != left, expected);
         }
 
-        [TestCase("1/2", "1", false)]
+        [TestCase("1/2", "1", true)]
         public void InequalityBigIntegerOperator(string leftString, string rightString, bool expected)
         {
             var left = BigRational.Parse(leftString);
@@ -83,7 +56,7 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(right > left, expected);
         }
 
-        [TestCase("1/2", "1", false)]
+        [TestCase("1/2", "1", true)]
         [TestCase("1/4", "1", true)]
         public void LessThanBigIntegerOperator(string leftString, string rightString, bool expected)
         {
@@ -94,7 +67,7 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "1/2", false)]
-        [TestCase("1/4", "1/2", true)]
+        [TestCase("1/4", "1/2", false)]
         public void GreaterThanBigRationalOperator(string leftString, string rightString, bool expected)
         {
             var left = BigRational.Parse(leftString);
@@ -103,18 +76,18 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(right < left, expected);
         }
 
-        [TestCase("1/2", "1/2", false)]
-        [TestCase("1/4", "1/2", true)]
-        public void GreaterThanBigIntegerOperator(string leftString, string rightString, bool expected)
+        [TestCase("1/2", "1", false)]
+        [TestCase("1/4", "1", false)]
+        public void GreaterThanBigIntegerOperator(string rationalString, string integerString, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
+            var left = BigRational.Parse(rationalString);
+            var right = BigInteger.Parse(integerString);
             Assert.AreEqual(left > right, expected);
             Assert.AreEqual(right < left, expected);
         }
 
         [TestCase("1/2", "1/2", false)]
-        [TestCase("1/4", "1/2", true)]
+        [TestCase("1/4", "1/2", false)]
         public void GreaterThanOrEqualBigRationalOperator(string leftString, string rightString, bool expected)
         {
             var left = BigRational.Parse(leftString);
@@ -123,17 +96,17 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(right <= left, expected);
         }
 
-        [TestCase("1/2", "1/2", false)]
-        [TestCase("1/4", "1/2", true)]
-        public void GreaterThanOrEqualBigIntegerOperator(string leftString, string rightString, bool expected)
+        [TestCase("1/2", "1", false)]
+        [TestCase("1/4", "1", false)]
+        public void GreaterThanOrEqualBigIntegerOperator(string rationalString, string integerString, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
+            var left = BigRational.Parse(rationalString);
+            var right = BigInteger.Parse(integerString);
             Assert.AreEqual(left >= right, expected);
             Assert.AreEqual(right <= left, expected);
         }
 
-        [TestCase("1/2", "1/2", false)]
+        [TestCase("1/2", "1/2", true)]
         [TestCase("1/4", "1/2", true)]
         public void LessThanOrEqualBigRationalOperator(string leftString, string rightString, bool expected)
         {
@@ -143,7 +116,7 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(right >= left, expected);
         }
 
-        [TestCase("1/2", "1", false)]
+        [TestCase("1/2", "1", true)]
         [TestCase("1/4", "1", true)]
         public void LessThanOrEqualBigIntegerOperator(string leftString, string rightString, bool expected)
         {

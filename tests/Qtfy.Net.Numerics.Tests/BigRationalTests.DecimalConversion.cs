@@ -15,18 +15,20 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase("-0.0125", "-1/80")]
         public void DecimalToRational(string decimalString, string expectedString)
         {
-            AssertEqual(BigRational.Parse(expectedString), (BigRational)decimal.Parse(decimalString));
+            AssertEqual(
+                BigRational.Parse(expectedString),
+                (BigRational)decimal.Parse(decimalString));
         }
 
         [TestCase("1/8", "0.125")]
         [TestCase("1/80", "0.0125")]
         [TestCase("-1/8", "-0.125")]
         [TestCase("-1/80", "-0.0125")]
-        public void RationalToDecimalExact(string decimalString, string rationalString)
+        public void RationalToDecimalExact(string rationalString, string decimalString)
         {
-            var actual = (decimal)BigRational.Parse(rationalString);
+            var rational = BigRational.Parse(rationalString);
             var expected = decimal.Parse(decimalString);
-            AssertEqual(expected, actual);
+            AssertEqual(expected, (decimal)rational);
         }
 
         [TestCase("2/3", "0.666_666_666_666_666_666_666_666_666_7")]
@@ -37,7 +39,7 @@ namespace Qtfy.Net.Numerics.Tests
         {
             var rational = BigRational.Parse(rationalString);
             var expected = decimal.Parse(expectedString);
-            Assert.AreEqual(decimal.Parse(expectedString), (decimal)rational);
+            Assert.AreEqual(expected, (decimal)rational);
         }
 
         [TestCase("0.000_000_000_000_000_000_000_000_000_5", "0")]

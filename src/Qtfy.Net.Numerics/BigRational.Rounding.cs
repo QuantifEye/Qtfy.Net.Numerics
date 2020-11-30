@@ -113,14 +113,14 @@ namespace Qtfy.Net.Numerics
         /// </param>
         /// <param name="mode">
         /// The specification of what to do when <paramref name="value"/> is exactly half way between two numbers
-        /// that are a multiple if <paramref name="tick"/>, (default value = <see cref="RationalRounding.ToEven"/>).
+        /// that are a multiple if <paramref name="tick"/>.
         /// </param>
         /// <returns>
         /// Rounds<paramref name="value"/> to a nearest number that is multiple of<paramref name= "tick" />.
         /// If <paramref name= "value" /> is exactly half way between two such numbers, <paramref name="mode"/>
         /// specifies the rounding method to use.
         /// </returns>
-        public static BigRational RoundToTick(BigRational value, BigRational tick, RationalRounding mode = RationalRounding.ToEven)
+        public static BigRational RoundToTick(BigRational value, BigRational tick, RationalRounding mode)
         {
             if (!tick.IsPositive)
             {
@@ -132,7 +132,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <summary>
-        /// Rounds <paramref name="value"/> to a the nearest <see cref="BigInteger"/> 
+        /// Rounds <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
         /// If <paramref name="value"/> is exactly half way between two such numbers, <paramref name="mode"/>
         /// specifies the rounding method to use <see cref="RationalRounding"/>.
         /// </summary>
@@ -140,22 +140,21 @@ namespace Qtfy.Net.Numerics
         /// The value to be rounded.
         /// </param>
         /// <param name="mode">
-        /// The specification of what to do when <paramref name="value"/> is exactly half way between two integer values,
-        /// (default value = <see cref="RationalRounding.ToEven"/>).
+        /// The specification of what to do when <paramref name="value"/> is exactly half way between two integer values.
         /// </param>
         /// <returns>
-        /// The result of rounding <paramref name="value"/> to a the nearest <see cref="BigInteger"/> 
+        /// The result of rounding <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
         /// If <paramref name="value"/> is exactly half way between two such numbers, <paramref name="mode"/>
         /// specifies the rounding method to use <see cref="RationalRounding"/>.
         /// </returns>
-        public static BigInteger RoundToInt(BigRational value, RationalRounding mode = RationalRounding.ToEven)
+        public static BigInteger RoundToInt(BigRational value, RationalRounding mode)
         {
             // TODO: should this return a BigInteger or BigRational?
             return value.IsInteger ? value.Numerator : RoundImpl(value, mode);
         }
 
         /// <summary>
-        /// Rounds <paramref name="value"/> to a the nearest <see cref="BigInteger"/> 
+        /// Rounds <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
         /// If <paramref name="value"/> is exactly half way between two such numbers,
         /// <paramref name="value"/> is rounded to the nearest even integer value.
         /// </summary>
@@ -163,7 +162,7 @@ namespace Qtfy.Net.Numerics
         /// The value to be rounded.
         /// </param>
         /// <returns>
-        /// The result of rounding <paramref name="value"/> to a the nearest <see cref="BigInteger"/> 
+        /// The result of rounding <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
         /// If <paramref name="value"/> is exactly half way between two such numbers,
         /// <paramref name="value"/> is rounded to the nearest even integer value.
         /// </returns>
