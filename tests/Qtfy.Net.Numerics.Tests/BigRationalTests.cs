@@ -114,49 +114,74 @@ namespace Qtfy.Net.Numerics.Tests
                 () => new BigRational(numerator, 0));
         }
 
-        [TestCase("1/2", 1)]
-        [TestCase("-1/2", -1)]
-        [TestCase("0/1", 0)]
-        public void Sign(string value, int expected)
+        [TestCase(1, 2, 1)]
+        [TestCase(-1, 2, -1)]
+        [TestCase(0, 1, 0)]
+        [TestCase(1, 1, 1)]
+        [TestCase(-1, 1, -1)]
+        public void Sign(int n, int d, int expected)
         {
-            Assert.AreEqual(expected, BigRational.Parse(value).Sign);
+            Assert.AreEqual(expected, new BigRational(n, d).Sign);
         }
 
-        [TestCase("1/2", true)]
-        public void IsPositive(string value, bool expected)
+        [TestCase(1, 2, true)]
+        [TestCase(-1, 2, false)]
+        [TestCase(0, 1, false)]
+        [TestCase(1, 1, true)]
+        [TestCase(-1, 1, false)]
+        public void IsPositive(int n, int d, bool expected)
         {
-            Assert.AreEqual(expected, BigRational.Parse(value).IsPositive);
+            Assert.AreEqual(expected, new BigRational(n, d).IsPositive);
         }
 
-        [TestCase("1/2", false)]
-        public void IsNegative(string value, bool expected)
+        [TestCase(1, 2, false)]
+        [TestCase(-1, 2, true)]
+        [TestCase(0, 1, false)]
+        [TestCase(1, 1, false)]
+        [TestCase(-1, 1, true)]
+        public void IsNegative(int n, int d, bool expected)
         {
-            Assert.AreEqual(expected, BigRational.Parse(value).IsNegative);
+            Assert.AreEqual(expected, new BigRational(n, d).IsNegative);
         }
 
-        [TestCase("1/2", false)]
-        public void IsZero(string value, bool expected)
+        [TestCase(1, 2, false)]
+        [TestCase(-1, 2, false)]
+        [TestCase(0, 1, true)]
+        [TestCase(1, 1, false)]
+        [TestCase(-1, 1, false)]
+        public void IsZero(int n, int d, bool expected)
         {
-            Assert.AreEqual(expected, BigRational.Parse(value).IsZero);
+            Assert.AreEqual(expected, new BigRational(n, d).IsZero);
         }
 
-        [TestCase("1/2", false)]
-        public void IsOne(string value, bool expected)
+        [TestCase(1, 2, false)]
+        [TestCase(-1, 2, false)]
+        [TestCase(0, 1, false)]
+        [TestCase(1, 1, true)]
+        [TestCase(-1, 1, false)]
+        public void IsOne(int n, int d, bool expected)
         {
-            Assert.AreEqual(expected, BigRational.Parse(value).IsOne);
+            Assert.AreEqual(expected, new BigRational(n, d).IsOne);
         }
 
-        [TestCase("1/2", false)]
-        public void IsMinusOne(string value, bool expected)
+        [TestCase(1, 2, false)]
+        [TestCase(-1, 2, false)]
+        [TestCase(0, 1, false)]
+        [TestCase(1, 1, false)]
+        [TestCase(-1, 1, true)]
+        public void IsMinusOne(int n, int d, bool expected)
         {
-            Assert.AreEqual(expected, BigRational.Parse(value).IsMinusOne);
+            Assert.AreEqual(expected, new BigRational(n, d).IsMinusOne);
         }
 
-        [TestCase("1/2", false)]
-        [TestCase("1", true)]
-        public void IsInteger(string value, bool expected)
+        [TestCase(1, 2, false)]
+        [TestCase(-1, 2, false)]
+        [TestCase(0, 1, true)]
+        [TestCase(1, 1, true)]
+        [TestCase(-1, 1, true)]
+        public void IsInteger(int n, int d, bool expected)
         {
-            Assert.AreEqual(expected, BigRational.Parse(value).IsInteger);
+            Assert.AreEqual(expected, new BigRational(n, d).IsInteger);
         }
 
         [Test]
@@ -167,13 +192,13 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual((BigInteger)3, d);
         }
 
-        [TestCase("1/2", "1/2")]
-        [TestCase("-1/2", "1/2")]
-        public void Abs(string actualString, string expectedString)
+        [TestCase(1, 2)]
+        [TestCase(-1, 2)]
+        public void Abs(int n, int d)
         {
-            var actual = BigRational.Abs(BigRational.Parse(actualString));
-            var expected = BigRational.Parse(expectedString);
-            Assert.AreEqual(expected, actual);
+            var actual = BigRational.Abs(new BigRational(n, d));
+            var expected = new BigRational(Math.Abs(n), Math.Abs(d));
+            BigRationalTests.AssertEqual(expected, actual);
         }
 
         [TestCase(1, 2)]
@@ -183,7 +208,7 @@ namespace Qtfy.Net.Numerics.Tests
             var rational = new BigRational(n1, n2);
             var expected = new BigRational(n2, n1);
             var actual = rational.Reciprocal();
-            AssertEqual(expected, actual);
+            BigRationalTests.AssertEqual(expected, actual);
         }
 
         [Test]
@@ -194,23 +219,30 @@ namespace Qtfy.Net.Numerics.Tests
                 () => rational.Reciprocal());
         }
 
-        [TestCase("1/2", "1/4")]
-        public void MinAndMax(string max, string min)
+        [TestCase(1, 4, 1, 2)]
+        [TestCase(-1, 2, 1, 4)]
+        [TestCase(-1, 2, -1, 4)]
+        public void MinAndMax(int minNumerator, int minDenominator, int maxNumerator, int maxDenominator)
         {
-            BigRational maximum = BigRational.Parse(max);
-            BigRational minimum = BigRational.Parse(min);
-            BigRationalTests.AssertEqual(maximum, BigRational.Max(maximum, minimum));
+            BigRational maximum = new BigRational(maxNumerator, maxDenominator);
+            BigRational minimum = new BigRational(minNumerator, minDenominator);
             BigRationalTests.AssertEqual(maximum, BigRational.Max(minimum, maximum));
-            BigRationalTests.AssertEqual(minimum, BigRational.Min(maximum, minimum));
+            BigRationalTests.AssertEqual(maximum, BigRational.Max(minimum, maximum));
+            BigRationalTests.AssertEqual(minimum, BigRational.Min(minimum, maximum));
             BigRationalTests.AssertEqual(minimum, BigRational.Min(minimum, maximum));
         }
 
-        [TestCase("1/1", 1, "1/1")]
-        [TestCase("1/1", 0, "1/1")]
-        public void Pow(string value, int power, string result)
+        [TestCase(1, 1, 1, 1, 1)]
+        [TestCase(1, 1, 0, 1, 1)]
+        [TestCase(1, 2, 2, 1, 4)]
+        [TestCase(-1, 1, 1, -1, 1)]
+        [TestCase(-1, 1, 0, 1, 1)]
+        [TestCase(-1, 2, 2, 1, 4)]
+        [TestCase(-1, 2, 3, -1, 8)]
+        public void Pow(int n, int d, int power, int expectedNumerator, int expectedDenominator)
         {
-            BigRational rational = BigRational.Parse(value);
-            BigRational expected = BigRational.Parse(result);
+            BigRational rational = new BigRational(n, d);
+            BigRational expected = new BigRational(expectedNumerator, expectedDenominator);
             BigRationalTests.AssertEqual(expected, BigRational.Pow(rational, power));
         }
 
@@ -227,6 +259,7 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(expected, new BigRational(numerator, denominator).ToString());
         }
 
+        [TestCase("-123/456", -123, 456)]
         [TestCase("123/456", 123, 456)]
         [TestCase("123", 123, 1)]
         public void TestParseSuccessful(string from, int numerator, int denominator)
@@ -246,19 +279,16 @@ namespace Qtfy.Net.Numerics.Tests
 
         [TestCase("123/456", 123, 456, true)]
         [TestCase("xyz", 0, 0, false)]
-        public void TestTryParse(string from, int numerator, int denominator, bool expectedSuccess)
+        public void TestTryParse(string input, int numerator, int denominator, bool expectedSuccess)
         {
             BigRational expectedRational = expectedSuccess
                 ? new BigRational(numerator, denominator)
                 : default;
 
-            var actualSuccess = BigRational.TryParse(from, out var actualRational);
+            var actualSuccess = BigRational.TryParse(input, out var actualRational);
 
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedSuccess, actualSuccess);
-                Assert.AreEqual(expectedRational, actualRational);
-            });
+            Assert.AreEqual(expectedSuccess, actualSuccess);
+            Assert.AreEqual(expectedRational, actualRational);
         }
     }
 }
