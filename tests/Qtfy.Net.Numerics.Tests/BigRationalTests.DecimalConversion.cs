@@ -35,7 +35,7 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase("-2/3", "-0.6666666666666666666666666667")]
         [TestCase("1/3", "0.3333333333333333333333333333")]
         [TestCase("-1/3", "-0.3333333333333333333333333333")]
-        public void RationalToDecimalWithRounding(string rationalString, string expectedString)
+        public void RationalToDecimalWithRecurringDigit(string rationalString, string expectedString)
         {
             var rational = BigRational.Parse(rationalString);
             var expected = decimal.Parse(expectedString);
@@ -48,7 +48,7 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase("-0.0000000000000000000000000005", "0")]
         [TestCase("-0.0000000000000000000000000015", "-0.0000000000000000000000000002")]
         [TestCase("-0.0000000000000000000000000025", "-0.0000000000000000000000000002")]
-        public void ToDecimalWithRounding5(string leftString, string rightString)
+        public void RationalToDecimalWithRounding(string leftString, string rightString)
         {
             var rational = (BigRational)decimal.Parse(leftString);
             var actual = (decimal)(rational / 10);
