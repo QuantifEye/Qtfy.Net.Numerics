@@ -5,11 +5,34 @@
 
 namespace Qtfy.Net.Numerics.Tests
 {
+    using System;
     using System.Numerics;
     using NUnit.Framework;
 
     public partial class BigRationalTests
     {
+        [TestCase(0.125d, 1, 8)]
+        [TestCase(0.25d, 1, 4)]
+        [TestCase(-0.125d, -1, 8)]
+        [TestCase(-0.25d, -1, 4)]
+        public void FromDouble(double value, int numerator, int denominator)
+        {
+            var actual = (BigRational)value;
+            var expected = new BigRational(numerator, denominator);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(0.125f, 1, 8)]
+        [TestCase(0.25f, 1, 4)]
+        [TestCase(-0.125f, -1, 8)]
+        [TestCase(-0.25f, -1, 4)]
+        public void FromFloat(float value, int numerator, int denominator)
+        {
+            var actual = (BigRational)value;
+            var expected = new BigRational(numerator, denominator);
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestCase(0d)]
         [TestCase(1d)]
         [TestCase(2d)]
@@ -46,26 +69,29 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(expected, (double)new BigRational(two54 + shift, two54));
         }
 
-        [TestCase(0.125d, 1, 8)]
-        [TestCase(0.25d, 1, 4)]
-        [TestCase(-0.125d, -1, 8)]
-        [TestCase(-0.25d, -1, 4)]
-        public void FromDouble(double value, int numerator, int denominator)
+        [Test]
+        public void CastToDoubleOverflow()
         {
-            var actual = (BigRational)value;
-            var expected = new BigRational(numerator, denominator);
-            Assert.AreEqual(expected, actual);
+            BigRational doubleMax = double.MaxValue;
+            BigRational positiveOverflowValue = doubleMax * doubleMax;
+            BigRational negativeOverflowValue = -positiveOverflowValue;
+            AssertBitEqual(double.PositiveInfinity, (double)positiveOverflowValue);
+            AssertBitEqual(double.NegativeInfinity, (double)negativeOverflowValue);
         }
 
-        [TestCase(0.125f, 1, 8)]
-        [TestCase(0.25f, 1, 4)]
-        [TestCase(-0.125f, -1, 8)]
-        [TestCase(-0.25f, -1, 4)]
-        public void FromFloat(float value, int numerator, int denominator)
+        [Test]
+        public void CastToDoubleUnderflow()
         {
-            var actual = (BigRational)value;
-            var expected = new BigRational(numerator, denominator);
-            Assert.AreEqual(expected, actual);
+            BigRational doubleEpsilon = double.Epsilon;
+            BigRational positiveUnderflow = doubleEpsilon * doubleEpsilon;
+            BigRational negativeUnderflow = -positiveUnderflow;
+            AssertBitEqual(0.0, (double)positiveUnderflow);
+            AssertBitEqual(-0.0, (double)negativeUnderflow);
+        }
+
+        private static void AssertBitEqual(double left, double right)
+        {
+            Assert.AreEqual(BitConverter.DoubleToInt64Bits(left), BitConverter.DoubleToInt64Bits(right));
         }
     }
 }
