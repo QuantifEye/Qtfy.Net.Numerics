@@ -74,7 +74,7 @@ namespace Qtfy.Net.Numerics
             info.AddValue(DenominatorName, this.Denominator);
         }
 
-                /// <inheritdoc/>
+        /// <inheritdoc/>
         public XmlSchema GetSchema()
         {
             return null;
