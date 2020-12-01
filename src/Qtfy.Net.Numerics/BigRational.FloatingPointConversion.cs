@@ -47,19 +47,14 @@ namespace Qtfy.Net.Numerics
             const int extraBitsMask = (1 << extraBits) - 1;
 
             int sign = value.Sign;
-            if (value.denominator.IsZero)
-            {
-                throw new DivideByZeroException();
-            }
 
-            if (value.numerator.IsZero)
+            if (value.IsZero)
             {
-                // TODO: negative zero
                 return 0d;
             }
 
-            var a = BigInteger.Abs(value.numerator);
-            var b = BigInteger.Abs(value.denominator);
+            var a = BigInteger.Abs(value.Numerator);
+            var b = value.Denominator;
             var aBits = a.GetBitLength();
             var bBits = b.GetBitLength();
 
