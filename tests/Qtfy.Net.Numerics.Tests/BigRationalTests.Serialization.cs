@@ -14,23 +14,6 @@ namespace Qtfy.Net.Numerics.Tests
 
     public partial class BigRationalTests
     {
-        public void SerialiseValid(int n, int d)
-        {
-            // var expected = new BigRational(n, d);
-            // BigRational actual;
-            // IFormatter formatter = new BinaryFormatter(); // deprecated
-            // using (var stream = new MemoryStream())
-            // {
-            //     formatter.Serialize(stream, expected);
-            //     using (var resultStream = new MemoryStream(stream.ToArray()))
-            //     {
-            //         actual = (BigRational)formatter.Deserialize(resultStream);
-            //     }
-            // }
-            // Assert.AreEqual(expected, actual);
-            Assert.Fail();
-        }
-
         [TestCase(1, 2)]
         public void TestXmlSerialise(int n, int d)
         {
