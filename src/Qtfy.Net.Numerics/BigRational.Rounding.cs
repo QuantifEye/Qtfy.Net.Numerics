@@ -6,7 +6,6 @@
 namespace Qtfy.Net.Numerics
 {
     using System;
-    using System.Diagnostics;
     using System.Numerics;
 
     /// <summary>
@@ -28,7 +27,6 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational Ceiling(BigRational value)
         {
-            // TODO: should this return a BigInteger or BigRational?
             return value.IsInteger ? value : CeilingImpl(value);
         }
 
@@ -44,7 +42,6 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational Floor(BigRational value)
         {
-            // TODO: should this return a BigInteger or BigRational?
             return value.IsInteger ? value : FloorImpl(value);
         }
 
@@ -64,11 +61,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational Ceiling(BigRational value, BigRational tick)
         {
-            if (!tick.IsPositive)
-            {
-                throw new ArgumentException("Tick size must be greater than zero.");
-            }
-
+            AssertValidTick(tick);
             var ticks = value / tick;
             return ticks.IsInteger ? value : CeilingImpl(ticks) * tick;
         }
@@ -90,11 +83,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational Floor(BigRational value, BigRational tick)
         {
-            if (!tick.IsPositive)
-            {
-                throw new ArgumentException("Tick size must be greater than zero.");
-            }
-
+            AssertValidTick(tick);
             var ticks = value / tick;
             return ticks.IsInteger ? value : FloorImpl(ticks) * tick;
         }
@@ -122,11 +111,8 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational RoundToTick(BigRational value, BigRational tick, RationalRounding mode)
         {
-            if (!tick.IsPositive)
-            {
-                throw new ArgumentException("Tick size must be positive.");
-            }
-
+            AssertValidTick(tick);
+            AssertValidRationalRounding(mode);
             var ticks = value / tick;
             return ticks.IsInteger ? value : RoundImpl(ticks, mode) * tick;
         }
@@ -149,27 +135,8 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigInteger RoundToInt(BigRational value, RationalRounding mode)
         {
-            // TODO: should this return a BigInteger or BigRational?
+            AssertValidRationalRounding(mode);
             return value.IsInteger ? value.Numerator : RoundImpl(value, mode);
-        }
-
-        /// <summary>
-        /// Rounds <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
-        /// If <paramref name="value"/> is exactly half way between two such numbers,
-        /// <paramref name="value"/> is rounded to the nearest even integer value.
-        /// </summary>
-        /// <param name="value">
-        /// The value to be rounded.
-        /// </param>
-        /// <returns>
-        /// The result of rounding <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
-        /// If <paramref name="value"/> is exactly half way between two such numbers,
-        /// <paramref name="value"/> is rounded to the nearest even integer value.
-        /// </returns>
-        public static BigInteger RoundToInt(BigRational value)
-        {
-            // TODO: should this return a BigInteger or BigRational?
-            return value.IsInteger ? value.Numerator : RoundToEvenImpl(value);
         }
 
         /// <summary>
@@ -217,7 +184,6 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger FloorImpl(BigRational value)
         {
-            Debug.Assert(!value.IsInteger, $"{nameof(value)} must not be an Integer");
             if (value.IsPositive)
             {
                 return value.Numerator / value.Denominator;
@@ -241,7 +207,6 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger CeilingImpl(BigRational value)
         {
-            Debug.Assert(!value.IsInteger, $"{nameof(value)} must not be an Integer");
             if (value.IsNegative)
             {
                 return value.Numerator / value.Denominator;
@@ -266,7 +231,6 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundUpImpl(BigRational value)
         {
-            Debug.Assert(!value.IsInteger, $"{nameof(value)} must not be an Integer");
             var floor = FloorImpl(value);
             return (value - floor).IsGreaterThanOrEqualToHalf()
                 ? ++floor
@@ -289,7 +253,6 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundDownImpl(BigRational value)
         {
-            Debug.Assert(!value.IsInteger, $"{nameof(value)} must not be an Integer");
             var floor = FloorImpl(value);
             return (value - floor).IsGreaterThanHalf()
                 ? ++floor
@@ -312,7 +275,6 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundTowardZeroImpl(BigRational value)
         {
-            Debug.Assert(!value.IsInteger, $"{nameof(value)} must not be an Integer");
             var floor = FloorImpl(value);
             var fraction = value - floor;
             if (value.IsPositive)
@@ -349,7 +311,6 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundAwayFromZeroImpl(BigRational value)
         {
-            Debug.Assert(!value.IsInteger, $"{nameof(value)} must not be an Integer");
             var floor = FloorImpl(value);
             var fraction = value - floor;
             if (value.IsPositive)
@@ -386,7 +347,6 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundToEvenImpl(BigRational value)
         {
-            Debug.Assert(!value.IsInteger, $"{nameof(value)} must not be an Integer");
             var floor = FloorImpl(value);
             switch ((value - floor).CompareToHalf())
             {
@@ -396,6 +356,23 @@ namespace Qtfy.Net.Numerics
                     return ++floor;
                 default:
                     return floor;
+            }
+        }
+
+        private static void AssertValidRationalRounding(RationalRounding mode)
+        {
+            Enum.IsDefined(mode);
+            if ((int)mode < 0 || (int)mode > 4)
+            {
+                throw new ArgumentException("Invalid RationalRounding.");
+            }
+        }
+
+        private static void AssertValidTick(BigRational tick)
+        {
+            if (!tick.IsPositive)
+            {
+                throw new ArgumentException("Invalid tick size. Tick pust be greater than zero.");
             }
         }
 

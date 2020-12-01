@@ -13,6 +13,14 @@ namespace Qtfy.Net.Numerics
         /// <summary>
         /// Indicates that if a number is not a whole number of ticks away from zero, that it should be rounded
         /// to the nearest number that multiple of the specified tick size. If the number is exactly half way
+        /// between two such numbers, the number is rounded down to the nearest number that is an even-multiple of
+        /// the specified tick size.
+        /// </summary>
+        ToEven,
+
+        /// <summary>
+        /// Indicates that if a number is not a whole number of ticks away from zero, that it should be rounded
+        /// to the nearest number that multiple of the specified tick size. If the number is exactly half way
         /// between two such numbers, the number is rounded up to the nearest number that is a multiple of
         /// the specified tick size.
         /// </summary>
@@ -25,14 +33,6 @@ namespace Qtfy.Net.Numerics
         /// the specified tick size.
         /// </summary>
         Down,
-
-        /// <summary>
-        /// Indicates that if a number is not a whole number of ticks away from zero, that it should be rounded
-        /// to the nearest number that multiple of the specified tick size. If the number is exactly half way
-        /// between two such numbers, the number is rounded down to the nearest number that is an even-multiple of
-        /// the specified tick size.
-        /// </summary>
-        ToEven,
 
         /// <summary>
         /// Indicates that if a number is not a whole number of ticks away from zero, that it should be rounded

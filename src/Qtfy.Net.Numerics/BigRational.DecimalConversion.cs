@@ -80,7 +80,7 @@ namespace Qtfy.Net.Numerics
             var rationalWhole = RoundTowardZeroImpl(value);
             var rationalScale = BigInteger.Pow(10, 28 - Digits(rationalWhole));
             var scaledFraction = (value - rationalWhole) * rationalScale;
-            var scaledRounded = RoundToInt(scaledFraction);
+            var scaledRounded = RoundToInt(scaledFraction, RationalRounding.ToEven);
 
             return ((decimal)scaledRounded / (decimal)rationalScale) + (decimal)rationalWhole;
         }
