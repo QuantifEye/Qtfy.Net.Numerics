@@ -33,6 +33,27 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase(0f)]
+        [TestCase(1f)]
+        [TestCase(2f)]
+        [TestCase(-1f)]
+        [TestCase(-2f)]
+        [TestCase(0.5f)]
+        [TestCase(-0.5f)]
+        [TestCase(0.25f)]
+        [TestCase(-0.25f)]
+        [TestCase(0.1f)]
+        [TestCase(-0.1f)]
+        [TestCase(0.000000000000000000005f)]
+        [TestCase(-0.000000000000000000005f)]
+        [TestCase(0.000000000000000000001f)]
+        [TestCase(-0.000000000000000000001f)]
+        public void CastToFloatRoundTrip(double expected)
+        {
+            var actual = (double)(BigRational)expected;
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestCase(0d)]
         [TestCase(1d)]
         [TestCase(2d)]
@@ -80,18 +101,43 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [Test]
+        public void CastToFloatOverflow()
+        {
+            BigRational floatMax = float.MaxValue;
+            BigRational positiveOverflowValue = floatMax * floatMax;
+            BigRational negativeOverflowValue = -positiveOverflowValue;
+            AssertBitEqual(float.PositiveInfinity, (float)positiveOverflowValue);
+            AssertBitEqual(float.NegativeInfinity, (float)negativeOverflowValue);
+        }
+
+        [Test]
         public void CastToDoubleUnderflow()
         {
-            BigRational doubleEpsilon = double.Epsilon;
-            BigRational positiveUnderflow = doubleEpsilon * doubleEpsilon;
+            BigRational floatEpsilon = double.Epsilon;
+            BigRational positiveUnderflow = floatEpsilon * floatEpsilon;
             BigRational negativeUnderflow = -positiveUnderflow;
-            AssertBitEqual(0.0, (double)positiveUnderflow);
-            AssertBitEqual(-0.0, (double)negativeUnderflow);
+            AssertBitEqual(0.0, (float)positiveUnderflow);
+            AssertBitEqual(-0.0d, (float)negativeUnderflow);
+        }
+
+        [Test]
+        public void CastToFloatUnderflow()
+        {
+            BigRational floatEpsilon = double.Epsilon;
+            BigRational positiveUnderflow = floatEpsilon * floatEpsilon;
+            BigRational negativeUnderflow = -positiveUnderflow;
+            AssertBitEqual(0.0f, (float)positiveUnderflow);
+            AssertBitEqual(-0.0f, (float)negativeUnderflow);
         }
 
         private static void AssertBitEqual(double left, double right)
         {
             Assert.AreEqual(BitConverter.DoubleToInt64Bits(left), BitConverter.DoubleToInt64Bits(right));
+        }
+
+        private static void AssertBitEqual(float left, float right)
+        {
+            Assert.AreEqual(BitConverter.SingleToInt32Bits(left), BitConverter.SingleToInt32Bits(right));
         }
     }
 }
