@@ -14,17 +14,17 @@ namespace Qtfy.Net.Numerics
     public static class SeriesExpansions
     {
         /// <summary>
-        /// Calculates the taylor approximation of eulers constant raised to <paramref name="power"/>,
+        /// Calculates the taylor approximation of Eulers constant raised to <paramref name="power"/>,
         /// with the specified number of terms.
         /// </summary>
         /// <param name="power">
-        /// The power to raise eulers constant to.
+        /// The power to raise Eulers constant to.
         /// </param>
         /// <param name="terms">
         /// The number of terms to compute.
         /// </param>
         /// <returns>
-        /// The taylor approximation of eulers constant raised to <paramref name="power"/>,
+        /// The taylor approximation of Eulers constant raised to <paramref name="power"/>,
         /// with the specified number of terms.
         /// </returns>
         public static BigRational Exp(BigRational power, int terms)
