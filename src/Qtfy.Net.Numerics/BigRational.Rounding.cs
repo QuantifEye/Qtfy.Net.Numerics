@@ -361,8 +361,7 @@ namespace Qtfy.Net.Numerics
 
         private static void AssertValidRationalRounding(RationalRounding mode)
         {
-            Enum.IsDefined(mode);
-            if ((int)mode < 0 || (int)mode > 4)
+            if (!Enum.IsDefined(mode))
             {
                 throw new ArgumentException("Invalid RationalRounding.");
             }
