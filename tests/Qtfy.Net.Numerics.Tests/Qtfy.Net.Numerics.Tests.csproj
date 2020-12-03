@@ -17,4 +17,16 @@
     <ProjectReference Include="../../src/Qtfy.Net.Numerics/Qtfy.Net.Numerics.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Random\Data\mersenne_twister_init_genrand_1234">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Random\Data\mersenne_twister_init_genrand_5489">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Random\Data\mersenne_twister_init_genrand_7777">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
