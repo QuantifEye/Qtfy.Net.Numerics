@@ -96,7 +96,7 @@ namespace Qtfy.Net.Numerics.Random
             {
                 fixed (uint* mt = state)
                 {
-                    InitGenRandImpl(mt, seed);
+                    MersenneTwister19937.InitGenRandImpl(mt, seed);
                 }
             }
 
@@ -127,7 +127,7 @@ namespace Qtfy.Net.Numerics.Random
                 fixed (uint* mt = state)
                 fixed (uint* init_key = seeds)
                 {
-                    InitByArrayImpl(mt, init_key, (uint)seeds.Length);
+                    MersenneTwister19937.InitByArrayImpl(mt, init_key, (uint)seeds.Length);
                 }
             }
 
@@ -139,7 +139,7 @@ namespace Qtfy.Net.Numerics.Random
         {
             if (this.index == N)
             {
-                this.UpdateState(this.state);
+                MersenneTwister19937.UpdateState(this.state);
                 this.index = 0;
             }
 
@@ -187,7 +187,7 @@ namespace Qtfy.Net.Numerics.Random
 
         private static unsafe void InitByArrayImpl(uint* mt, uint* initKey, uint keyLength)
         {
-            InitGenRandImpl(mt, 19650218U);
+            MersenneTwister19937.InitGenRandImpl(mt, 19650218U);
             var i = 1U;
             var j = 0U;
             var k = keyLength > N ? keyLength : N;
@@ -228,17 +228,15 @@ namespace Qtfy.Net.Numerics.Random
             }
         }
 
-        private void UpdateState(uint[] state)
+        private static void UpdateState(uint[] state)
         {
             unsafe
             {
                 fixed (uint* s = state)
                 {
-                    UpdateStateImpl(s);
+                    MersenneTwister19937.UpdateStateImpl(s);
                 }
             }
-
-            this.index = 0;
         }
     }
 }
