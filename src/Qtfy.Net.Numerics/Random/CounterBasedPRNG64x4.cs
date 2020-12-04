@@ -3,15 +3,16 @@
 // Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Runtime.CompilerServices;
-
+using System.Numerics;
 
 namespace Qtfy.Net.Numerics.Random
 {
+    using System;
+    using System.Runtime.CompilerServices;
+
     public abstract class CounterBasedPRNG64x4 : IRandomBitGenerator<ulong>
     {
-        public struct  Counter
+        public struct Counter
         {
             public ulong Word0;
 
@@ -58,6 +59,27 @@ namespace Qtfy.Net.Numerics.Random
         protected CounterBasedPRNG64x4(ulong word0, ulong word1, ulong word2, ulong word3)
         {
             this.key = new Counter(word0, word1, word2, word3);
+            this.ctr = default;
+            this.position = 0;
+        }
+        
+        protected CounterBasedPRNG64x4(BigInteger counter)
+        {
+            if (counter >= BigInteger.Pow(2, 256))
+            {
+                throw null;
+            }
+
+            var ones = BigInteger.Pow(2, 256) - 1;
+            var lowerOnes = BigInteger.Pow(2, 64) - 1;
+            var w0 = counter & lowerOnes;
+            counter >>= 64;
+            var w1 = counter & lowerOnes;
+            counter >>= 64;
+            var w2 = counter & lowerOnes;
+            counter >>= 64;
+            this.ctr = new Counter();
+
             this.ctr = default;
             this.position = 0;
         }
