@@ -46,49 +46,27 @@ namespace Qtfy.Net.Numerics.Tests
 
         [TestCase("1/2", "-1/2", "0")]
         [TestCase("1/2", "1/2", "1")]
-        public void AddRationals(string leftString, string rightString, string expectedString)
+        public void TestAddition(string leftString, string rightString, string expectedString)
         {
             var left = BigRational.Parse(leftString);
             var right = BigRational.Parse(rightString);
-            var expected = BigRational.Parse(expectedString);
-            AssertEqual(expected, left + right);
-            AssertEqual(expected, right + left);
-        }
-
-        [TestCase("1/2", "1", "3/2")]
-        [TestCase("1/2", "2", "5/2")]
-        public void AddBigInteger(string leftString, string rightString, string expectedString)
-        {
-            var left = BigRational.Parse(leftString);
-            var right = BigInteger.Parse(rightString);
             var expected = BigRational.Parse(expectedString);
             AssertEqual(expected, left + right);
             AssertEqual(expected, right + left);
         }
 
         [TestCase("1/2", "1/2", "0")]
-        public void SubtractRationals(string leftString, string rightString, string expectedString)
+        public void TestSubtraction(string leftString, string rightString, string expectedString)
         {
             var left = BigRational.Parse(leftString);
             var right = BigRational.Parse(rightString);
-            var expected = BigRational.Parse(expectedString);
-            AssertEqual(expected, left - right);
-            AssertEqual(-expected, right - left);
-        }
-
-        [TestCase("1/2", "1", "-1/2")]
-        [TestCase("1/2", "2", "-3/2")]
-        public void SubtractBigInteger(string leftString, string rightString, string expectedString)
-        {
-            var left = BigRational.Parse(leftString);
-            var right = BigInteger.Parse(rightString);
             var expected = BigRational.Parse(expectedString);
             AssertEqual(expected, left - right);
             AssertEqual(-expected, right - left);
         }
 
         [TestCase("1/2", "1/2", "1/4")]
-        public void MultiplyRationals(string leftString, string rightString, string expectedString)
+        public void TestMultiplication(string leftString, string rightString, string expectedString)
         {
             var left = BigRational.Parse(leftString);
             var right = BigRational.Parse(rightString);
@@ -97,26 +75,16 @@ namespace Qtfy.Net.Numerics.Tests
             AssertEqual(expected, right * left);
         }
 
-        [TestCase("1/2", "1", "1/2")]
-        [TestCase("1/2", "2", "1")]
-        public void MultiplyBigInteger(string leftString, string rightString, string expectedString)
-        {
-            var left = BigRational.Parse(leftString);
-            var right = BigInteger.Parse(rightString);
-            var expected = BigRational.Parse(expectedString);
-            AssertEqual(expected, left * right);
-            AssertEqual(expected, right * left);
-        }
-
-        [TestCase("1/2", "1/2", "0")]
-        public void DivideRationals(string leftString, string rightString, string expectedString)
+        [TestCase("1/2", "1/2", "1")]
+        public void TestDivision(string leftString, string rightString, string expectedString)
         {
             AssertEqual(
                 BigRational.Parse(expectedString),
-                BigRational.Parse(leftString) - BigRational.Parse(rightString));
+                BigRational.Parse(leftString) / BigRational.Parse(rightString));
         }
 
-        public void RationalDivideError(string leftString, string rightString)
+        [Test]
+        public void TestDivideError(string leftString, string rightString)
         {
             var left = new BigRational(1, 2);
             var right = new BigRational(0);
@@ -125,33 +93,8 @@ namespace Qtfy.Net.Numerics.Tests
                 () => expected = left / right);
         }
 
-        [TestCase("1/2", "1", "1/2")]
-        public void DivideBigInteger1(string leftString, string rightString, string expectedString)
-        {
-            AssertEqual(
-                BigRational.Parse(expectedString),
-                BigRational.Parse(leftString) / BigInteger.Parse(rightString));
-        }
-
-        [TestCase("1", "1/2", "2")]
-        public void DivideBigInteger2(string leftString, string rightString, string expectedString)
-        {
-            AssertEqual(
-                BigRational.Parse(expectedString),
-                BigInteger.Parse(leftString) / BigRational.Parse(rightString));
-        }
-
-        public void BigIntegerDivideError()
-        {
-            var left = new BigRational(1, 2);
-            var right = new BigInteger(0);
-            BigRational expected = default;
-            Assert.Throws<DivideByZeroException>(
-                () => expected = left / right);
-        }
-
         [TestCase("3/2", "1", "1/2")]
-        public void ModRationals(string leftString, string rightString, string expectedString)
+        public void TestMod(string leftString, string rightString, string expectedString)
         {
             AssertEqual(
                 BigRational.Parse(expectedString),
@@ -159,8 +102,8 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         /// <summary>
-        /// Checks that mod workd the same as BigInteger mod for integer values rationals
-        ///</summary>
+        /// Checks that mod works the same as BigInteger mod for integer values rationals.
+        /// </summary>
         [TestCase(5, 3)]
         [TestCase(-5, 3)]
         [TestCase(5, -3)]
