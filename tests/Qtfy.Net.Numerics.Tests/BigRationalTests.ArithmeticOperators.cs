@@ -84,7 +84,7 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [Test]
-        public void TestDivideError(string leftString, string rightString)
+        public void TestDivideError()
         {
             var left = new BigRational(1, 2);
             var right = new BigRational(0);
