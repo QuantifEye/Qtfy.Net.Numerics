@@ -60,7 +60,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static bool operator ==(BigInteger left, BigRational right)
         {
-            return right == left;
+            return right.IsInteger && left == right.Numerator;
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static bool operator !=(BigRational left, BigInteger right)
         {
-            return !(right == left);
+            return left.Denominator != BigInteger.One || left.Numerator != right;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static bool operator !=(BigInteger left, BigRational right)
         {
-            return !(right == left);
+            return right.Denominator != BigInteger.One || left != right.Numerator;
         }
 
         /// <summary>
