@@ -125,9 +125,9 @@ namespace Qtfy.Net.Numerics.Random
             unsafe
             {
                 fixed (uint* mt = state)
-                fixed (uint* init_key = seeds)
+                fixed (uint* initKey = seeds)
                 {
-                    MersenneTwister19937.InitByArrayImpl(mt, init_key, (uint)seeds.Length);
+                    MersenneTwister19937.InitByArrayImpl(mt, initKey, (uint)seeds.Length);
                 }
             }
 
@@ -143,7 +143,73 @@ namespace Qtfy.Net.Numerics.Random
                 this.index = 0;
             }
 
-            var y = this.state[this.index++];
+            return Temper(this.state[this.index++]);
+        }
+
+        /// <summary>
+        /// Fills thhe provided buffer with generated numbers, advancing the state of the generator.
+        /// </summary>
+        /// <param name="buffer">
+        /// The buffer to fill with generated numbers.
+        /// </param>
+        public void Fill(uint[] buffer)
+        {
+            int size = buffer.Length;
+            if (size == 0)
+            {
+                return;
+            }
+
+            unsafe
+            {
+                fixed (uint* s = this.state)
+                fixed (uint* b = buffer)
+                {
+                    this.index = FillImpl(s, b, b + size, this.index);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The implementation of <see cref="Fill"/>.
+        /// </summary>
+        /// <param name="state">
+        /// A pointer to the first element in the state.
+        /// </param>
+        /// <param name="buffer">
+        /// A pointer to the first element in the buffer to fill.
+        /// </param>
+        /// <param name="bufferEnd">
+        /// A pointer to the first element after the last element in the buffer to fill.
+        /// </param>
+        /// <param name="index">
+        /// The current state position.
+        /// </param>
+        /// <returns>
+        /// The new state position.
+        /// </returns>
+        private static unsafe int FillImpl(uint* state, uint* buffer, uint* bufferEnd, int index)
+        {
+            do
+            {
+                if (index == N)
+                {
+                    UpdateStateImpl(state);
+                    index = 1;
+                    *buffer = Temper(*state);
+                }
+                else
+                {
+                    *buffer = Temper(state[index]);
+                    ++index;
+                }
+            }
+            while (++buffer != bufferEnd);
+            return index;
+        }
+
+        private static uint Temper(uint y)
+        {
             y ^= y >> 11;
             y ^= (y << 7) & 0x9d2c5680;
             y ^= (y << 15) & 0xefc60000;
@@ -151,13 +217,20 @@ namespace Qtfy.Net.Numerics.Random
             return y;
         }
 
+        /// <summary>
+        /// The implementation of <see cref="UpdateState"/>.
+        /// </summary>
+        /// <param name="mt">
+        /// A pointer to the first element in the state. The name mt is retained from the original c code.
+        /// </param>
         private static unsafe void UpdateStateImpl(uint* mt)
         {
             var p0 = mt;
             var p1 = mt + 1;
             var p2 = mt + M;
-            var counter = N - M;
             uint y;
+
+            var counter = N - M;
             do
             {
                 y = (*p0 & UpperMask) | (*p1 & LowerMask);
@@ -168,8 +241,8 @@ namespace Qtfy.Net.Numerics.Random
             }
             while (--counter != 0);
 
-            counter = M - 1;
             p2 = mt;
+            counter = M - 1;
             do
             {
                 y = (*p0 & UpperMask) | (*p1 & LowerMask);
@@ -185,6 +258,36 @@ namespace Qtfy.Net.Numerics.Random
             *p0 = *p2 ^ (y >> 1) ^ ((y & 0x1U) == 0U ? 0x0U : MatrixA);
         }
 
+        /// <summary>
+        /// Advances the state by recalculating the state. This is used when the end of the state has been reached in
+        /// order to update state values.
+        /// </summary>
+        /// <param name="state">
+        /// The state array to update.
+        /// </param>
+        private static void UpdateState(uint[] state)
+        {
+            unsafe
+            {
+                fixed (uint* s = state)
+                {
+                    MersenneTwister19937.UpdateStateImpl(s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The implementation of the <see cref="InitByArray"/> initialization procedure.
+        /// </summary>
+        /// <param name="mt">
+        /// A pointer to the first element in the state. The name mt is retained from the original c code.
+        /// </param>
+        /// <param name="initKey">
+        /// A pointer to the first element in the provided array of seeds.
+        /// </param>
+        /// <param name="keyLength">
+        /// The number of seeds in the provided array of seeds.
+        /// </param>
         private static unsafe void InitByArrayImpl(uint* mt, uint* initKey, uint keyLength)
         {
             MersenneTwister19937.InitGenRandImpl(mt, 19650218U);
@@ -219,23 +322,21 @@ namespace Qtfy.Net.Numerics.Random
             mt[0] = 0x1U << 31;
         }
 
-        private static unsafe void InitGenRandImpl(uint* mt, uint s)
+        /// <summary>
+        /// The implementation of <see cref="InitGenRand"/>.
+        /// </summary>
+        /// <param name="mt">
+        /// A pointer to the first element in the state. The name mt is retained from the original c code.
+        /// </param>
+        /// <param name="seed">
+        /// The seed.
+        /// </param>
+        private static unsafe void InitGenRandImpl(uint* mt, uint seed)
         {
-            mt[0] = s;
+            mt[0] = seed;
             for (uint mti = 1; mti < N; mti++)
             {
                 mt[mti] = (1812433253U * (mt[mti - 1] ^ (mt[mti - 1] >> 30))) + mti;
-            }
-        }
-
-        private static void UpdateState(uint[] state)
-        {
-            unsafe
-            {
-                fixed (uint* s = state)
-                {
-                    MersenneTwister19937.UpdateStateImpl(s);
-                }
             }
         }
     }
