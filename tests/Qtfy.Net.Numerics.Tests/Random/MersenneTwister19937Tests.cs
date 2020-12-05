@@ -97,6 +97,19 @@ namespace Qtfy.Net.Numerics.Random.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase(1234U, 5)]
+        [TestCase(1234U, 700)]
+        [TestCase(1234U, 1400)]
+        public void TestFill(uint seed, int size)
+        {
+            var expectedGenerator = MersenneTwister19937.InitGenRand(seed);
+            var expected = GetRandomValues(expectedGenerator, size);
+            var actualGenerator = MersenneTwister19937.InitGenRand(seed);
+            var actual = new uint[size];
+            actualGenerator.Fill(actual);
+            Assert.AreEqual(expected, actual);
+        }
+
         private static uint[] GetRandomValues(MersenneTwister19937 generator, int size)
         {
             var actual = new uint[size];
