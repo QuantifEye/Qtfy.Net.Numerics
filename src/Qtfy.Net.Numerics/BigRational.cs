@@ -15,6 +15,21 @@ namespace Qtfy.Net.Numerics
     public partial struct BigRational
     {
         /// <summary>
+        /// A value representing 1/1.
+        /// </summary>
+        public static readonly BigRational One = new BigRational(1);
+
+        /// <summary>
+        /// A value representing 0/1.
+        /// </summary>
+        public static readonly BigRational Zero = default;
+
+        /// <summary>
+        /// A value representing -1/1.
+        /// </summary>
+        public static readonly BigRational MinusOne = new BigRational(-1);
+
+        /// <summary>
         /// The denominator value of this <see cref="BigRational"/>.
         /// </summary>
         private readonly BigInteger denominator;
