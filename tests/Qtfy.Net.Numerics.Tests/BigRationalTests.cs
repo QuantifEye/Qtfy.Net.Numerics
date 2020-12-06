@@ -11,34 +11,25 @@ namespace Qtfy.Net.Numerics.Tests
 
     public partial class BigRationalTests
     {
-        public static void AssertCanonical(BigRational rational)
+        [Test]
+        public void TestOneConstant()
         {
-            Assert.True(rational.Denominator > BigInteger.Zero);
-            var n = BigInteger.Abs(rational.Numerator);
-            var d = BigInteger.Abs(rational.Denominator);
-            var gcd = BigInteger.GreatestCommonDivisor(n, d);
-            Assert.AreEqual(n, n / gcd);
-            Assert.AreEqual(d, d / gcd);
+            Assert.AreEqual(BigInteger.One, BigRational.One.Numerator);
+            Assert.AreEqual(BigInteger.One, BigRational.One.Denominator);
         }
 
-        public static void AssertEqual(BigRational left, BigRational right)
+        [Test]
+        public void TestMinusOneConstant()
         {
-            BigRationalTests.AssertCanonical(left);
-            BigRationalTests.AssertCanonical(right);
-            Assert.AreEqual(left.Numerator, right.Numerator);
-            Assert.AreEqual(left.Denominator, right.Denominator);
+            Assert.AreEqual(BigInteger.MinusOne, BigRational.MinusOne.Numerator);
+            Assert.AreEqual(BigInteger.One, BigRational.MinusOne.Denominator);
         }
 
-        public static void AssertEqual(BigRational left, BigInteger right)
+        [Test]
+        public void TestZeroConstant()
         {
-            AssertCanonical(left);
-            Assert.AreEqual(left.Numerator, right);
-            Assert.AreEqual(left.Denominator, BigInteger.One);
-        }
-
-        public static void AssertEqual(BigInteger left, BigRational right)
-        {
-            BigRationalTests.AssertEqual(right, left);
+            Assert.AreEqual(BigInteger.Zero, BigRational.Zero.Numerator);
+            Assert.AreEqual(BigInteger.One, BigRational.Zero.Denominator);
         }
 
         /// <summary>
@@ -289,6 +280,36 @@ namespace Qtfy.Net.Numerics.Tests
 
             Assert.AreEqual(expectedSuccess, actualSuccess);
             Assert.AreEqual(expectedRational, actualRational);
+        }
+        
+        private static void AssertCanonical(BigRational rational)
+        {
+            Assert.True(rational.Denominator > BigInteger.Zero);
+            var n = BigInteger.Abs(rational.Numerator);
+            var d = BigInteger.Abs(rational.Denominator);
+            var gcd = BigInteger.GreatestCommonDivisor(n, d);
+            Assert.AreEqual(n, n / gcd);
+            Assert.AreEqual(d, d / gcd);
+        }
+
+        private static void AssertEqual(BigRational left, BigRational right)
+        {
+            BigRationalTests.AssertCanonical(left);
+            BigRationalTests.AssertCanonical(right);
+            Assert.AreEqual(left.Numerator, right.Numerator);
+            Assert.AreEqual(left.Denominator, right.Denominator);
+        }
+
+        private static void AssertEqual(BigRational left, BigInteger right)
+        {
+            AssertCanonical(left);
+            Assert.AreEqual(left.Numerator, right);
+            Assert.AreEqual(left.Denominator, BigInteger.One);
+        }
+
+        private static void AssertEqual(BigInteger left, BigRational right)
+        {
+            BigRationalTests.AssertEqual(right, left);
         }
     }
 }
