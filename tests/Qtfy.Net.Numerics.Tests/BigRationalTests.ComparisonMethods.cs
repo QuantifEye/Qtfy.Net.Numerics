@@ -10,6 +10,7 @@ namespace Qtfy.Net.Numerics.Tests
 
     public partial class BigRationalTests
     {
+        [Test]
         public void EqualsObject()
         {
             BigRational rational = new BigRational(7);
@@ -19,77 +20,77 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "1/2", true)]
-        public void EqualsBigRational(string leftRational, string rightRational, bool expected)
+        public void EqualsBigRational(string left, string right, bool expected)
         {
-            var left = BigRational.Parse(leftRational);
-            var right = BigRational.Parse(rightRational);
-            Assert.AreEqual(left.Equals(right), expected);
+            Assert.AreEqual(
+                expected,
+                BigRational.Parse(left).Equals(BigRational.Parse(right)));
         }
 
-        [TestCase("1", "1", true)]
-        [TestCase("1/2", "2", false)]
-        public void EqualsSignedIntegral(string leftRational, string rightInteger, bool expected)
+        [TestCase("-1", -1, true)]
+        [TestCase("1/2", -2, false)]
+        public void EqualsNegativeInteger(string rational, int integer, bool expected)
         {
-            var left = BigRational.Parse(leftRational);
-            var right = BigInteger.Parse(rightInteger);
-            Assert.AreEqual(expected, left.Equals(right));
-
-            Assert.AreEqual(expected, left.Equals((long)right));
-            Assert.AreEqual(expected, left.Equals((int)right));
-            Assert.AreEqual(expected, left.Equals((short)right));
-            Assert.AreEqual(expected, left.Equals((sbyte)right));
+            var left = BigRational.Parse(rational);
+            Assert.AreEqual(expected, left.Equals((BigInteger)integer));
+            Assert.AreEqual(expected, left.Equals((long)integer));
+            Assert.AreEqual(expected, left.Equals((int)integer));
+            Assert.AreEqual(expected, left.Equals((short)integer));
+            Assert.AreEqual(expected, left.Equals((sbyte)integer));
         }
 
-        [TestCase("1", "1", true)]
-        [TestCase("1/2", "2", false)]
-        public void EqualsUnsignedIntegral(string leftRational, string rightInteger, bool expected)
+        [TestCase("1", 1, true)]
+        [TestCase("1/2", 2, false)]
+        public void EqualsPositiveInteger(string rational, int integer, bool expected)
         {
-            var left = BigRational.Parse(leftRational);
-            var right = BigInteger.Parse(rightInteger);
-            Assert.AreEqual(expected, left.Equals(right));
-
-            Assert.AreEqual(expected, left.Equals((ulong)right));
-            Assert.AreEqual(expected, left.Equals((uint)right));
-            Assert.AreEqual(expected, left.Equals((ushort)right));
-            Assert.AreEqual(expected, left.Equals((byte)right));
+            var left = BigRational.Parse(rational);
+            Assert.AreEqual(expected, left.Equals((BigInteger)integer));
+            Assert.AreEqual(expected, left.Equals((ulong)integer));
+            Assert.AreEqual(expected, left.Equals((uint)integer));
+            Assert.AreEqual(expected, left.Equals((ushort)integer));
+            Assert.AreEqual(expected, left.Equals((byte)integer));
+            Assert.AreEqual(expected, left.Equals((ulong)integer));
+            Assert.AreEqual(expected, left.Equals((uint)integer));
+            Assert.AreEqual(expected, left.Equals((ushort)integer));
+            Assert.AreEqual(expected, left.Equals((byte)integer));
         }
 
         [TestCase("1/2", "1/2", 0)]
         [TestCase("1/4", "1/2", -1)]
         [TestCase("1/2", "1/4", 1)]
-        public void CompareToBigRational(string leftRational, string rightRational, int expected)
+        public void CompareToBigRational(string rational, string rightRational, int expected)
         {
-            var left = BigRational.Parse(leftRational);
+            var left = BigRational.Parse(rational);
             var right = BigRational.Parse(rightRational);
             Assert.AreEqual(left.CompareTo(right), expected);
         }
 
-        [TestCase("1", "1", 0)]
-        [TestCase("1/2", "2", -1)]
-        public void CompareToSignedIntegral(string leftRational, string rightInteger, int expected)
+        [TestCase("1", 1, 0)]
+        [TestCase("1/2", 2, -1)]
+        public void CompareToPositiveInteger(string rational, int integer, int expected)
         {
-            var left = BigRational.Parse(leftRational);
-            var right = BigInteger.Parse(rightInteger);
-            Assert.AreEqual(expected, left.CompareTo(right));
-
-            Assert.AreEqual(expected, left.CompareTo((long)right));
-            Assert.AreEqual(expected, left.CompareTo((int)right));
-            Assert.AreEqual(expected, left.CompareTo((short)right));
-            Assert.AreEqual(expected, left.CompareTo((sbyte)right));
+            var left = BigRational.Parse(rational);
+            Assert.AreEqual(expected, left.CompareTo(integer));
+            Assert.AreEqual(expected, left.CompareTo((long)integer));
+            Assert.AreEqual(expected, left.CompareTo((int)integer));
+            Assert.AreEqual(expected, left.CompareTo((short)integer));
+            Assert.AreEqual(expected, left.CompareTo((sbyte)integer));
+            Assert.AreEqual(expected, left.CompareTo((ulong)integer));
+            Assert.AreEqual(expected, left.CompareTo((uint)integer));
+            Assert.AreEqual(expected, left.CompareTo((ushort)integer));
+            Assert.AreEqual(expected, left.CompareTo((byte)integer));
         }
 
-        [TestCase("1", "1", 0)]
-        [TestCase("1/2", "2", -1)]
-        public void CompareToUnsignedIntegral(string leftRational, string rightInteger, int expected)
+        [TestCase("1", -1, 1)]
+        [TestCase("1/2", -2, 1)]
+        public void CompareToNegativeInteger(string rational, int integer, int expected)
         {
-            var left = BigRational.Parse(leftRational);
-            var right = BigInteger.Parse(rightInteger);
-            Assert.AreEqual(expected, left.CompareTo(right));
-
-            Assert.AreEqual(expected, left.CompareTo((ulong)right));
-            Assert.AreEqual(expected, left.CompareTo((uint)right));
-            Assert.AreEqual(expected, left.CompareTo((ushort)right));
-            Assert.AreEqual(expected, left.CompareTo((byte)right));
+            var left = BigRational.Parse(rational);
+            Assert.AreEqual(expected, left.CompareTo(integer));
+            Assert.AreEqual(expected, left.CompareTo((long)integer));
+            Assert.AreEqual(expected, left.CompareTo((int)integer));
+            Assert.AreEqual(expected, left.CompareTo((short)integer));
+            Assert.AreEqual(expected, left.CompareTo((sbyte)integer));
         }
     }
 }
