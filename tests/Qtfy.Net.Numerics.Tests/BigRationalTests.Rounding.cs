@@ -3,10 +3,11 @@
 // Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
+using System.Numerics;
+
 namespace Qtfy.Net.Numerics.Tests
 {
     using System;
-    using System.Numerics;
     using NUnit.Framework;
 
     public partial class BigRationalTests
@@ -32,15 +33,15 @@ namespace Qtfy.Net.Numerics.Tests
                 BigRational.Parse(expected));
         }
 
-        [TestCase("3/2", "1")]
-        [TestCase("-3/2", "-2")]
-        [TestCase("1", "1")]
-        [TestCase("-1", "-1")]
-        public void Floor(string input, string expected)
+        [TestCase("3/2", 1)]
+        [TestCase("-3/2", -2)]
+        [TestCase("1", 1)]
+        [TestCase("-1", -1)]
+        public void Floor(string rational, int rounded)
         {
             AssertEqual(
-                BigRational.Floor(BigRational.Parse(input)),
-                BigRational.Parse(expected));
+                BigRational.Floor(BigRational.Parse(rational)),
+                new BigInteger(rounded));
         }
 
         [TestCase("1/6", "1/3", "0")]
@@ -56,93 +57,102 @@ namespace Qtfy.Net.Numerics.Tests
                 BigRational.Parse(expected));
         }
 
-        [TestCase("1/6", "1/3", RationalRounding.Down, "0")]
-        [TestCase("-1/6", "1/3", RationalRounding.Down, "-1/3")]
+        [TestCase("1/6", "1/3", RationalRounding.Down, "0/3")]
+        [TestCase("3/6", "1/3", RationalRounding.Down, "1/3")]
         [TestCase("1/6", "1/3", RationalRounding.Up, "1/3")]
-        [TestCase("-1/6", "1/3", RationalRounding.Up, "0")]
-        [TestCase("1/6", "1/3", RationalRounding.TowardZero, "0")]
-        [TestCase("-1/6", "1/3", RationalRounding.TowardZero, "0")]
+        [TestCase("3/6", "1/3", RationalRounding.Up, "2/3")]
+        [TestCase("1/6", "1/3", RationalRounding.TowardZero, "0/3")]
+        [TestCase("3/6", "1/3", RationalRounding.TowardZero, "1/3")]
         [TestCase("1/6", "1/3", RationalRounding.AwayFromZero, "1/3")]
-        [TestCase("-1/6", "1/3", RationalRounding.AwayFromZero, "-1/3")]
-        [TestCase("1/6", "1/3", RationalRounding.ToEven, "0")]
-        [TestCase("2/6", "1/3", RationalRounding.ToEven, "1/3")]
+        [TestCase("3/6", "1/3", RationalRounding.AwayFromZero, "2/3")]
+        [TestCase("1/6", "1/3", RationalRounding.ToEven, "0/3")]
         [TestCase("3/6", "1/3", RationalRounding.ToEven, "2/3")]
-        public void RoundToTick(string unrounded, string tick, RationalRounding mode, string expected)
+        [TestCase("-1/6", "1/3", RationalRounding.Down, "-1/3")]
+        [TestCase("-3/6", "1/3", RationalRounding.Down, "-2/3")]
+        [TestCase("-1/6", "1/3", RationalRounding.Up, "0/3")]
+        [TestCase("-3/6", "1/3", RationalRounding.Up, "-1/3")]
+        [TestCase("-1/6", "1/3", RationalRounding.TowardZero, "0/3")]
+        [TestCase("-3/6", "1/3", RationalRounding.TowardZero, "-1/3")]
+        [TestCase("-1/6", "1/3", RationalRounding.AwayFromZero, "-1/3")]
+        [TestCase("-3/6", "1/3", RationalRounding.AwayFromZero, "-2/3")]
+        [TestCase("-1/6", "1/3", RationalRounding.ToEven, "0/3")]
+        [TestCase("-3/6", "1/3", RationalRounding.ToEven, "-2/3")]
+        public void TestRoundToTickAtMidPoint(string unrounded, string tick, RationalRounding mode, string expected)
         {
             AssertEqual(
                 BigRational.RoundToTick(BigRational.Parse(unrounded), BigRational.Parse(tick), mode),
                 BigRational.Parse(expected));
         }
 
-        [Test]
-        public void RoundToTickModeError()
+        [TestCase(RationalRounding.Down)]
+        [TestCase(RationalRounding.Up)]
+        [TestCase(RationalRounding.ToEven)]
+        [TestCase(RationalRounding.TowardZero)]
+        [TestCase(RationalRounding.AwayFromZero)]
+        public void TestRoundToTickNotAtMidPoint(RationalRounding mode)
         {
-            Assert.Throws<ArgumentException>(() => BigRational.RoundToTick(1, new BigRational(1, 2), (RationalRounding)100));
+            const int range = 6;
+            var epsilon = new BigRational(1, 12);
+            var tick = new BigRational(1, 3);
+            var max = range * tick;
+            var min = -range * tick;
+            for (BigRational rational = min; rational <= max; rational += tick)
+            {
+                AssertEqual(rational, BigRational.RoundToTick(rational + epsilon, tick, mode));
+                AssertEqual(rational, BigRational.RoundToTick(rational - epsilon, tick, mode));
+            }
         }
 
         [Test]
-        public void RoundToTickTickError()
+        public void RoundToTickWithModeError()
+        {
+            Assert.Throws<ArgumentException>(() =>
+                BigRational.RoundToTick(1, new BigRational(1, 2), (RationalRounding) 100));
+        }
+
+        [Test]
+        public void RoundToTickWithTickError()
         {
             Assert.Throws<ArgumentException>(() => BigRational.RoundToTick(1, new BigRational(-1, 2), default));
         }
 
-        [TestCase("1/2", RationalRounding.Down, "0")]
-        [TestCase("3/2", RationalRounding.Down, "1")]
-        [TestCase("-1/2", RationalRounding.Down, "-1")]
-        [TestCase("-3/2", RationalRounding.Down, "-2")]
-
-        [TestCase("1/2", RationalRounding.Up, "1")]
-        [TestCase("3/2", RationalRounding.Up, "2")]
-        [TestCase("-1/2", RationalRounding.Up, "0")]
-        [TestCase("-3/2", RationalRounding.Up, "-1")]
-
-        [TestCase("1/2", RationalRounding.TowardZero, "0")]
-        [TestCase("3/2", RationalRounding.TowardZero, "1")]
-        [TestCase("-1/2", RationalRounding.TowardZero, "0")]
-        [TestCase("-3/2", RationalRounding.TowardZero, "-1")]
-
-        [TestCase("1/2", RationalRounding.AwayFromZero, "1")]
-        [TestCase("3/2", RationalRounding.AwayFromZero, "2")]
-        [TestCase("-1/2", RationalRounding.AwayFromZero, "-1")]
-        [TestCase("-3/2", RationalRounding.AwayFromZero, "-2")]
-
-        [TestCase("1/2", RationalRounding.ToEven, "0")]
-        [TestCase("3/2", RationalRounding.ToEven, "2")]
-        [TestCase("-1/2", RationalRounding.ToEven, "0")]
-        [TestCase("-3/2", RationalRounding.ToEven, "-2")]
-        public void RoundToIntMidPoint(string unroundedString, RationalRounding mode, string roundedString)
+        [TestCase("1/2", RationalRounding.Down, 0)]
+        [TestCase("-1/2", RationalRounding.Down, -1)]
+        [TestCase("1/2", RationalRounding.Up, 1)]
+        [TestCase("-1/2", RationalRounding.Up, 0)]
+        [TestCase("1/2", RationalRounding.TowardZero, 0)]
+        [TestCase("-1/2", RationalRounding.TowardZero, 0)]
+        [TestCase("1/2", RationalRounding.AwayFromZero, 1)]
+        [TestCase("-1/2", RationalRounding.AwayFromZero, -1)]
+        [TestCase("1/2", RationalRounding.ToEven, 0)]
+        [TestCase("-1/2", RationalRounding.ToEven, 0)]
+        public void RoundToIntAtMidPoint(string rational, RationalRounding mode, int rounded)
         {
-            AssertEqual(
-                BigRational.RoundToInt(BigRational.Parse(unroundedString), mode),
-                BigRational.Parse(roundedString));
+            Assert.AreEqual(
+                BigRational.RoundToInt(BigRational.Parse(rational), mode),
+                new BigInteger(rounded));
         }
 
-        [TestCase("1/3", "0")]
-        [TestCase("2/3", "1")]
-        [TestCase("-1/3", "0")]
-        [TestCase("-2/3", "-1")]
-        [TestCase("0", "0")]
-        [TestCase("1", "1")]
-        [TestCase("-1", "-1")]
-        [TestCase("2", "2")]
-        [TestCase("-2", "-2")]
-        public void RoundToIntNotMidPoint(string unroundedString, string roundedString)
+        [TestCase(RationalRounding.Down)]
+        [TestCase(RationalRounding.Up)]
+        [TestCase(RationalRounding.ToEven)]
+        [TestCase(RationalRounding.TowardZero)]
+        [TestCase(RationalRounding.AwayFromZero)]
+        public void RoundToIntNotAtMidPoint(RationalRounding mode)
         {
-            var unrounded = BigRational.Parse(unroundedString);
-            var rounded = BigInteger.Parse(roundedString);
-            var modes = (RationalRounding[])Enum.GetValues(typeof(RationalRounding));
-            foreach (var mode in modes)
+            const int range = 3;
+            var epsilon = new BigRational(1, 3);
+            for (BigRational rational = -range; rational <= range; ++rational)
             {
-                Assert.AreEqual(
-                    BigRational.RoundToInt(unrounded, mode),
-                    rounded);
+                AssertEqual(rational, BigRational.RoundToInt(rational + epsilon, mode));
+                AssertEqual(rational, BigRational.RoundToInt(rational - epsilon, mode));
             }
         }
 
         [Test]
         public void RoundToIntModeError()
         {
-            Assert.Throws<ArgumentException>(() => BigRational.RoundToInt(1, (RationalRounding)100));
+            Assert.Throws<ArgumentException>(() => BigRational.RoundToInt(1, (RationalRounding) 100));
         }
     }
 }
