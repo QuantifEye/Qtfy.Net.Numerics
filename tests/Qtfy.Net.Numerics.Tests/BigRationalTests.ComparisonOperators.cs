@@ -5,61 +5,60 @@
 
 namespace Qtfy.Net.Numerics.Tests
 {
-    using System.Numerics;
     using NUnit.Framework;
 
     public partial class BigRationalTests
     {
         [TestCase("1/2", "1/2", true)]
-        public void TestEqualityOperator(string leftString, string rightString, bool expected)
+        public void TestEqualityOperator(string left, string right, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
-            Assert.AreEqual(expected, left == right);
+            Assert.AreEqual(
+                expected,
+                BigRational.Parse(left) == BigRational.Parse(right));
         }
 
         [TestCase("1/2", "1/2", false)]
-        public void InequalityBigRationalOperator(string leftString, string rightString, bool expected)
+        public void InequalityBigRationalOperator(string left, string right, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
-            Assert.AreEqual(left != right, expected);
+            Assert.AreEqual(
+                expected,
+                BigRational.Parse(left) != BigRational.Parse(right));
         }
 
         [TestCase("1/2", "1/2", false)]
         [TestCase("1/4", "1/2", true)]
-        public void TestLessThanOperator(string leftString, string rightString, bool expected)
+        public void TestLessThanOperator(string left, string right, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
-            Assert.AreEqual(right > left, expected);
+            Assert.AreEqual(
+                expected,
+                BigRational.Parse(left) < BigRational.Parse(right));
         }
 
         [TestCase("1/2", "1/2", false)]
         [TestCase("1/4", "1/2", false)]
-        public void TestGreaterThanOperator(string leftString, string rightString, bool expected)
+        public void TestGreaterThanOperator(string left, string right, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
-            Assert.AreEqual(left > right, expected);
+            Assert.AreEqual(
+                expected,
+                BigRational.Parse(left) > BigRational.Parse(right));
         }
 
         [TestCase("1/2", "1/2", true)]
         [TestCase("1/4", "1/2", false)]
-        public void TestGreaterThanOrEqualOperator(string leftString, string rightString, bool expected)
+        public void TestGreaterThanOrEqualOperator(string left, string right, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
-            Assert.AreEqual(left >= right, expected);
+            Assert.AreEqual(
+                expected,
+                BigRational.Parse(left) >= BigRational.Parse(right));
         }
 
         [TestCase("1/2", "1/2", true)]
         [TestCase("1/4", "1/2", true)]
-        public void TestLEssThanOrEqualOperator(string leftString, string rightString, bool expected)
+        public void TestLessThanOrEqualOperator(string left, string right, bool expected)
         {
-            var left = BigRational.Parse(leftString);
-            var right = BigRational.Parse(rightString);
-            Assert.AreEqual(left <= right, expected);
+            Assert.AreEqual(
+                expected,
+                BigRational.Parse(left) <= BigRational.Parse(right));
         }
     }
 }
