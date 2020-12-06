@@ -9,10 +9,32 @@ namespace Qtfy.Net.Numerics.Tests
     using System.Collections.Generic;
     using System.Linq;
     using System.Numerics;
+    using System.Reflection;
     using NUnit.Framework;
 
     public partial class BigRationalTests
     {
+        [TestCase("op_Equality")]
+        [TestCase("op_Inequality")]
+        [TestCase("op_LessThan")]
+        [TestCase("op_LessThanOrEqual")]
+        [TestCase("op_GreaterThan")]
+        [TestCase("op_GreaterThanOrEqual")]
+        public void TestHasComparisonOverload(string name)
+        {
+            AssertHasOverloads<bool>(name);
+        }
+
+        [TestCase("op_Addition")]
+        [TestCase("op_Subtraction")]
+        [TestCase("op_Multiply")]
+        [TestCase("op_Division")]
+        [TestCase("op_Modulus")]
+        public void TestHasArithmeticOverload(string name)
+        {
+            AssertHasOverloads<BigRational>(name);
+        }
+
         [TestCaseSource(typeof(OverloadCases))]
         public void TestAdditionOverloads(dynamic left, dynamic right)
         {
@@ -43,6 +65,14 @@ namespace Qtfy.Net.Numerics.Tests
             AssertEqual(
                 (BigRational)left / (BigRational)right,
                 left / right);
+        }
+
+        [TestCaseSource(typeof(OverloadCases))]
+        public void TestModulusOverloads(dynamic left, dynamic right)
+        {
+            AssertEqual(
+                (BigRational)left % (BigRational)right,
+                left % right);
         }
 
         [TestCaseSource(typeof(OverloadCases))]
@@ -93,11 +123,35 @@ namespace Qtfy.Net.Numerics.Tests
                 left >= right);
         }
 
-        public class OverloadCases : IEnumerable
+        private static bool HasMethod<TLeft, TRight, TReturn>(string name)
         {
-            private static readonly (BigRational rational, BigInteger integer)[] UnsignedCases;
+            var count = typeof(BigRational)
+                .GetMethods(BindingFlags.Static | BindingFlags.Public)
+                .Where(m => m.Name == name)
+                .Where(m => m.ReturnType == typeof(TReturn))
+                .Where(m => m.GetParameters().Length == 2)
+                .Where(m => m.GetParameters()[0].ParameterType == typeof(TLeft))
+                .Count(m => m.GetParameters()[1].ParameterType == typeof(TRight));
 
-            private static readonly (BigRational rational, BigInteger integer)[] SignedCases;
+            return count == 1;
+        }
+
+        private static void AssertHasOverloads<TReturn>(string name)
+        {
+            Assert.True(HasMethod<BigRational, BigRational, TReturn>(name));
+            Assert.True(HasMethod<BigRational, BigInteger, TReturn>(name));
+            Assert.True(HasMethod<BigInteger, BigRational, TReturn>(name));
+            Assert.True(HasMethod<BigRational, ulong, TReturn>(name));
+            Assert.True(HasMethod<ulong, BigRational, TReturn>(name));
+            Assert.True(HasMethod<BigRational, long, TReturn>(name));
+            Assert.True(HasMethod<long, BigRational, TReturn>(name));
+        }
+
+        private class OverloadCases : IEnumerable
+        {
+            private static readonly IEnumerable<(BigRational rational, BigInteger integer)> UnsignedCases;
+
+            private static readonly IEnumerable<(BigRational rational, BigInteger integer)> SignedCases;
 
             static OverloadCases()
             {
