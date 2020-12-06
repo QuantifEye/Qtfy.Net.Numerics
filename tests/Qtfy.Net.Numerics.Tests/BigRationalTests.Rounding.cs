@@ -3,11 +3,10 @@
 // Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-using System.Numerics;
-
 namespace Qtfy.Net.Numerics.Tests
 {
     using System;
+    using System.Numerics;
     using NUnit.Framework;
 
     public partial class BigRationalTests
@@ -107,7 +106,7 @@ namespace Qtfy.Net.Numerics.Tests
         public void RoundToTickWithModeError()
         {
             Assert.Throws<ArgumentException>(() =>
-                BigRational.RoundToTick(1, new BigRational(1, 2), (RationalRounding) 100));
+                BigRational.RoundToTick(1, new BigRational(1, 2), (RationalRounding)100));
         }
 
         [Test]
@@ -152,7 +151,7 @@ namespace Qtfy.Net.Numerics.Tests
         [Test]
         public void RoundToIntModeError()
         {
-            Assert.Throws<ArgumentException>(() => BigRational.RoundToInt(1, (RationalRounding) 100));
+            Assert.Throws<ArgumentException>(() => BigRational.RoundToInt(1, (RationalRounding)100));
         }
     }
 }

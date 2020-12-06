@@ -281,7 +281,7 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(expectedSuccess, actualSuccess);
             Assert.AreEqual(expectedRational, actualRational);
         }
-        
+
         private static void AssertCanonical(BigRational rational)
         {
             Assert.True(rational.Denominator > BigInteger.Zero);
