@@ -64,14 +64,14 @@ namespace Qtfy.Net.Numerics.Tests
         public void TestExpInvalidTerms()
         {
             Assert.Throws<ArgumentException>(
-                () =>SeriesExpansions.Exp(0, -1));
+                () => SeriesExpansions.Exp(0, -1));
         }
 
         [Test]
         public void TestLogInvalidTerms()
         {
             Assert.Throws<ArgumentException>(
-                () =>SeriesExpansions.Log(0, -1));
+                () => SeriesExpansions.Log(0, -1));
         }
     }
 }

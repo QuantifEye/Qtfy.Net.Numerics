@@ -150,7 +150,7 @@ namespace Qtfy.Net.Numerics.Tests
             BigRational doubleMax = double.MaxValue;
             BigRational oneSmaller = System.Math.BitDecrement(double.MaxValue);
             BigRational epsilon = doubleMax - Math.BitDecrement(double.MaxValue);
-            BigRational rational = doubleMax + 2 * epsilon;
+            BigRational rational = doubleMax + (2 * epsilon);
             double result = (double)rational;
         }
 
