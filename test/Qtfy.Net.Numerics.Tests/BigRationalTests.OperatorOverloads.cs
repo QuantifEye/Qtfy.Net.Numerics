@@ -1,12 +1,14 @@
 // <copyright file="BigRationalTests.OperatorOverloads.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics.Tests
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Numerics;
     using System.Reflection;
@@ -147,74 +149,69 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.True(HasMethod<long, BigRational, TReturn>(name));
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1812", Justification = "class is instantiated by unit testing")]
         private class OverloadCases : IEnumerable
         {
-            private static readonly IEnumerable<(BigRational rational, BigInteger integer)> UnsignedCases;
+            private static readonly object[][] Cases = MakeCases();
 
-            private static readonly IEnumerable<(BigRational rational, BigInteger integer)> SignedCases;
-
-            static OverloadCases()
+            private static object[][] MakeCases()
             {
-                var allIntegers = new BigInteger[] { -4, -3, -2, -1, 1, 2, 3, 4 };
-                var positiveIntegers = new BigInteger[] { 1, 2, 3, 4 };
-                var denominators = new BigInteger[] { 1, 2 };
-
-                var positiveRationals = positiveIntegers
-                    .Zip(denominators)
-                    .Select(t => new BigRational(t.First, t.Second))
-                    .Distinct()
-                    .ToArray();
-
-                var allRationals = allIntegers
-                    .Zip(denominators)
-                    .Select(t => new BigRational(t.First, t.Second))
-                    .Distinct()
-                    .ToArray();
-
-                IEnumerable<(BigRational rational, BigInteger integer)> MakeCases(
-                    BigRational[] rationals,
-                    BigInteger[] integers)
+                int[] allIntegers = { -2, -1, 1, 2 };
+                int[] positiveIntegers = { 1, 2 };
+                BigRational[] positiveRationals =
                 {
-                    foreach (var rational in rationals)
+                    new BigRational(1, 2),
+                    new BigRational(1),
+                    new BigRational(3, 2),
+                    new BigRational(2),
+                };
+                var allRationals = positiveRationals
+                    .Concat(positiveRationals.Select(r => -r))
+                    .OrderBy(x => x)
+                    .ToArray();
+
+                static IEnumerable<(BigRational rational, int integer)> MakeProduct(
+                    BigRational[] rationals,
+                    int[] integers)
+                {
+                    foreach (var r in rationals)
                     {
-                        foreach (var integer in integers)
+                        foreach (var i in integers)
                         {
-                            yield return (rational, integer);
+                            yield return (r, i);
                         }
                     }
                 }
 
-                SignedCases = MakeCases(allRationals, allIntegers).ToArray();
-                UnsignedCases = MakeCases(positiveRationals, positiveIntegers).ToArray();
+                var signedCases = MakeProduct(allRationals, allIntegers).ToArray();
+                var unsignedCases = MakeProduct(allRationals, positiveIntegers).ToArray();
+
+                static IEnumerable<object[]> Case(object left, object right)
+                {
+                    yield return new[] { left, right };
+                    yield return new[] { right, left };
+                }
+
+                IEnumerable<IEnumerable<object[]>> Cases()
+                {
+                    foreach (var (r, i) in signedCases)
+                    {
+                        yield return Case(r, (BigInteger)i);
+                        yield return Case(r, (long)i);
+                    }
+
+                    foreach (var (r, i) in unsignedCases)
+                    {
+                        yield return Case(r, (ulong)i);
+                    }
+                }
+
+                return Cases().SelectMany(x => x).ToArray();
             }
 
             public IEnumerator GetEnumerator()
             {
-                foreach (var (r, i) in SignedCases)
-                {
-                    yield return new object[] { r, i };
-                    yield return new object[] { r, (long)i };
-                    yield return new object[] { (long)i, r };
-                    yield return new object[] { r, (int)i };
-                    yield return new object[] { (int)i, r };
-                    yield return new object[] { r, (short)i };
-                    yield return new object[] { (short)i, r };
-                    yield return new object[] { r, (sbyte)i };
-                    yield return new object[] { (sbyte)i, r };
-                }
-
-                foreach (var (r, i) in UnsignedCases)
-                {
-                    yield return new object[] { r, i };
-                    yield return new object[] { r, (ulong)i };
-                    yield return new object[] { (ulong)i, r };
-                    yield return new object[] { r, (uint)i };
-                    yield return new object[] { (uint)i, r };
-                    yield return new object[] { r, (ushort)i };
-                    yield return new object[] { (ushort)i, r };
-                    yield return new object[] { r, (byte)i };
-                    yield return new object[] { (byte)i, r };
-                }
+                return Cases.GetEnumerator();
             }
         }
     }

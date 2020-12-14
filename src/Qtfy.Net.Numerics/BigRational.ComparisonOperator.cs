@@ -1,10 +1,12 @@
 // <copyright file="BigRational.ComparisonOperator.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics
 {
+    using System;
     using System.Numerics;
 
     /// <summary>
@@ -75,6 +77,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator ==(BigRational left, ulong right)
         {
             return left.IsInteger && left.Numerator == right;
@@ -92,6 +95,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator ==(ulong left, BigRational right)
         {
             return right.IsInteger && left == right.Numerator;
@@ -194,6 +198,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// false if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, true.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator !=(BigRational left, ulong right)
         {
             return left.Denominator != BigInteger.One || left.Numerator != right;
@@ -211,6 +216,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// false if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, true.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator !=(ulong left, BigRational right)
         {
             return right.Denominator != BigInteger.One || left != right.Numerator;
@@ -313,6 +319,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is greater than <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator >(BigRational left, ulong right)
         {
             return left.Numerator > right * left.Denominator;
@@ -330,6 +337,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is greater than <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator >(ulong left, BigRational right)
         {
             return left * right.Denominator > right.Numerator;
@@ -432,6 +440,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is less than or equal to <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator <=(BigRational left, ulong right)
         {
             return left.Numerator <= right * left.Denominator;
@@ -449,6 +458,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is less than or equal to <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator <=(ulong left, BigRational right)
         {
             return left * right.Denominator <= right.Numerator;
@@ -534,6 +544,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is less than <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator <(ulong left, BigRational right)
         {
             return left * right.Denominator < right.Numerator;
@@ -551,6 +562,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is less than <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator <(BigRational left, ulong right)
         {
             return left.Numerator < right * left.Denominator;
@@ -670,6 +682,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is greater than or equal to <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator >=(BigRational left, ulong right)
         {
             return left.Numerator >= right * left.Denominator;
@@ -687,6 +700,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// true if <paramref name="left"/> is greater than or equal to <paramref name="right"/>; otherwise, false.
         /// </returns>
+        [CLSCompliant(false)]
         public static bool operator >=(ulong left, BigRational right)
         {
             return left * right.Denominator >= right.Numerator;

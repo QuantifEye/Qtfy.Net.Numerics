@@ -1,17 +1,21 @@
 ﻿// <copyright file="BigRational.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Numerics;
     using System.Runtime.CompilerServices;
 
     /// <summary>
     /// A structure that represents a rational number with an arbitrarily large numerator and denominator.
     /// </summary>
+    [SuppressMessage("Microsoft.Usage", "CA2225", Justification = "Proposal for csharp language feature pending")]
     public partial struct BigRational
     {
         /// <summary>
@@ -22,7 +26,7 @@ namespace Qtfy.Net.Numerics
         /// <summary>
         /// A value representing 0/1.
         /// </summary>
-        public static readonly BigRational Zero = default;
+        public static readonly BigRational Zero = new BigRational(0);
 
         /// <summary>
         /// A value representing -1/1.
@@ -270,28 +274,33 @@ namespace Qtfy.Net.Numerics
         /// <summary>
         /// Converts the string representation of a number to its <see cref="BigRational"/> equivalent.
         /// </summary>
-        /// <param name="from">
+        /// <param name="value">
         /// A string that contains the number to convert.
         /// </param>
         /// <returns>
-        /// A value that is equivalent to the number specified in the <paramref name="from"/> parameter.
+        /// A value that is equivalent to the number specified in the <paramref name="value"/> parameter.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// If <paramref name="from"/> is null.
+        /// If <paramref name="value"/> is null.
         /// </exception>
         /// <exception cref="FormatException">
-        /// If <paramref name="from"/> cannot be interpreted as a <see cref="BigRational"/>.
+        /// If <paramref name="value"/> cannot be interpreted as a <see cref="BigRational"/>.
         /// </exception>
-        public static BigRational Parse(string from)
+        public static BigRational Parse(string value)
         {
-            var s = from.Split('/');
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var s = value.Split('/');
             switch (s.Length)
             {
                 case 1:
-                    return new BigRational(BigInteger.Parse(from));
+                    return new BigRational(BigInteger.Parse(value, CultureInfo.InvariantCulture));
                 case 2:
-                    var n = BigInteger.Parse(s[0]);
-                    var d = BigInteger.Parse(s[1]);
+                    var n = BigInteger.Parse(s[0], CultureInfo.InvariantCulture);
+                    var d = BigInteger.Parse(s[1], CultureInfo.InvariantCulture);
                     if (d.IsZero)
                     {
                         break;
@@ -300,31 +309,37 @@ namespace Qtfy.Net.Numerics
                     return new BigRational(n, d);
             }
 
-            throw new FormatException($"Could not parse \"{from}\" as a BigRational.");
+            throw new FormatException($"Could not parse \"{value}\" as a BigRational.");
         }
 
         /// <summary>
         /// Tries to convert the string representation of a number to its <see cref="BigRational"/> equivalent,
         /// and returns a value that indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="from">
+        /// <param name="value">
         /// The string representation of a number.
         /// </param>
         /// <param name="rational">
         /// When this method returns, contains the <see cref="BigRational"/> equivalent to
         /// the number that is contained in value, or zero (0) if the conversion fails.
-        /// The conversion fails if the value <paramref name="from"/> is null or is not of the correct format.
+        /// The conversion fails if the value <paramref name="value"/> is null or is not of the correct format.
         /// This parameter is passed uninitialized.
         /// </param>
         /// <returns>
         /// true if value was converted successfully; otherwise, false.
         /// </returns>
-        public static bool TryParse(string from, out BigRational rational)
+        public static bool TryParse(string value, out BigRational rational)
         {
-            var s = from.Split('/');
+            if (value is null)
+            {
+                rational = default;
+                return false;
+            }
+
+            var s = value.Split('/');
             switch (s.Length)
             {
-                case 1 when BigInteger.TryParse(@from, out var bigint):
+                case 1 when BigInteger.TryParse(value, out var bigint):
                     rational = new BigRational(bigint);
                     return true;
                 case 2 when BigInteger.TryParse(s[0], out var num) && BigInteger.TryParse(s[1], out var den):

@@ -1,12 +1,14 @@
 ﻿// <copyright file="BigRationalTests.Rounding.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics.Tests
 {
     using System;
     using System.Numerics;
+    using System.Reflection;
     using NUnit.Framework;
 
     public partial class BigRationalTests
@@ -49,6 +51,8 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase("-1/6", "1/3", "-1/3")]
         [TestCase("-3/6", "1/3", "-2/3")]
         [TestCase("-2/6", "1/3", "-1/3")]
+        [TestCase("-2", "1/3", "-2")]
+        [TestCase("2", "1", "2")]
         public void FloorWithTick(string input, string tick, string expected)
         {
             AssertEqual(
@@ -99,6 +103,7 @@ namespace Qtfy.Net.Numerics.Tests
             {
                 AssertEqual(rational, BigRational.RoundToTick(rational + epsilon, tick, mode));
                 AssertEqual(rational, BigRational.RoundToTick(rational - epsilon, tick, mode));
+                AssertEqual(rational, BigRational.RoundToTick(rational, tick, mode));
             }
         }
 
@@ -152,6 +157,26 @@ namespace Qtfy.Net.Numerics.Tests
         public void RoundToIntModeError()
         {
             Assert.Throws<ArgumentException>(() => BigRational.RoundToInt(1, (RationalRounding)100));
+        }
+
+        [Test]
+        public void TestRoundImplError()
+        {
+            static void Helper()
+            {
+                try
+                {
+                    typeof(BigRational)
+                        .GetMethod("RoundImpl", BindingFlags.NonPublic | BindingFlags.Static)
+                        .Invoke(null, new object[] { default(BigRational), (RationalRounding)int.MaxValue });
+                }
+                catch (TargetInvocationException ex)
+                {
+                    throw ex.InnerException;
+                }
+            }
+
+            Assert.Throws<ArgumentException>(Helper);
         }
     }
 }

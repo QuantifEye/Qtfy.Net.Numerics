@@ -1,6 +1,7 @@
 ﻿// <copyright file="BigRationalTests.Serialization.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics.Tests
@@ -43,8 +44,34 @@ namespace Qtfy.Net.Numerics.Tests
             var text = $"<BigRational>{expected.Numerator}/{expected.Denominator}</BigRational>";
             using var textReader = new StringReader(text);
             using var reader = XmlReader.Create(textReader);
-            var actual = (BigRational)serializer.Deserialize(reader);
-            Assert.AreEqual(expected, actual);
+            if (serializer.Deserialize(reader) is BigRational rational)
+            {
+                Assert.AreEqual(expected, rational);
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+
+        [Test]
+        public void TestReaderXmlNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => default(BigRational).ReadXml(null));
+        }
+
+        [Test]
+        public void TestWriteXmlNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => default(BigRational).WriteXml(null));
+        }
+
+        [Test]
+        public void TestGetSchema()
+        {
+            Assert.IsNull(BigRational.Zero.GetSchema());
         }
     }
 }

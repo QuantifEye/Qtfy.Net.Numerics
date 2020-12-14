@@ -1,6 +1,7 @@
 // <copyright file="BigRational.ComparisonMethods.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics
@@ -34,7 +35,7 @@ namespace Qtfy.Net.Numerics
         IComparable<sbyte>
     {
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is BigRational bigRational && this.Equals(bigRational);
         }
@@ -61,6 +62,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public bool Equals(ulong other)
         {
             return this.Numerator.Equals(other * this.Denominator);
@@ -73,6 +75,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public bool Equals(uint other)
         {
             return this.Numerator.Equals(other * this.Denominator);
@@ -85,6 +88,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public bool Equals(ushort other)
         {
             return this.Numerator.Equals(other * this.Denominator);
@@ -103,6 +107,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public bool Equals(sbyte other)
         {
             return this.Numerator.Equals(other * this.Denominator);
@@ -121,6 +126,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public int CompareTo(ulong other)
         {
             return this.Numerator.CompareTo(other * this.Denominator);
@@ -133,6 +139,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public int CompareTo(uint other)
         {
             return this.Numerator.CompareTo(other * this.Denominator);
@@ -145,6 +152,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public int CompareTo(ushort other)
         {
             return this.Numerator.CompareTo(other * this.Denominator);
@@ -163,6 +171,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
+        [CLSCompliant(false)]
         public int CompareTo(sbyte other)
         {
             return this.Numerator.CompareTo(other * this.Denominator);

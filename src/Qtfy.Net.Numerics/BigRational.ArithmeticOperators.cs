@@ -1,6 +1,7 @@
 // <copyright file="BigRational.ArithmeticOperators.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics
@@ -138,6 +139,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator +(BigRational augend, ulong addend)
         {
             var leftDen = augend.Denominator;
@@ -156,6 +158,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator +(ulong augend, BigRational addend)
         {
             var rightDen = addend.Denominator;
@@ -265,6 +268,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The result of subtracting <paramref name="subtrahend"/> from <paramref name="minuend"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator -(BigRational minuend, ulong subtrahend)
         {
             var leftDen = minuend.Denominator;
@@ -283,6 +287,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The result of subtracting <paramref name="subtrahend"/> from <paramref name="minuend"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator -(ulong minuend, BigRational subtrahend)
         {
             var rightDen = subtrahend.Denominator;
@@ -319,6 +324,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The result of subtracting <paramref name="subtrahend"/> from <paramref name="minuend"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator -(long minuend, BigRational subtrahend)
         {
             var rightDen = subtrahend.Denominator;
@@ -337,6 +343,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The product of <paramref name="multiplicand"/> and <paramref name="multiplier"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator *(BigRational multiplicand, BigRational multiplier)
         {
             return new BigRational(
@@ -390,6 +397,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The product of <paramref name="multiplicand"/> and <paramref name="multiplier"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator *(BigRational multiplicand, ulong multiplier)
         {
             return new BigRational(multiplicand.Numerator * multiplier, multiplicand.Denominator);
@@ -407,6 +415,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The product of <paramref name="multiplicand"/> and <paramref name="multiplier"/>.
         /// </returns>
+        [CLSCompliant(false)]
         public static BigRational operator *(ulong multiplicand, BigRational multiplier)
         {
             return new BigRational(multiplicand * multiplier.Numerator, multiplier.Denominator);
@@ -521,6 +530,7 @@ namespace Qtfy.Net.Numerics
         /// <exception cref="DivideByZeroException">
         /// If <paramref name="divisor"/> is equal to zero (0/1).
         /// </exception>
+        [CLSCompliant(false)]
         public static BigRational operator /(BigRational dividend, ulong divisor)
         {
             return new BigRational(dividend.Numerator, dividend.Denominator * divisor);
@@ -541,6 +551,7 @@ namespace Qtfy.Net.Numerics
         /// <exception cref="DivideByZeroException">
         /// If <paramref name="divisor"/> is equal to zero (0/1).
         /// </exception>
+        [CLSCompliant(false)]
         public static BigRational operator /(ulong dividend, BigRational divisor)
         {
             return new BigRational(dividend * divisor.Denominator, divisor.Numerator);
@@ -664,6 +675,7 @@ namespace Qtfy.Net.Numerics
         /// <exception cref="DivideByZeroException">
         /// If <paramref name="divisor"/> is zero (1/0).
         /// </exception>
+        [CLSCompliant(false)]
         public static BigRational operator %(BigRational dividend, ulong divisor)
         {
             var temp = dividend / divisor;
@@ -685,6 +697,7 @@ namespace Qtfy.Net.Numerics
         /// <exception cref="DivideByZeroException">
         /// If <paramref name="divisor"/> is zero (1/0).
         /// </exception>
+        [CLSCompliant(false)]
         public static BigRational operator %(ulong dividend, BigRational divisor)
         {
             var temp = dividend / divisor;
@@ -706,6 +719,7 @@ namespace Qtfy.Net.Numerics
         /// <exception cref="DivideByZeroException">
         /// If <paramref name="divisor"/> is zero (1/0).
         /// </exception>
+        [CLSCompliant(false)]
         public static BigRational operator %(BigRational dividend, long divisor)
         {
             var temp = dividend / divisor;

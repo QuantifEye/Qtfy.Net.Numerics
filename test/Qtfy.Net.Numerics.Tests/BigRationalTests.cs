@@ -1,6 +1,7 @@
 ﻿// <copyright file="BigRationalTests.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics.Tests
@@ -218,9 +219,9 @@ namespace Qtfy.Net.Numerics.Tests
             BigRational maximum = new BigRational(maxNumerator, maxDenominator);
             BigRational minimum = new BigRational(minNumerator, minDenominator);
             BigRationalTests.AssertEqual(maximum, BigRational.Max(minimum, maximum));
-            BigRationalTests.AssertEqual(maximum, BigRational.Max(minimum, maximum));
+            BigRationalTests.AssertEqual(maximum, BigRational.Max(maximum, minimum));
             BigRationalTests.AssertEqual(minimum, BigRational.Min(minimum, maximum));
-            BigRationalTests.AssertEqual(minimum, BigRational.Min(minimum, maximum));
+            BigRationalTests.AssertEqual(minimum, BigRational.Min(maximum, minimum));
         }
 
         [TestCase(1, 1, 1, 1, 1)]
@@ -230,6 +231,9 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase(-1, 1, 0, 1, 1)]
         [TestCase(-1, 2, 2, 1, 4)]
         [TestCase(-1, 2, 3, -1, 8)]
+        [TestCase(-1, 2, 0, 1, 1)]
+        [TestCase(0, 1, 1, 1, 1)]
+        [TestCase(10, 1, 0, 1, 1)]
         public void Pow(int n, int d, int power, int expectedNumerator, int expectedDenominator)
         {
             BigRational rational = new BigRational(n, d);
@@ -260,6 +264,13 @@ namespace Qtfy.Net.Numerics.Tests
             BigRationalTests.AssertEqual(expected, actual);
         }
 
+        [Test]
+        public void TestParseNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => BigRational.Parse(null));
+        }
+
         [TestCase("xyz")]
         [TestCase("123/0")]
         public void TestParseUnsuccessful(string from)
@@ -268,6 +279,7 @@ namespace Qtfy.Net.Numerics.Tests
                 () => BigRational.Parse(from));
         }
 
+        [TestCase("123", 123, 1, true)]
         [TestCase("123/456", 123, 456, true)]
         [TestCase("xyz", 0, 0, false)]
         public void TestTryParse(string input, int numerator, int denominator, bool expectedSuccess)
@@ -280,6 +292,27 @@ namespace Qtfy.Net.Numerics.Tests
 
             Assert.AreEqual(expectedSuccess, actualSuccess);
             Assert.AreEqual(expectedRational, actualRational);
+        }
+
+        [Test]
+        public void TryParseNull()
+        {
+            if (BigRational.TryParse(null, out var result))
+            {
+                Assert.Fail();
+            }
+        }
+
+        [Test]
+        public void TestGetHashCodeEqual()
+        {
+            Assert.AreEqual(
+                new BigRational(1, 2).GetHashCode(),
+                new BigRational(2, 4).GetHashCode());
+
+            Assert.AreEqual(
+                default(BigRational).GetHashCode(),
+                new BigRational(0).GetHashCode());
         }
 
         private static void AssertCanonical(BigRational rational)

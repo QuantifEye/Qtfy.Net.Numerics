@@ -1,10 +1,12 @@
 // <copyright file="BigRational.Serialization.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics
 {
+    using System;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -15,7 +17,7 @@ namespace Qtfy.Net.Numerics
     public partial struct BigRational : IXmlSerializable
     {
         /// <inheritdoc/>
-        public XmlSchema GetSchema()
+        public XmlSchema? GetSchema()
         {
             return null;
         }
@@ -23,6 +25,11 @@ namespace Qtfy.Net.Numerics
         /// <inheritdoc/>
         public void ReadXml(XmlReader reader)
         {
+            if (reader is null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             reader.ReadStartElement();
             this = Parse(reader.ReadContentAsString());
             reader.ReadEndElement();
@@ -31,6 +38,11 @@ namespace Qtfy.Net.Numerics
         /// <inheritdoc/>
         public void WriteXml(XmlWriter writer)
         {
+            if (writer is null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
+
             writer.WriteValue(this.ToString());
         }
     }

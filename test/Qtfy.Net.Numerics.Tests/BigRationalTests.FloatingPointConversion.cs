@@ -1,6 +1,7 @@
 // <copyright file="BigRationalTests.FloatingPointConversion.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics.Tests
@@ -119,15 +120,15 @@ namespace Qtfy.Net.Numerics.Tests
             BigRational floatMax = float.MaxValue;
             BigRational positiveOverflowValue = floatMax * floatMax;
             BigRational negativeOverflowValue = -positiveOverflowValue;
-            AssertBitEqual(0.0, (float)positiveOverflowValue);
-            AssertBitEqual(-0.0d, (float)negativeOverflowValue);
+            AssertBitEqual(float.PositiveInfinity, (float)positiveOverflowValue);
+            AssertBitEqual(float.NegativeInfinity, (float)negativeOverflowValue);
         }
 
         [Test]
         public void CastToDoubleUnderflow()
         {
-            BigRational floatEpsilon = double.Epsilon;
-            BigRational positiveUnderflow = floatEpsilon * floatEpsilon;
+            BigRational doubleEpsilon = double.Epsilon;
+            BigRational positiveUnderflow = doubleEpsilon * doubleEpsilon;
             BigRational negativeUnderflow = -positiveUnderflow;
             AssertBitEqual(0.0d, (double)positiveUnderflow);
             AssertBitEqual(-0.0d, (double)negativeUnderflow);
@@ -141,6 +142,16 @@ namespace Qtfy.Net.Numerics.Tests
             BigRational negativeUnderflow = -positiveUnderflow;
             AssertBitEqual(0.0f, (float)positiveUnderflow);
             AssertBitEqual(-0.0f, (float)negativeUnderflow);
+        }
+
+        [Test]
+        public void ToDoubleRoundToOverflow()
+        {
+            BigRational doubleMax = double.MaxValue;
+            BigRational oneSmaller = System.Math.BitDecrement(double.MaxValue);
+            BigRational epsilon = doubleMax - Math.BitDecrement(double.MaxValue);
+            BigRational rational = doubleMax + 2 * epsilon;
+            double result = (double)rational;
         }
 
         private static void AssertBitEqual(double left, double right)
