@@ -1,7 +1,23 @@
 
 [*.cs]
+
+## documentation in test assembly not enforced
+
+# missing xml comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = silent
-dotnet_diagnostic.SA1601.severity = silent
-dotnet_diagnostic.SA1611.severity = silent
+
+# elements must be documented
 dotnet_diagnostic.SA1600.severity = silent
+
+#partial elements must be documented
+dotnet_diagnostic.SA1601.severity = silent
+
+# property documentation must have value text
 dotnet_diagnostic.SA1610.severity = silent
+
+# element parameters must be documented
+dotnet_diagnostic.SA1611.severity = silent
+
+
+
+
