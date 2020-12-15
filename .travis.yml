@@ -5,6 +5,11 @@ dist: bionic
 git:
   depth: false
 
+branches:
+  only:
+  - master
+  - dev
+
 script: bash build/travis_build_and_test.sh
 
 deploy:
