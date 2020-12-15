@@ -2,7 +2,7 @@ Welcome to the QuantifEye Numerics repository.
 
 We are working toward release 1.0.0 which will include an arbitrary precision rational number class and the mersenne twister pseudo random number generator.
 
-<table align="center" valign="center">
+<table>
 	<tr>
 		 <th colspan="2">Build Status.</th>
  	</tr>
