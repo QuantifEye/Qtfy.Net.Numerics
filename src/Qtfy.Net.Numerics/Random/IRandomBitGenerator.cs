@@ -1,6 +1,7 @@
 // <copyright file="IRandomBitGenerator.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics.Random
@@ -19,6 +20,6 @@ namespace Qtfy.Net.Numerics.Random
         /// <returns>
         /// An integral value in the closed interval [T.Min, T.Max].
         /// </returns>
-        TBits Next();
+        TBits GetBits();
     }
 }
