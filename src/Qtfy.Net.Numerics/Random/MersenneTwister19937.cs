@@ -1,6 +1,7 @@
 // <copyright file="MersenneTwister19937.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 /*
@@ -36,12 +37,15 @@
 
 namespace Qtfy.Net.Numerics.Random
 {
+    using System;
+
     /// <summary>
     /// The Mersenne Twister random number generator.
     /// <see href="http://stackoverflow.com">
     /// http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/emt19937ar.html
     /// </see>.
     /// </summary>
+    [CLSCompliant(false)]
     public sealed class MersenneTwister19937 : IRandomBitGenerator<uint>
     {
         private const int N = 624;
@@ -121,6 +125,11 @@ namespace Qtfy.Net.Numerics.Random
         /// </remarks>
         public static MersenneTwister19937 InitByArray(uint[] seeds)
         {
+            if (seeds is null)
+            {
+                throw new ArgumentNullException(nameof(seeds));
+            }
+
             var state = new uint[N];
             unsafe
             {
@@ -135,7 +144,7 @@ namespace Qtfy.Net.Numerics.Random
         }
 
         /// <inheritdoc />
-        public uint Next()
+        public uint GetBits()
         {
             if (this.index == N)
             {
@@ -147,13 +156,18 @@ namespace Qtfy.Net.Numerics.Random
         }
 
         /// <summary>
-        /// Fills thhe provided buffer with generated numbers, advancing the state of the generator.
+        /// Fills the provided buffer with generated numbers, advancing the state of the generator.
         /// </summary>
         /// <param name="buffer">
         /// The buffer to fill with generated numbers.
         /// </param>
         public void Fill(uint[] buffer)
         {
+            if (buffer is null)
+            {
+                throw new ArgumentNullException(nameof(buffer));
+            }
+
             int size = buffer.Length;
             if (size == 0)
             {
@@ -162,8 +176,7 @@ namespace Qtfy.Net.Numerics.Random
 
             unsafe
             {
-                fixed (uint* s = this.state)
-                fixed (uint* b = buffer)
+                fixed (uint* s = this.state, b = buffer)
                 {
                     this.index = FillImpl(s, b, b + size, this.index);
                 }
