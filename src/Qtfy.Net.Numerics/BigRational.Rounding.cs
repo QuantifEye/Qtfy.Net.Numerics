@@ -1,6 +1,7 @@
 // <copyright file="BigRational.Rounding.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics
@@ -59,6 +60,9 @@ namespace Qtfy.Net.Numerics
         /// The smallest number that greater than or equal to <paramref name="value"/> that is
         /// a whole number of ticks away from zero.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="tick"/> is less than or equal to zero.
+        /// </exception>
         public static BigRational Ceiling(BigRational value, BigRational tick)
         {
             AssertValidTick(tick);
@@ -81,6 +85,9 @@ namespace Qtfy.Net.Numerics
         /// The largest number less than or equal to <paramref name="value"/> that is a
         /// multiple of <paramref name="tick"/>.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="tick"/> is less than or equal to zero.
+        /// </exception>
         public static BigRational Floor(BigRational value, BigRational tick)
         {
             AssertValidTick(tick);
@@ -109,10 +116,16 @@ namespace Qtfy.Net.Numerics
         /// If <paramref name= "value" /> is exactly half way between two such numbers, <paramref name="mode"/>
         /// specifies the rounding method to use.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="tick"/> is less than or equal to zero.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="mode"/> is mode is not valid <see cref="RationalRounding"/> value.
+        /// </exception>
         public static BigRational RoundToTick(BigRational value, BigRational tick, RationalRounding mode)
         {
-            AssertValidTick(tick);
             AssertValidRationalRounding(mode);
+            AssertValidTick(tick);
             var ticks = value / tick;
             return ticks.IsInteger ? value : RoundImpl(ticks, mode) * tick;
         }
@@ -133,6 +146,9 @@ namespace Qtfy.Net.Numerics
         /// If <paramref name="value"/> is exactly half way between two such numbers, <paramref name="mode"/>
         /// specifies the rounding method to use <see cref="RationalRounding"/>.
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="mode"/> is mode is not valid <see cref="RationalRounding"/> value.
+        /// </exception>
         public static BigInteger RoundToInt(BigRational value, RationalRounding mode)
         {
             AssertValidRationalRounding(mode);
@@ -156,17 +172,26 @@ namespace Qtfy.Net.Numerics
         /// <remarks>
         /// This method assumes that <paramref name="value"/> is not an integral number.
         /// </remarks>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="mode"/> is mode is not valid <see cref="RationalRounding"/> value.
+        /// </exception>
         private static BigInteger RoundImpl(BigRational value, RationalRounding mode)
         {
-            return mode switch
+            switch (mode)
             {
-                RationalRounding.Up => RoundUpImpl(value),
-                RationalRounding.Down => RoundDownImpl(value),
-                RationalRounding.ToEven => RoundToEvenImpl(value),
-                RationalRounding.AwayFromZero => RoundAwayFromZeroImpl(value),
-                RationalRounding.TowardZero => RoundTowardZeroImpl(value),
-                _ => throw new ArgumentException("Invalid RationalRounding value")
-            };
+                case RationalRounding.ToEven:
+                    return RoundToEvenImpl(value);
+                case RationalRounding.Up:
+                    return RoundUpImpl(value);
+                case RationalRounding.Down:
+                    return RoundDownImpl(value);
+                case RationalRounding.AwayFromZero:
+                    return RoundAwayFromZeroImpl(value);
+                case RationalRounding.TowardZero:
+                    return RoundTowardZeroImpl(value);
+                default:
+                    throw new ArgumentException("Invalid RationalRounding.");
+            }
         }
 
         /// <summary>

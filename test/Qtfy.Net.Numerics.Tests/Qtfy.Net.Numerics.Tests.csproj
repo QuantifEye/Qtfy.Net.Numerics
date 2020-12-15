@@ -2,4 +2,7 @@
   <PropertyGroup>
     <TargetFramework>$(QtfyTargetFramework)</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Qtfy.Net.Numerics/Qtfy.Net.Numerics.csproj" />
+  </ItemGroup>
 </Project>

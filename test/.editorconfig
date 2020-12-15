@@ -1,0 +1,7 @@
+
+[*.cs]
+dotnet_diagnostic.CS1591.severity = silent
+dotnet_diagnostic.SA1601.severity = silent
+dotnet_diagnostic.SA1611.severity = silent
+dotnet_diagnostic.SA1600.severity = silent
+dotnet_diagnostic.SA1610.severity = silent

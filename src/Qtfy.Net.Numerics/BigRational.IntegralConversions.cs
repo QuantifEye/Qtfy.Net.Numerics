@@ -1,10 +1,12 @@
 // <copyright file="BigRational.IntegralConversions.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 namespace Qtfy.Net.Numerics
 {
+    using System;
     using System.Numerics;
 
     /// <summary>
@@ -29,6 +31,7 @@ namespace Qtfy.Net.Numerics
         /// <param name="value">
         /// The <see cref="ulong"/> to convert.
         /// </param>
+        [CLSCompliant(false)]
         public static implicit operator BigRational(ulong value)
         {
             return new BigRational(value);
@@ -51,6 +54,7 @@ namespace Qtfy.Net.Numerics
         /// <param name="value">
         /// The <see cref="uint"/> to convert.
         /// </param>
+        [CLSCompliant(false)]
         public static implicit operator BigRational(uint value)
         {
             return new BigRational(value);
@@ -73,6 +77,7 @@ namespace Qtfy.Net.Numerics
         /// <param name="value">
         /// The <see cref="ushort"/> to convert.
         /// </param>
+        [CLSCompliant(false)]
         public static implicit operator BigRational(ushort value)
         {
             return new BigRational(value);
@@ -106,6 +111,7 @@ namespace Qtfy.Net.Numerics
         /// <param name="value">
         /// The <see cref="sbyte"/> to convert.
         /// </param>
+        [CLSCompliant(false)]
         public static implicit operator BigRational(sbyte value)
         {
             return new BigRational(value);

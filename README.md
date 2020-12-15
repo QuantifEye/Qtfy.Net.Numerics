@@ -1,19 +1,18 @@
-# Qtfy.QMath
+Welcome to the QuantifEye Numerics repository.
 
-Qtfy.QMath aims to provide methods and algorithms for mathematical and numerical computations required by other projects in the Qtfy namespace.
+We are working toward release 1.0.0 which will include an arbitrary precision rational number class and the mersenne twister pseudo random number generator.
 
-Currently Qtfy.QMath is a minimal library that provides the following classes and methods.
+<table>
+	<tr>
+		 <th colspan="2">Build Status.</th>
+ 	</tr>
+ 	<tr>
+  		<td>master</td>
+      <td><img src="https://travis-ci.com/QuantifEye/Qtfy.Net.Numerics.svg?token=4GppM9ERgowDjXBKpuH5&branch=master" alt=""/></td>
+ 	</tr>
+	<tr>
+  		<td>dev</td>
+      <td><img src="https://travis-ci.com/QuantifEye/Qtfy.Net.Numerics.svg?token=4GppM9ERgowDjXBKpuH5&branch=dev" alt=""/></td>
+ 	</tr>
 
-## Qtfy.QMath.BigRational
-
-This is a type that is implemented using System.Numerics.BigInteger, and provides the ability to perform arbitrary precision rational computations.
-
-The type also provides static methods that allow BigRational numbers to be rounded to an arbitrary tick size, such as to the nearest third.
-
-## Qtfy.QMath.Combinatorics
-
-The methods in this static class provide the ability to iterate over power sets.
-
-## Qtfy.QMath.SeriesExpansions
-
-The methods in this static class provide the ability calculate the series expansion approximations of the natural logarithm of a BigRational number and the exponent of a BigRational number.
+</table>

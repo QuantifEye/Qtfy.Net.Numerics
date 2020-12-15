@@ -3,7 +3,7 @@
   "settings": {
     "documentationRules": {
       "companyName": "QuantifEye",
-      "copyrightText": "Copyright (c) {companyName}. All rights reserved.\nLicensed under the {licenseName} license. See {licenseFile} file in the project root for full license information.",
+      "copyrightText": "Copyright (c) {companyName}. All rights reserved.\nLicensed under the {licenseName} license.\nSee {licenseFile} file in the project root for full license information.",
       "variables": {
         "licenseName": "Apache 2.0",
         "licenseFile": "LICENSE.txt"
