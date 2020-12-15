@@ -105,6 +105,19 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [Test]
+        public void CastToDoubleRoundToInfinity()
+        {
+            BigRational toRound = BigInteger.Pow(2, 1024) - BigInteger.One;
+            Assert.AreEqual(
+                double.PositiveInfinity,
+                (double)toRound);
+
+            Assert.AreEqual(
+                double.NegativeInfinity,
+                (double)-toRound);
+        }
+
+        [Test]
         public void CastToDoubleOverflow()
         {
             BigRational doubleMax = double.MaxValue;
