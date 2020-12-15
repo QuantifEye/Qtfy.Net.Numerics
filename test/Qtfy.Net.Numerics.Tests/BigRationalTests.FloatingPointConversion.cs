@@ -144,16 +144,6 @@ namespace Qtfy.Net.Numerics.Tests
             AssertBitEqual(-0.0f, (float)negativeUnderflow);
         }
 
-        [Test]
-        public void ToDoubleRoundToOverflow()
-        {
-            BigRational doubleMax = double.MaxValue;
-            BigRational oneSmaller = System.Math.BitDecrement(double.MaxValue);
-            BigRational epsilon = doubleMax - Math.BitDecrement(double.MaxValue);
-            BigRational rational = doubleMax + (2 * epsilon);
-            double result = (double)rational;
-        }
-
         private static void AssertBitEqual(double left, double right)
         {
             Assert.AreEqual(BitConverter.DoubleToInt64Bits(left), BitConverter.DoubleToInt64Bits(right));
