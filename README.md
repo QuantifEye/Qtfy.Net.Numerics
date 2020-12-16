@@ -14,17 +14,16 @@ Welcome to the QuantifEye Numerics repository.
  	</tr>
 </table>
 
-We are currently working toward version 1.0.0. consist of an arbitrary precision Rational Number, and related series expansions to calculate `Exp` and `Log`.
-
-
+We are currently working toward version 1.0.0. of the numerics library
 
 Serialization support has not been added but is planned. More to come.
 
 # Installation
-see [nuget](https://www.nuget.org/packages/Qtfy.Net.ExampleNugetRepository/).
+See [nuget](https://www.nuget.org/packages/Qtfy.Net.ExampleNugetRepository/).
 
 # Developement
-The current required dotnet sdk is version 5.0.1xx.
+## Dependencies
+See `./global.json` for the required sdk.
 
 ## Build
 ```shell

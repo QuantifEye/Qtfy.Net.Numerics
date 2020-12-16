@@ -7,7 +7,7 @@
 namespace Qtfy.Net.Numerics
 {
     /// <summary>
-    /// An enumeration that determines how a BigRational number is rounded.
+    /// An enumeration that determines how a number is rounded.
     /// </summary>
     public enum MidpointRoundingMode
     {
