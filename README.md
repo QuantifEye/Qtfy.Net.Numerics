@@ -1,5 +1,8 @@
-Welcome to the QuantifEye Numerics repository.
+# Qtfy.Net.Numerics
 
+We are currently working toward version 1.0.0. of the numerics library
+
+# Build
 <table>
 	<tr>
 		 <th colspan="2">Build Status.</th>
@@ -14,9 +17,6 @@ Welcome to the QuantifEye Numerics repository.
  	</tr>
 </table>
 
-We are currently working toward version 1.0.0. of the numerics library
-
-Serialization support has not been added but is planned. More to come.
 # Installation
 See "add link once released"
 
