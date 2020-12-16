@@ -2,7 +2,7 @@
 
 We are currently working toward version 1.0.0. of the numerics library
 
-# Build
+## Build
 <table>
 	<tr>
 		 <th colspan="2">Build Status.</th>
@@ -17,22 +17,22 @@ We are currently working toward version 1.0.0. of the numerics library
  	</tr>
 </table>
 
-# Installation
+## Installation
 See "add link once released"
 
-# Developement
-## Dependencies
+## Developement
+### Dependencies
 See `./global.json` for the required sdk.
 
-## Build
+### Build
 ```shell
 dotnet build
 ```
-## Unit Testing
+### Unit Testing
 ```shell
 dotnet test
 ```
-## Coverage
+### Coverage
 This requires two global tools `coverlet.console`, and `dotnet-reportgenerator-globaltool` which can be installed by running the script
 `./build/install_global_tools.sh`
 
