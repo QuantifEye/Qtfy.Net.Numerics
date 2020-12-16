@@ -14,7 +14,7 @@ Welcome to the QuantifEye Numerics repository.
  	</tr>
 </table>
 
-We are currently on version 1.0.0. consist of an arbitrary precision Rational Number, and related series expansions to calculate `Exp` and `Log`.
+We are currently working toward version 1.0.0. consist of an arbitrary precision Rational Number, and related series expansions to calculate `Exp` and `Log`.
 
 
 
