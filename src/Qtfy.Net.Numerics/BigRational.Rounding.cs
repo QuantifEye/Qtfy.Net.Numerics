@@ -7,6 +7,7 @@
 namespace Qtfy.Net.Numerics
 {
     using System;
+    using System.Diagnostics;
     using System.Numerics;
 
     /// <summary>
@@ -120,9 +121,9 @@ namespace Qtfy.Net.Numerics
         /// If <paramref name="tick"/> is less than or equal to zero.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// If <paramref name="mode"/> is mode is not valid <see cref="RationalRounding"/> value.
+        /// If <paramref name="mode"/> is mode is not valid <see cref="MidpointRoundingMode"/> value.
         /// </exception>
-        public static BigRational RoundToTick(BigRational value, BigRational tick, RationalRounding mode)
+        public static BigRational RoundToTick(BigRational value, BigRational tick, MidpointRoundingMode mode)
         {
             AssertValidRationalRounding(mode);
             AssertValidTick(tick);
@@ -133,7 +134,7 @@ namespace Qtfy.Net.Numerics
         /// <summary>
         /// Rounds <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
         /// If <paramref name="value"/> is exactly half way between two such numbers, <paramref name="mode"/>
-        /// specifies the rounding method to use <see cref="RationalRounding"/>.
+        /// specifies the rounding method to use <see cref="MidpointRoundingMode"/>.
         /// </summary>
         /// <param name="value">
         /// The value to be rounded.
@@ -144,12 +145,12 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// The result of rounding <paramref name="value"/> to a the nearest <see cref="BigInteger"/>
         /// If <paramref name="value"/> is exactly half way between two such numbers, <paramref name="mode"/>
-        /// specifies the rounding method to use <see cref="RationalRounding"/>.
+        /// specifies the rounding method to use <see cref="MidpointRoundingMode"/>.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// If <paramref name="mode"/> is mode is not valid <see cref="RationalRounding"/> value.
+        /// If <paramref name="mode"/> is mode is not valid <see cref="MidpointRoundingMode"/> value.
         /// </exception>
-        public static BigInteger RoundToInt(BigRational value, RationalRounding mode)
+        public static BigInteger RoundToInt(BigRational value, MidpointRoundingMode mode)
         {
             AssertValidRationalRounding(mode);
             return value.IsInteger ? value.Numerator : RoundImpl(value, mode);
@@ -173,21 +174,21 @@ namespace Qtfy.Net.Numerics
         /// This method assumes that <paramref name="value"/> is not an integral number.
         /// </remarks>
         /// <exception cref="ArgumentException">
-        /// If <paramref name="mode"/> is mode is not valid <see cref="RationalRounding"/> value.
+        /// If <paramref name="mode"/> is mode is not valid <see cref="MidpointRoundingMode"/> value.
         /// </exception>
-        private static BigInteger RoundImpl(BigRational value, RationalRounding mode)
+        private static BigInteger RoundImpl(BigRational value, MidpointRoundingMode mode)
         {
             switch (mode)
             {
-                case RationalRounding.ToEven:
+                case MidpointRoundingMode.ToEven:
                     return RoundToEvenImpl(value);
-                case RationalRounding.Up:
+                case MidpointRoundingMode.Up:
                     return RoundUpImpl(value);
-                case RationalRounding.Down:
+                case MidpointRoundingMode.Down:
                     return RoundDownImpl(value);
-                case RationalRounding.AwayFromZero:
+                case MidpointRoundingMode.AwayFromZero:
                     return RoundAwayFromZeroImpl(value);
-                case RationalRounding.TowardZero:
+                case MidpointRoundingMode.TowardZero:
                     return RoundTowardZeroImpl(value);
                 default:
                     throw new ArgumentException("Invalid RationalRounding.");
@@ -209,6 +210,7 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger FloorImpl(BigRational value)
         {
+            Debug.Assert(!value.IsInteger, "value must not be an integer");
             if (value.IsPositive)
             {
                 return value.Numerator / value.Denominator;
@@ -232,6 +234,7 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger CeilingImpl(BigRational value)
         {
+            Debug.Assert(!value.IsInteger, "value must not be an integer");
             if (value.IsNegative)
             {
                 return value.Numerator / value.Denominator;
@@ -256,6 +259,7 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundUpImpl(BigRational value)
         {
+            Debug.Assert(!value.IsInteger, "value must not be an integer");
             var floor = FloorImpl(value);
             return (value - floor).IsGreaterThanOrEqualToHalf()
                 ? ++floor
@@ -278,6 +282,7 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundDownImpl(BigRational value)
         {
+            Debug.Assert(!value.IsInteger, "value must not be an integer");
             var floor = FloorImpl(value);
             return (value - floor).IsGreaterThanHalf()
                 ? ++floor
@@ -300,6 +305,7 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundTowardZeroImpl(BigRational value)
         {
+            Debug.Assert(!value.IsInteger, "value must not be an integer");
             var floor = FloorImpl(value);
             var fraction = value - floor;
             if (value.IsPositive)
@@ -336,6 +342,7 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundAwayFromZeroImpl(BigRational value)
         {
+            Debug.Assert(!value.IsInteger, "value must not be an integer");
             var floor = FloorImpl(value);
             var fraction = value - floor;
             if (value.IsPositive)
@@ -372,6 +379,7 @@ namespace Qtfy.Net.Numerics
         /// </remarks>
         private static BigInteger RoundToEvenImpl(BigRational value)
         {
+            Debug.Assert(!value.IsInteger, "value must not be an integer");
             var floor = FloorImpl(value);
             switch ((value - floor).CompareToHalf())
             {
@@ -384,7 +392,7 @@ namespace Qtfy.Net.Numerics
             }
         }
 
-        private static void AssertValidRationalRounding(RationalRounding mode)
+        private static void AssertValidRationalRounding(MidpointRoundingMode mode)
         {
             if (!Enum.IsDefined(mode))
             {
@@ -396,7 +404,7 @@ namespace Qtfy.Net.Numerics
         {
             if (!tick.IsPositive)
             {
-                throw new ArgumentException("Invalid tick size. Tick pust be greater than zero.");
+                throw new ArgumentException("Invalid tick size. Tick must be greater than zero.");
             }
         }
 

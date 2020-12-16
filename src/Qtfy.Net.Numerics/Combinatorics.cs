@@ -1,10 +1,10 @@
-﻿// <copyright file="Combinatorics.PowerSet.cs" company="QuantifEye">
+﻿// <copyright file="Combinatorics.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-namespace Qtfy.Net.Numerics.BigMath
+namespace Qtfy.Net.Numerics
 {
     using System;
     using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Qtfy.Net.Numerics.BigMath
     /// <summary>
     /// A collection of methods that provide combinatorial tools.
     /// </summary>
-    public static partial class Combinatorics
+    public static class Combinatorics
     {
         /// <summary>
         /// Returns the power set of the distinct elements from a sequence by using the default

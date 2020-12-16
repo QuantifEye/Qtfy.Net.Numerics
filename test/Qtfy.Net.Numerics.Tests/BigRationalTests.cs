@@ -40,7 +40,6 @@ namespace Qtfy.Net.Numerics.Tests
         public void DefaultInitialize()
         {
             BigRational rational = default;
-            AssertCanonical(rational);
             Assert.AreEqual(BigInteger.Zero, rational.Numerator);
             Assert.AreEqual(BigInteger.One, rational.Denominator);
         }
@@ -55,8 +54,7 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase(-2)]
         public void ConstructFromNumerator(int numerator)
         {
-            var rational = new BigRational((BigInteger)numerator);
-            AssertCanonical(rational);
+            var rational = new BigRational(numerator);
             Assert.AreEqual((BigInteger)numerator, rational.Numerator);
             Assert.AreEqual(BigInteger.One, rational.Denominator);
         }
@@ -190,7 +188,7 @@ namespace Qtfy.Net.Numerics.Tests
         {
             var actual = BigRational.Abs(new BigRational(n, d));
             var expected = new BigRational(Math.Abs(n), Math.Abs(d));
-            BigRationalTests.AssertEqual(expected, actual);
+            AssertEqual(expected, actual);
         }
 
         [TestCase(1, 2)]
@@ -199,8 +197,7 @@ namespace Qtfy.Net.Numerics.Tests
         {
             var rational = new BigRational(n1, n2);
             var expected = new BigRational(n2, n1);
-            var actual = rational.Reciprocal();
-            BigRationalTests.AssertEqual(expected, actual);
+            AssertEqual(expected, rational.Reciprocal());
         }
 
         [Test]
@@ -216,12 +213,12 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase(-1, 2, -1, 4)]
         public void MinAndMax(int minNumerator, int minDenominator, int maxNumerator, int maxDenominator)
         {
-            BigRational maximum = new BigRational(maxNumerator, maxDenominator);
-            BigRational minimum = new BigRational(minNumerator, minDenominator);
-            BigRationalTests.AssertEqual(maximum, BigRational.Max(minimum, maximum));
-            BigRationalTests.AssertEqual(maximum, BigRational.Max(maximum, minimum));
-            BigRationalTests.AssertEqual(minimum, BigRational.Min(minimum, maximum));
-            BigRationalTests.AssertEqual(minimum, BigRational.Min(maximum, minimum));
+            var maximum = new BigRational(maxNumerator, maxDenominator);
+            var minimum = new BigRational(minNumerator, minDenominator);
+            AssertEqual(maximum, BigRational.Max(minimum, maximum));
+            AssertEqual(maximum, BigRational.Max(maximum, minimum));
+            AssertEqual(minimum, BigRational.Min(minimum, maximum));
+            AssertEqual(minimum, BigRational.Min(maximum, minimum));
         }
 
         [TestCase(1, 1, 1, 1, 1)]
@@ -236,9 +233,9 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase(10, 1, 0, 1, 1)]
         public void Pow(int n, int d, int power, int expectedNumerator, int expectedDenominator)
         {
-            BigRational rational = new BigRational(n, d);
-            BigRational expected = new BigRational(expectedNumerator, expectedDenominator);
-            BigRationalTests.AssertEqual(expected, BigRational.Pow(rational, power));
+            var rational = new BigRational(n, d);
+            var expected = new BigRational(expectedNumerator, expectedDenominator);
+            AssertEqual(expected, BigRational.Pow(rational, power));
         }
 
         [Test]
@@ -249,6 +246,8 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase(1, 2, "1/2")]
+        [TestCase(-1, 2, "-1/2")]
+        [TestCase(1, -2, "-1/2")]
         public void TestToString(int numerator, int denominator, string expected)
         {
             Assert.AreEqual(expected, new BigRational(numerator, denominator).ToString());
@@ -261,7 +260,7 @@ namespace Qtfy.Net.Numerics.Tests
         {
             var expected = new BigRational(numerator, denominator);
             var actual = BigRational.Parse(from);
-            BigRationalTests.AssertEqual(expected, actual);
+            AssertEqual(expected, actual);
         }
 
         [Test]
@@ -284,20 +283,20 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCase("xyz", 0, 0, false)]
         public void TestTryParse(string input, int numerator, int denominator, bool expectedSuccess)
         {
-            BigRational expectedRational = expectedSuccess
+            var expectedRational = expectedSuccess
                 ? new BigRational(numerator, denominator)
                 : default;
 
             var actualSuccess = BigRational.TryParse(input, out var actualRational);
 
             Assert.AreEqual(expectedSuccess, actualSuccess);
-            Assert.AreEqual(expectedRational, actualRational);
+            AssertEqual(expectedRational, actualRational);
         }
 
         [Test]
         public void TryParseNull()
         {
-            if (BigRational.TryParse(null, out var result))
+            if (BigRational.TryParse(null, out _))
             {
                 Assert.Fail();
             }
@@ -313,11 +312,15 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.AreEqual(
                 default(BigRational).GetHashCode(),
                 new BigRational(0).GetHashCode());
+
+            Assert.AreNotEqual(
+                default(BigRational).GetHashCode(),
+                new BigRational(1).GetHashCode());
         }
 
         private static void AssertCanonical(BigRational rational)
         {
-            Assert.True(rational.Denominator > BigInteger.Zero);
+            Assert.True(rational.Denominator > BigRational.Zero);
             var n = BigInteger.Abs(rational.Numerator);
             var d = BigInteger.Abs(rational.Denominator);
             var gcd = BigInteger.GreatestCommonDivisor(n, d);
@@ -327,22 +330,10 @@ namespace Qtfy.Net.Numerics.Tests
 
         private static void AssertEqual(BigRational left, BigRational right)
         {
-            BigRationalTests.AssertCanonical(left);
-            BigRationalTests.AssertCanonical(right);
+            AssertCanonical(left);
+            AssertCanonical(right);
             Assert.AreEqual(left.Numerator, right.Numerator);
             Assert.AreEqual(left.Denominator, right.Denominator);
-        }
-
-        private static void AssertEqual(BigRational left, BigInteger right)
-        {
-            AssertCanonical(left);
-            Assert.AreEqual(left.Numerator, right);
-            Assert.AreEqual(left.Denominator, BigInteger.One);
-        }
-
-        private static void AssertEqual(BigInteger left, BigRational right)
-        {
-            BigRationalTests.AssertEqual(right, left);
         }
     }
 }

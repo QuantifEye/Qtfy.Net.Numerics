@@ -15,7 +15,6 @@ namespace Qtfy.Net.Numerics
     /// <summary>
     /// A structure that represents a rational number with an arbitrarily large numerator and denominator.
     /// </summary>
-    [SuppressMessage("Microsoft.Usage", "CA2225", Justification = "Proposal for csharp language feature pending")]
     public partial struct BigRational
     {
         /// <summary>
@@ -94,7 +93,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <summary>
-        /// Gets the denominator of this <see cref = "BigRational" />.
+        /// Gets the denominator of this <see cref="BigRational" />.
         /// </summary>
         /// <remarks>
         /// This is currently a computed property because c# does not provide a default constructor.
@@ -108,7 +107,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <summary>
-        /// Gets the numerator of this <see cref = "BigRational"/>.
+        /// Gets the numerator of this <see cref="BigRational"/>.
         /// </summary>
         public BigInteger Numerator
         {

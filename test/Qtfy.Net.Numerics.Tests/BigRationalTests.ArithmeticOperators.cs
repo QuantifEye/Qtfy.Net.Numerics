@@ -31,6 +31,9 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "3/2")]
+        [TestCase("-1/2", "1/2")]
+        [TestCase("5/2", "7/2")]
+        [TestCase("-5/2", "-3/2")]
         public void IncrementTest(string input, string expected)
         {
             var rational = BigRational.Parse(input);
@@ -40,6 +43,9 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "-1/2")]
+        [TestCase("-1/2", "-3/2")]
+        [TestCase("5/2", "3/2")]
+        [TestCase("-5/2", "-7/2")]
         public void DecrementTest(string input, string expected)
         {
             var rational = BigRational.Parse(input);
@@ -50,6 +56,8 @@ namespace Qtfy.Net.Numerics.Tests
 
         [TestCase("1/2", "-1/2", "0")]
         [TestCase("1/2", "1/2", "1")]
+        [TestCase("10", "105/10", "205/10")]
+        [TestCase("10", "-105/10", "-1/2")]
         public void TestAddition(string left, string right, string expected)
         {
             AssertEqual(
@@ -58,6 +66,9 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "1/2", "0")]
+        [TestCase("5/2", "1/2", "4/2")]
+        [TestCase("-5/2", "1/2", "-6/2")]
+        [TestCase("5/2", "-1/2", "6/2")]
         public void TestSubtraction(string left, string right, string expected)
         {
             AssertEqual(
@@ -66,6 +77,10 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "1/2", "1/4")]
+        [TestCase("5/2", "3/2", "15/4")]
+        [TestCase("-5/2", "-3/2", "15/4")]
+        [TestCase("-5/2", "3/2", "-15/4")]
+        [TestCase("5/2", "-3/2", "-15/4")]
         public void TestMultiplication(string left, string right, string expected)
         {
             AssertEqual(
@@ -74,6 +89,9 @@ namespace Qtfy.Net.Numerics.Tests
         }
 
         [TestCase("1/2", "1/2", "1")]
+        [TestCase("5/2", "3/2", "10/6")]
+        [TestCase("-5/2", "3/2", "-10/6")]
+        [TestCase("5/2", "-3/2", "-10/6")]
         public void TestDivision(string left, string right, string expected)
         {
             AssertEqual(

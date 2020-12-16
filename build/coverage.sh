@@ -17,6 +17,9 @@ declare -r COVERAGESITE=${COVERAGEFILE}.site
 rm -rf $COVERAGEFOLDER
 mkdir $COVERAGEFOLDER
 
+# clean so that all warnings appear
+dotnet clean
+
 dotnet test -c $CONFIGURATION
 coverlet $TESTDLL --target "dotnet" --targetargs "test $TESTCSPROJ --no-build" --output $COVERAGEFILE  --format cobertura
 reportgenerator "-reports:${COVERAGEFILE}" "-targetdir:${COVERAGESITE}.site" -reporttypes:html

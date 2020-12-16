@@ -60,39 +60,39 @@ namespace Qtfy.Net.Numerics.Tests
                 BigRational.Parse(expected));
         }
 
-        [TestCase("1/6", "1/3", RationalRounding.Down, "0/3")]
-        [TestCase("3/6", "1/3", RationalRounding.Down, "1/3")]
-        [TestCase("1/6", "1/3", RationalRounding.Up, "1/3")]
-        [TestCase("3/6", "1/3", RationalRounding.Up, "2/3")]
-        [TestCase("1/6", "1/3", RationalRounding.TowardZero, "0/3")]
-        [TestCase("3/6", "1/3", RationalRounding.TowardZero, "1/3")]
-        [TestCase("1/6", "1/3", RationalRounding.AwayFromZero, "1/3")]
-        [TestCase("3/6", "1/3", RationalRounding.AwayFromZero, "2/3")]
-        [TestCase("1/6", "1/3", RationalRounding.ToEven, "0/3")]
-        [TestCase("3/6", "1/3", RationalRounding.ToEven, "2/3")]
-        [TestCase("-1/6", "1/3", RationalRounding.Down, "-1/3")]
-        [TestCase("-3/6", "1/3", RationalRounding.Down, "-2/3")]
-        [TestCase("-1/6", "1/3", RationalRounding.Up, "0/3")]
-        [TestCase("-3/6", "1/3", RationalRounding.Up, "-1/3")]
-        [TestCase("-1/6", "1/3", RationalRounding.TowardZero, "0/3")]
-        [TestCase("-3/6", "1/3", RationalRounding.TowardZero, "-1/3")]
-        [TestCase("-1/6", "1/3", RationalRounding.AwayFromZero, "-1/3")]
-        [TestCase("-3/6", "1/3", RationalRounding.AwayFromZero, "-2/3")]
-        [TestCase("-1/6", "1/3", RationalRounding.ToEven, "0/3")]
-        [TestCase("-3/6", "1/3", RationalRounding.ToEven, "-2/3")]
-        public void TestRoundToTickAtMidPoint(string unrounded, string tick, RationalRounding mode, string expected)
+        [TestCase("1/6", "1/3", MidpointRoundingMode.Down, "0/3")]
+        [TestCase("3/6", "1/3", MidpointRoundingMode.Down, "1/3")]
+        [TestCase("1/6", "1/3", MidpointRoundingMode.Up, "1/3")]
+        [TestCase("3/6", "1/3", MidpointRoundingMode.Up, "2/3")]
+        [TestCase("1/6", "1/3", MidpointRoundingMode.TowardZero, "0/3")]
+        [TestCase("3/6", "1/3", MidpointRoundingMode.TowardZero, "1/3")]
+        [TestCase("1/6", "1/3", MidpointRoundingMode.AwayFromZero, "1/3")]
+        [TestCase("3/6", "1/3", MidpointRoundingMode.AwayFromZero, "2/3")]
+        [TestCase("1/6", "1/3", MidpointRoundingMode.ToEven, "0/3")]
+        [TestCase("3/6", "1/3", MidpointRoundingMode.ToEven, "2/3")]
+        [TestCase("-1/6", "1/3", MidpointRoundingMode.Down, "-1/3")]
+        [TestCase("-3/6", "1/3", MidpointRoundingMode.Down, "-2/3")]
+        [TestCase("-1/6", "1/3", MidpointRoundingMode.Up, "0/3")]
+        [TestCase("-3/6", "1/3", MidpointRoundingMode.Up, "-1/3")]
+        [TestCase("-1/6", "1/3", MidpointRoundingMode.TowardZero, "0/3")]
+        [TestCase("-3/6", "1/3", MidpointRoundingMode.TowardZero, "-1/3")]
+        [TestCase("-1/6", "1/3", MidpointRoundingMode.AwayFromZero, "-1/3")]
+        [TestCase("-3/6", "1/3", MidpointRoundingMode.AwayFromZero, "-2/3")]
+        [TestCase("-1/6", "1/3", MidpointRoundingMode.ToEven, "0/3")]
+        [TestCase("-3/6", "1/3", MidpointRoundingMode.ToEven, "-2/3")]
+        public void TestRoundToTickAtMidPoint(string unrounded, string tick, MidpointRoundingMode mode, string expected)
         {
             AssertEqual(
                 BigRational.RoundToTick(BigRational.Parse(unrounded), BigRational.Parse(tick), mode),
                 BigRational.Parse(expected));
         }
 
-        [TestCase(RationalRounding.Down)]
-        [TestCase(RationalRounding.Up)]
-        [TestCase(RationalRounding.ToEven)]
-        [TestCase(RationalRounding.TowardZero)]
-        [TestCase(RationalRounding.AwayFromZero)]
-        public void TestRoundToTickNotAtMidPoint(RationalRounding mode)
+        [TestCase(MidpointRoundingMode.Down)]
+        [TestCase(MidpointRoundingMode.Up)]
+        [TestCase(MidpointRoundingMode.ToEven)]
+        [TestCase(MidpointRoundingMode.TowardZero)]
+        [TestCase(MidpointRoundingMode.AwayFromZero)]
+        public void TestRoundToTickNotAtMidPoint(MidpointRoundingMode mode)
         {
             const int range = 6;
             var epsilon = new BigRational(1, 12);
@@ -111,7 +111,7 @@ namespace Qtfy.Net.Numerics.Tests
         public void RoundToTickWithModeError()
         {
             Assert.Throws<ArgumentException>(() =>
-                BigRational.RoundToTick(1, new BigRational(1, 2), (RationalRounding)100));
+                BigRational.RoundToTick(1, new BigRational(1, 2), (MidpointRoundingMode)100));
         }
 
         [Test]
@@ -120,29 +120,29 @@ namespace Qtfy.Net.Numerics.Tests
             Assert.Throws<ArgumentException>(() => BigRational.RoundToTick(1, new BigRational(-1, 2), default));
         }
 
-        [TestCase("1/2", RationalRounding.Down, 0)]
-        [TestCase("-1/2", RationalRounding.Down, -1)]
-        [TestCase("1/2", RationalRounding.Up, 1)]
-        [TestCase("-1/2", RationalRounding.Up, 0)]
-        [TestCase("1/2", RationalRounding.TowardZero, 0)]
-        [TestCase("-1/2", RationalRounding.TowardZero, 0)]
-        [TestCase("1/2", RationalRounding.AwayFromZero, 1)]
-        [TestCase("-1/2", RationalRounding.AwayFromZero, -1)]
-        [TestCase("1/2", RationalRounding.ToEven, 0)]
-        [TestCase("-1/2", RationalRounding.ToEven, 0)]
-        public void RoundToIntAtMidPoint(string rational, RationalRounding mode, int rounded)
+        [TestCase("1/2", MidpointRoundingMode.Down, 0)]
+        [TestCase("-1/2", MidpointRoundingMode.Down, -1)]
+        [TestCase("1/2", MidpointRoundingMode.Up, 1)]
+        [TestCase("-1/2", MidpointRoundingMode.Up, 0)]
+        [TestCase("1/2", MidpointRoundingMode.TowardZero, 0)]
+        [TestCase("-1/2", MidpointRoundingMode.TowardZero, 0)]
+        [TestCase("1/2", MidpointRoundingMode.AwayFromZero, 1)]
+        [TestCase("-1/2", MidpointRoundingMode.AwayFromZero, -1)]
+        [TestCase("1/2", MidpointRoundingMode.ToEven, 0)]
+        [TestCase("-1/2", MidpointRoundingMode.ToEven, 0)]
+        public void RoundToIntAtMidPoint(string rational, MidpointRoundingMode mode, int rounded)
         {
             Assert.AreEqual(
                 BigRational.RoundToInt(BigRational.Parse(rational), mode),
                 new BigInteger(rounded));
         }
 
-        [TestCase(RationalRounding.Down)]
-        [TestCase(RationalRounding.Up)]
-        [TestCase(RationalRounding.ToEven)]
-        [TestCase(RationalRounding.TowardZero)]
-        [TestCase(RationalRounding.AwayFromZero)]
-        public void RoundToIntNotAtMidPoint(RationalRounding mode)
+        [TestCase(MidpointRoundingMode.Down)]
+        [TestCase(MidpointRoundingMode.Up)]
+        [TestCase(MidpointRoundingMode.ToEven)]
+        [TestCase(MidpointRoundingMode.TowardZero)]
+        [TestCase(MidpointRoundingMode.AwayFromZero)]
+        public void RoundToIntNotAtMidPoint(MidpointRoundingMode mode)
         {
             const int range = 3;
             var epsilon = new BigRational(1, 3);
@@ -156,7 +156,7 @@ namespace Qtfy.Net.Numerics.Tests
         [Test]
         public void RoundToIntModeError()
         {
-            Assert.Throws<ArgumentException>(() => BigRational.RoundToInt(1, (RationalRounding)100));
+            Assert.Throws<ArgumentException>(() => BigRational.RoundToInt(1, (MidpointRoundingMode)100));
         }
 
         [Test]
@@ -168,7 +168,7 @@ namespace Qtfy.Net.Numerics.Tests
                 {
                     typeof(BigRational)
                         .GetMethod("RoundImpl", BindingFlags.NonPublic | BindingFlags.Static)
-                        .Invoke(null, new object[] { default(BigRational), (RationalRounding)int.MaxValue });
+                        .Invoke(null, new object[] { default(BigRational), (MidpointRoundingMode)int.MaxValue });
                 }
                 catch (TargetInvocationException ex)
                 {

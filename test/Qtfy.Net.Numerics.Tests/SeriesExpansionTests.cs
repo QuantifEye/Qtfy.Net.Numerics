@@ -8,7 +8,6 @@ namespace Qtfy.Net.Numerics.Tests
 {
     using System;
     using NUnit.Framework;
-    using Qtfy.Net.Numerics.BigMath;
 
     public class SeriesExpansionTests
     {

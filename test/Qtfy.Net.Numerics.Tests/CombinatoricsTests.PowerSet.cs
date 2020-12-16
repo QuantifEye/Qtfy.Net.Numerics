@@ -11,20 +11,18 @@ namespace Qtfy.Net.Numerics.Tests
     using System.Linq;
     using NUnit.Framework;
 
-    using Qtfy.Net.Numerics.BigMath;
-
     public class CombinatoricsTests
     {
         private static readonly (int[] left, int[] right)[] ExpectedPowerSetAndCompliment =
         {
-            (System.Array.Empty<int>(), new[] { 1, 2, 3 }),
+            (Array.Empty<int>(), new[] { 1, 2, 3 }),
             (new[] { 1 }, new[] { 2, 3 }),
             (new[] { 2 }, new[] { 1, 3 }),
             (new[] { 1, 2 }, new[] { 3 }),
             (new[] { 3 }, new[] { 1, 2 }),
             (new[] { 1, 3 }, new[] { 2 }),
             (new[] { 2, 3 }, new[] { 1 }),
-            (new[] { 1, 2, 3 }, System.Array.Empty<int>()),
+            (new[] { 1, 2, 3 }, Array.Empty<int>()),
         };
 
         private static readonly int[][] ExpectedPowerSet = ExpectedPowerSetAndCompliment
@@ -87,7 +85,7 @@ namespace Qtfy.Net.Numerics.Tests
         [Test]
         public void PowerSetEmptyTest()
         {
-            var source = System.Array.Empty<int>();
+            var source = Array.Empty<int>();
             var actual = Combinatorics.PowerSet(source).ToArray();
             Assert.AreEqual(1, actual.Length);
             var empty = actual[0];

@@ -13,7 +13,10 @@ insert_final_newline     = true
 [*.cs]
 indent_size = 4
 
-# elements must be ordered by access
+# "elements must be ordered by access"
 # justification: this rule results in utility methods being far from where they are used.
 dotnet_diagnostic.SA1202.severity = silent
 
+# "Provide a method named xxx as a friendly alternate for operator op_xxx"
+# This may be added back in the futute
+dotnet_diagnostic.CA2225.severity = silent

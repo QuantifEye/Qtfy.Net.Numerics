@@ -1,4 +1,4 @@
-﻿// <copyright file="RationalRounding.cs" company="QuantifEye">
+﻿// <copyright file="MidpointRoundingMode.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
@@ -9,7 +9,7 @@ namespace Qtfy.Net.Numerics
     /// <summary>
     /// An enumeration that determines how a BigRational number is rounded.
     /// </summary>
-    public enum RationalRounding
+    public enum MidpointRoundingMode
     {
         /// <summary>
         /// Indicates that if a number is not a whole number of ticks away from zero, that it should be rounded

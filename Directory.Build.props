@@ -2,7 +2,7 @@
 
   <!-- the most recently-released version. last thing to change before performing release. -->
   <PropertyGroup>
-    <Version>0.0.1</Version>
+    <Version>1.0.0</Version>
     <QtfyTargetFramework>net5.0</QtfyTargetFramework>
   </PropertyGroup>
 

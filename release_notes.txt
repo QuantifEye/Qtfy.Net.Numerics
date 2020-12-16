@@ -1,1 +1,4 @@
-Some Release Notes
+v1.0.0
+========================================================================================
+- added type BigRational
+  - an arbitrary precision rational number

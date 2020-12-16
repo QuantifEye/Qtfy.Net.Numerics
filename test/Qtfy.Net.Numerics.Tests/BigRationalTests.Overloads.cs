@@ -1,10 +1,10 @@
-// <copyright file="BigRationalTests.OperatorOverloads.cs" company="QuantifEye">
+// <copyright file="BigRationalTests.Overloads.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-namespace Qtfy.Net.Numerics.Tests.BigMath
+namespace Qtfy.Net.Numerics.Tests
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace Qtfy.Net.Numerics.Tests.BigMath
     using System.Numerics;
     using System.Reflection;
     using NUnit.Framework;
-    using Qtfy.Net.Numerics.BigMath;
 
     public partial class BigRationalTests
     {
@@ -123,20 +122,6 @@ namespace Qtfy.Net.Numerics.Tests.BigMath
             Assert.AreEqual(
                 (BigRational)left >= (BigRational)right,
                 left >= right);
-        }
-
-        [TestCaseSource(typeof(OverloadCases))]
-        public void TestIEquatableOverloads(dynamic left, dynamic right)
-        {
-            var expected = ((BigRational)left).Equals((BigRational)right);
-            Assert.Equals(expected, left.Equals(right));
-        }
-
-        [TestCaseSource(typeof(OverloadCases))]
-        public void TestIComparableOverloads(dynamic left, dynamic right)
-        {
-            var expected = ((BigRational)left).CompareTo((BigRational)right);
-            Assert.Equals(expected, left.CompareTo(right));
         }
 
         private static bool HasMethod<TLeft, TRight, TReturn>(string name)

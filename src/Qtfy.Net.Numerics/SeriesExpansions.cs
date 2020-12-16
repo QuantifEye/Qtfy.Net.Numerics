@@ -4,7 +4,7 @@
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-namespace Qtfy.Net.Numerics.BigMath
+namespace Qtfy.Net.Numerics
 {
     using System;
     using System.Numerics;
@@ -32,7 +32,7 @@ namespace Qtfy.Net.Numerics.BigMath
         {
             if (terms < 0)
             {
-                throw new ArgumentException("terms must be non-negative");
+                throw new ArgumentException($"{nameof(terms)} must be non-negative");
             }
 
             if (terms == 0)
@@ -59,7 +59,7 @@ namespace Qtfy.Net.Numerics.BigMath
         }
 
         /// <summary>
-        /// Approximates the natural (base e) logarithm of a specified number using a series expansion of a specified (default = 1000) number of terms.
+        /// Approximates the natural (base e) logarithm of a specified number using a series expansion of a specified number of terms.
         /// </summary>
         /// <param name="x">
         /// The number whose logarithm is to be approximated.
@@ -74,7 +74,7 @@ namespace Qtfy.Net.Numerics.BigMath
         {
             if (terms < 0)
             {
-                throw new ArgumentException("terms must be non-negative");
+                throw new ArgumentException($"{nameof(terms)} must be non-negative");
             }
 
             var n = 1 / (x - 1);
