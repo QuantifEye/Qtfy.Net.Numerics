@@ -4,7 +4,7 @@
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-namespace Qtfy.Net.Numerics.Tests
+namespace Qtfy.Net.Numerics.Tests.BigMath
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace Qtfy.Net.Numerics.Tests
     using System.Numerics;
     using System.Reflection;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.BigMath;
 
     public partial class BigRationalTests
     {
@@ -80,9 +81,8 @@ namespace Qtfy.Net.Numerics.Tests
         [TestCaseSource(typeof(OverloadCases))]
         public void TestEqualityOverloads(dynamic left, dynamic right)
         {
-            Assert.AreEqual(
-                (BigRational)left == (BigRational)right,
-                left == right);
+            var expected = (BigRational)left == (BigRational)right;
+            Assert.AreEqual(expected, left == right);
         }
 
         [TestCaseSource(typeof(OverloadCases))]
@@ -125,6 +125,20 @@ namespace Qtfy.Net.Numerics.Tests
                 left >= right);
         }
 
+        [TestCaseSource(typeof(OverloadCases))]
+        public void TestIEquatableOverloads(dynamic left, dynamic right)
+        {
+            var expected = ((BigRational)left).Equals((BigRational)right);
+            Assert.Equals(expected, left.Equals(right));
+        }
+
+        [TestCaseSource(typeof(OverloadCases))]
+        public void TestIComparableOverloads(dynamic left, dynamic right)
+        {
+            var expected = ((BigRational)left).CompareTo((BigRational)right);
+            Assert.Equals(expected, left.CompareTo(right));
+        }
+
         private static bool HasMethod<TLeft, TRight, TReturn>(string name)
         {
             var count = typeof(BigRational)
@@ -160,10 +174,10 @@ namespace Qtfy.Net.Numerics.Tests
                 int[] positiveIntegers = { 1, 2 };
                 BigRational[] positiveRationals =
                 {
-                    new BigRational(1, 2),
-                    new BigRational(1),
-                    new BigRational(3, 2),
-                    new BigRational(2),
+                    new (1, 2),
+                    new (1),
+                    new (3, 2),
+                    new (2),
                 };
                 var allRationals = positiveRationals
                     .Concat(positiveRationals.Select(r => -r))
