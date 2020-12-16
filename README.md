@@ -17,7 +17,6 @@ Welcome to the QuantifEye Numerics repository.
 We are currently working toward version 1.0.0. of the numerics library
 
 Serialization support has not been added but is planned. More to come.
-
 # Installation
 See "add link once released"
 
