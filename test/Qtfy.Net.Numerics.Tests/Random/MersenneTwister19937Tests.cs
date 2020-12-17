@@ -1,6 +1,7 @@
 // <copyright file="MersenneTwister19937Tests.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
-// Licensed under the Apache 2.0 license. See LICENSE.txt file in the project root for full license information.
+// Licensed under the Apache 2.0 license.
+// See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
 // The following comment relates to the code found in the methods
@@ -53,6 +54,7 @@
 
 namespace Qtfy.Net.Numerics.Random.Tests
 {
+    using System;
     using System.Linq;
     using NUnit.Framework;
 
@@ -97,6 +99,14 @@ namespace Qtfy.Net.Numerics.Random.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void InitByArrayNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => MersenneTwister19937.InitByArray(null));
+        }
+
+        [TestCase(1234U, 0)]
         [TestCase(1234U, 5)]
         [TestCase(1234U, 700)]
         [TestCase(1234U, 1400)]
@@ -110,12 +120,20 @@ namespace Qtfy.Net.Numerics.Random.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void TestFillNull()
+        {
+            var generator = MersenneTwister19937.InitGenRand(1234);
+            Assert.Throws<ArgumentNullException>(
+                () => generator.Fill(null));
+        }
+
         private static uint[] GetRandomValues(MersenneTwister19937 generator, int size)
         {
             var actual = new uint[size];
             for (int i = 0; i < actual.Length; ++i)
             {
-                actual[i] = generator.Next();
+                actual[i] = generator.GetBits();
             }
 
             return actual;
@@ -149,28 +167,28 @@ namespace Qtfy.Net.Numerics.Random.Tests
             /*
                A C-program for MT19937, with initialization improved 2002/1/26.
                Coded by Takuji Nishimura and Makoto Matsumoto.
-    
+
                Before using, initialize the state by using init_genrand(seed)
                or init_by_array(init_key, key_length).
-    
+
                Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
                All rights reserved.
-    
+
                Redistribution and use in source and binary forms, with or without
                modification, are permitted provided that the following conditions
                are met:
-    
+
                  1. Redistributions of source code must retain the above copyright
                     notice, this list of conditions and the following disclaimer.
-    
+
                  2. Redistributions in binary form must reproduce the above copyright
                     notice, this list of conditions and the following disclaimer in the
                     documentation and/or other materials provided with the distribution.
-    
+
                  3. The names of its contributors may not be used to endorse or promote
                     products derived from this software without specific prior written
                     permission.
-    
+
                THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
                "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
                LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -182,8 +200,8 @@ namespace Qtfy.Net.Numerics.Random.Tests
                LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
                NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
                SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-    
-    
+
+
                Any feedback is very welcome.
                http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
                email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
