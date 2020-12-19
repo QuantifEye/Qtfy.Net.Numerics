@@ -16,7 +16,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.BitGenerators
     {
         private static void TestGenerator(IRandomBitGenerator<uint> generator, uint[] expected)
         {
-            uint[] actual = new uint[expected.Length];
+            var actual = new uint[expected.Length];
             for (int i = 0; i < actual.Length; ++i)
             {
                 actual[i] = generator.GetBits();

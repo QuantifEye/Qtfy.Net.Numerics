@@ -20,3 +20,6 @@ dotnet_diagnostic.SA1202.severity = silent
 # "Provide a method named xxx as a friendly alternate for operator op_xxx"
 # This may be added back in the futute
 dotnet_diagnostic.CA2225.severity = silent
+
+# partial elements should be documented.
+dotnet_diagnostic.SA1601.severity = silent
