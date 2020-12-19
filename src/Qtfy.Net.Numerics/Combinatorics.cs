@@ -34,7 +34,7 @@ namespace Qtfy.Net.Numerics
         /// var result = PowerSet(new int { 1, 2, 3 }).ToArray();
         /// var expected = new int[][]
         /// {
-        ///    new int[] { },
+        ///    new int[] {},
         ///    new int[] { 1 }),
         ///    new int[] { 2 },
         ///    new int[] { 1, 2 },
@@ -92,6 +92,22 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// A <see cref="IEnumerable{T}"/> that iterates all possible ways to split a set into two groups (left and right).
         /// </returns>
+        /// <example>
+        /// <code>
+        /// var result = PowerSetWithCompliment(new int { 1, 2, 3 }).ToArray();
+        /// var expected = new (int[], int[])[]
+        /// {
+        ///    (new[] {}, new[] { 1, 2, 3 }),
+        ///    (new[] { 1 }, new[] { 2, 3 }),
+        ///    (new[] { 2 }, new[] { 1, 3 }),
+        ///    (new[] { 1, 2 }, new[] { 3 }),
+        ///    (new[] { 3 }, new[] { 1, 2 }),
+        ///    (new[] { 1, 3 }, new[] { 2 }),
+        ///    (new[] { 2, 3 }, new[] { 1 }),
+        ///    (new[] { 1, 2, 3 }, new[] {}),
+        /// };
+        /// </code>
+        /// </example>
         public static IEnumerable<(T[] left, T[] right)> PowerSetWithCompliment<T>(IEnumerable<T> collection)
         {
             var elements = collection.Distinct().ToArray();
