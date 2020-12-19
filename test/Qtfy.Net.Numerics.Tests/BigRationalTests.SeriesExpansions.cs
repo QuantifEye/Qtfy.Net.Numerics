@@ -12,7 +12,7 @@ namespace Qtfy.Net.Numerics.Tests
     public partial class BigRationalTests
     {
         [TestCase(7, 14)]
-        public void EulerConstantTaylorExpansion(int numerator, int denominator)
+        public void ExpTaylorExpansion(int numerator, int denominator)
         {
             var power = new BigRational(numerator, denominator);
             Assert.AreEqual(
@@ -37,7 +37,7 @@ namespace Qtfy.Net.Numerics.Tests
 
         [TestCase(2)]
         [TestCase(100.5)]
-        public void DoublePrecisionEulerConstant(double x)
+        public void DoublePrecisionExp(double x)
         {
             var exp = Math.Exp(x);
             BigRational lower = Math.BitDecrement(exp);
@@ -45,6 +45,20 @@ namespace Qtfy.Net.Numerics.Tests
             BigRational actual = BigRational.Exp(x, 500);
             Assert.True(actual < upper);
             Assert.True(actual > lower);
+        }
+
+        [Test]
+        public void NegativeTermsExp()
+        {
+            Assert.Throws<ArgumentException>(
+                () => BigRational.Exp(1, -1));
+        }
+
+        [Test]
+        public void NegativeTermsLog()
+        {
+            Assert.Throws<ArgumentException>(
+                () => BigRational.Log(1, -1));
         }
 
         [TestCase(2)]

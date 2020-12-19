@@ -72,6 +72,11 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational Log(BigRational x, int terms)
         {
+            if (terms < 0)
+            {
+                throw new ArgumentException("terms must be non-negative");
+            }
+
             var n = 1 / (x - 1);
             var factor = 1 / ((2 * n) + 1);
             var factorSquared = factor * factor;
