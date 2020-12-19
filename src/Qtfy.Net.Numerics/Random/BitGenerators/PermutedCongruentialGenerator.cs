@@ -50,7 +50,7 @@ namespace Qtfy.Net.Numerics.Random.BitGenerators
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PermutedCongruentialGenerator"/> class.
-        /// This method is deterministic and uses deterministic values.
+        /// This method uses deterministic default values.
         /// </summary>
         public PermutedCongruentialGenerator()
         {
