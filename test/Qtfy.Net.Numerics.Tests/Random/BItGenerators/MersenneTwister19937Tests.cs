@@ -52,11 +52,12 @@
     email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 
-namespace Qtfy.Net.Numerics.Random.Tests
+namespace Qtfy.Net.Numerics.Tests.Random.BitGenerators
 {
     using System;
     using System.Linq;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.Random.BitGenerators;
 
     public class MersenneTwister19937Tests
     {
@@ -75,7 +76,7 @@ namespace Qtfy.Net.Numerics.Random.Tests
 
             var generator = MersenneTwister19937.InitGenRand(seed);
             Assert.AreEqual(
-                BenchmarkInitGenRand(seed, size),
+                OriginalInitGenRand(seed, size),
                 GetRandomValues(generator, size));
         }
 
@@ -92,10 +93,10 @@ namespace Qtfy.Net.Numerics.Random.Tests
             // This is chosen so that the state is cycled twice.
             const int size = 1400;
 
-            var seeds = BenchmarkInitGenRand(1, seedSize);
+            var seeds = OriginalInitGenRand(1, seedSize);
             var generator = MersenneTwister19937.InitByArray(seeds);
             var actual = GetRandomValues(generator, size);
-            var expected = BenchmarkInitByArray(seeds, size);
+            var expected = OriginalInitByArray(seeds, size);
             Assert.AreEqual(expected, actual);
         }
 
@@ -139,7 +140,7 @@ namespace Qtfy.Net.Numerics.Random.Tests
             return actual;
         }
 
-        private static uint[] BenchmarkInitGenRand(uint seed, int outputSize)
+        private static uint[] OriginalInitGenRand(uint seed, int outputSize)
         {
             return Original(
                 outputSize: outputSize,
@@ -147,7 +148,7 @@ namespace Qtfy.Net.Numerics.Random.Tests
                 method: SeedMethod.InitGenRand);
         }
 
-        private static uint[] BenchmarkInitByArray(uint[] seeds, int outputSize)
+        private static uint[] OriginalInitByArray(uint[] seeds, int outputSize)
         {
             return Original(
                 outputSize: outputSize,
