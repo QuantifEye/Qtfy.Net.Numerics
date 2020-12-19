@@ -60,21 +60,17 @@ namespace Qtfy.Net.Numerics.Random
 
         private readonly uint[] state;
 
-        private int index;
+        private int index = N;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MersenneTwister19937"/> class.
-        /// </summary>
-        /// <param name="state">
-        /// The state array of the generator.
-        /// </param>
-        /// <param name="index">
-        /// The current position in the state.
-        /// </param>
-        private MersenneTwister19937(uint[] state, int index)
+        private MersenneTwister19937(uint[] state)
         {
             this.state = state;
-            this.index = index;
+            this.index = N;
+        }
+
+        private MersenneTwister19937(ISeedSequence<uint> seedSequence)
+        {
+            this.state = seedSequence.Generate(N);
         }
 
         /// <summary>
@@ -104,7 +100,7 @@ namespace Qtfy.Net.Numerics.Random
                 }
             }
 
-            return new MersenneTwister19937(state, N);
+            return new MersenneTwister19937(state);
         }
 
         /// <summary>
@@ -130,16 +126,18 @@ namespace Qtfy.Net.Numerics.Random
                 throw new ArgumentNullException(nameof(seeds));
             }
 
-            var state = new uint[N];
-            unsafe
-            {
-                fixed (uint* mt = state, initKey = seeds)
-                {
-                    MersenneTwister19937.InitByArrayImpl(mt, initKey, (uint)seeds.Length);
-                }
-            }
+            // var state = new uint[N];
+            // unsafe
+            // {
+            //     fixed (uint* mt = state, initKey = seeds)
+            //     {
+            //         MersenneTwister19937.InitByArrayImpl(mt, initKey, (uint)seeds.Length);
+            //     }
+            // }
+            //
+            // return new MersenneTwister19937(state);
 
-            return new MersenneTwister19937(state, N);
+            return new MersenneTwister19937(new InitByArraySeedSequence(seeds));
         }
 
         /// <inheritdoc />
@@ -332,6 +330,133 @@ namespace Qtfy.Net.Numerics.Random
             }
 
             mt[0] = 0x1U << 31;
+        }
+
+        public class InitByArraySeedSequence : ISeedSequence<uint>
+        {
+            private readonly uint[] seeds;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InitByArraySeedSequence"/> class.
+            /// </summary>
+            /// <param name="seeds">
+            /// The seed data used as entropy.
+            /// </param>
+            public InitByArraySeedSequence(uint[] seeds)
+            {
+                this.seeds = seeds;
+            }
+
+            /// <inheritdoc />
+            public uint[] Generate(int resultSize)
+            {
+                if (resultSize < 0)
+                {
+                    throw new ArgumentException();
+                }
+
+                var result = new uint[resultSize];
+                unsafe
+                {
+                    fixed (uint* mt = result, initKey = this.seeds)
+                    {
+                        GenerateImpl(mt, (uint)resultSize, initKey, (uint)this.seeds.Length);
+                    }
+                }
+
+                return result;
+            }
+
+            private static unsafe void GenerateImpl(uint* mt, uint resultSize, uint* initKey, uint keyLength)
+            {
+                MersenneTwister19937.InitGenRandImpl(mt, 19650218U);
+                var i = 1U;
+                var j = 0U;
+                var k = keyLength > resultSize ? keyLength : resultSize;
+                for (; k != 0; k--)
+                {
+                    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525U)) + initKey[j] + j;
+                    if (++i >= resultSize)
+                    {
+                        mt[0] = mt[resultSize - 1];
+                        i = 1;
+                    }
+
+                    if (++j >= keyLength)
+                    {
+                        j = 0;
+                    }
+                }
+
+                for (k = resultSize - 1; k != 0; k--)
+                {
+                    mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1566083941U)) - i;
+                    if (++i >= resultSize)
+                    {
+                        mt[0] = mt[resultSize - 1];
+                        i = 1;
+                    }
+                }
+
+                mt[0] = 0x1U << 31;
+            }
+        }
+
+        public class InitGenRandSeedSequence : ISeedSequence<uint>
+        {
+            private readonly uint seed;
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InitGenRandSeedSequence"/> class.
+            /// </summary>
+            /// <param name="seed">
+            /// The seed used to construct this seed sequence.
+            /// </param>
+            public InitGenRandSeedSequence(uint seed)
+            {
+                this.seed = seed;
+            }
+
+            /// <inheritdoc />
+            public uint[] Generate(int resultSize)
+            {
+                // TODO: should we hardcode the resultSize as the size of the mersenne twister
+                // internal array for performance?
+                // This sounds reasonable because this seed sequence is added to allow reproducible
+                // MersenneTwister19937 32 numbers.
+                if (resultSize < 0)
+                {
+                    throw new ArgumentException();
+                }
+
+                var result = new uint[resultSize];
+                unsafe
+                {
+                    fixed (uint* mt = result)
+                    {
+                        GenerateImpl(mt, (uint)resultSize, this.seed);
+                    }
+                }
+
+                return result;
+            }
+
+            /// <summary>
+            /// The implementation of the generate method. The logic for this method can be found in the
+            /// initial c code by the name init_genrand(...).
+            /// The unit tests contains a copy of this code ported to c#.
+            /// </summary>
+            /// <param name="mt">The array to fill with generated numbers.</param>
+            /// <param name="seed">The seed used as entropy.</param>
+            /// <param name="resultSize">The size of mt.</param>
+            internal static unsafe void GenerateImpl(uint* mt, uint mtSize, uint seed)
+            {
+                mt[0] = seed;
+                for (uint mti = 1; mti < mtSize; mti++)
+                {
+                    mt[mti] = (1812433253U * (mt[mti - 1] ^ (mt[mti - 1] >> 30))) + mti;
+                }
+            }
         }
 
         /// <summary>
