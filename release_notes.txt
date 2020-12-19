@@ -2,6 +2,5 @@ v1.0.0
 ========================================================================================
 - added type BigRational
   - an arbitrary precision rational number
-  - added series expansions for Log(BigRational, terms)
-  - added series expansions for Exp(BigRational, terms)
-- added Powerset
+- added static class Combinatorics
+  - added methods that allow the iteration of a power set.
