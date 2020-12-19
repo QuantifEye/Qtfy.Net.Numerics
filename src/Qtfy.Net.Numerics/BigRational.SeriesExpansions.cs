@@ -1,4 +1,4 @@
-﻿// <copyright file="SeriesExpansions.cs" company="QuantifEye">
+// <copyright file="BigRational.SeriesExpansions.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
@@ -10,9 +10,9 @@ namespace Qtfy.Net.Numerics
     using System.Numerics;
 
     /// <summary>
-    /// A collection of methods used to calculate the series approximations of various functions and constants.
+    /// A structure that represents a rational number with an arbitrarily large numerator and denominator.
     /// </summary>
-    public static class SeriesExpansions
+    public partial struct BigRational
     {
         /// <summary>
         /// Calculates the taylor approximation of Eulers constant raised to <paramref name="power"/>,
@@ -32,7 +32,7 @@ namespace Qtfy.Net.Numerics
         {
             if (terms < 0)
             {
-                throw new ArgumentException($"{nameof(terms)} must be non-negative");
+                throw new ArgumentException("terms must be non-negative");
             }
 
             if (terms == 0)
@@ -59,7 +59,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <summary>
-        /// Approximates the natural (base e) logarithm of a specified number using a series expansion of a specified number of terms.
+        /// Approximates the natural (base e) logarithm of a specified number using a series expansion of a specified (default = 1000) number of terms.
         /// </summary>
         /// <param name="x">
         /// The number whose logarithm is to be approximated.
@@ -72,11 +72,6 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational Log(BigRational x, int terms)
         {
-            if (terms < 0)
-            {
-                throw new ArgumentException($"{nameof(terms)} must be non-negative");
-            }
-
             var n = 1 / (x - 1);
             var factor = 1 / ((2 * n) + 1);
             var factorSquared = factor * factor;
