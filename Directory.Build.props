@@ -19,12 +19,12 @@
   <!-- packaging properties, if the repository becomes a suite of dlls, some or all
        of these properties need to move to the individual project files. -->
   <PropertyGroup>
-    <AssemblyTitle>Quantifeye Numerics</AssemblyTitle>
-    <Authors>Andre Beelders</Authors>
-    <!-- <Description>A description of what this does.</Description> -->
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Description>The core numerics library for the QuantifEye project.</Description>
     <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildThisFileDirectory)/release_notes.txt"))</PackageReleaseNotes>
-    <PackageTags>rational arithmetic;bigrational;arbitrary precision</PackageTags>
+    <PackageTags>arbitrary;extended;precision;arithmetic;bigrational;combinatorics;number;numerics;rational</PackageTags>
+    <AssemblyTitle>QuantifEye Numerics</AssemblyTitle>
+    <Authors>Andre Beelders</Authors>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/QuantifEye/Qtfy.Net.Numerics</RepositoryUrl>
   </PropertyGroup>
 
