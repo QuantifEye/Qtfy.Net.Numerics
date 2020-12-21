@@ -6,20 +6,20 @@
 
 namespace Qtfy.Net.Numerics.Random
 {
-/// <summary>
-/// An interface for objects able to generate integral values that have random bits.
-/// </summary>
-/// <typeparam name="TBits">
-/// The type of the value generated.
-/// </typeparam>
-public interface IRandomBitGenerator<TBits>
-{
     /// <summary>
-    /// Gets an integral value in the closed interval [T.Min, T.Max].
+    /// An interface for objects able to generate integral values that have random bits.
     /// </summary>
-    /// <returns>
-    /// An integral value in the closed interval [T.Min, T.Max].
-    /// </returns>
-    TBits GetBits();
-}
+    /// <typeparam name="TBits">
+    /// The type of the value generated.
+    /// </typeparam>
+    public interface IRandomBitGenerator<TBits>
+    {
+        /// <summary>
+        /// Gets an integral value in the closed interval [T.Min, T.Max].
+        /// </summary>
+        /// <returns>
+        /// An integral value in the closed interval [T.Min, T.Max].
+        /// </returns>
+        TBits GetBits();
+    }
 }
