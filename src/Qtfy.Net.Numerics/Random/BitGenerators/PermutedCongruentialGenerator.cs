@@ -13,7 +13,7 @@ namespace Qtfy.Net.Numerics.Random.BitGenerators
     /// <see href="https://www.pcg-random.org/index.html" />.
     /// </summary>
     [CLSCompliant(false)]
-    public class PermutedCongruentialGenerator : IRandomBitGenerator<uint>
+    public sealed class PermutedCongruentialGenerator : UniformUIntBitGenerator
     {
         private readonly ulong inc;
 
@@ -59,7 +59,7 @@ namespace Qtfy.Net.Numerics.Random.BitGenerators
         }
 
         /// <inheritdoc />
-        public uint GetBits()
+        public sealed override uint GetBits()
         {
             ulong oldState = this.state;
             this.state = (oldState * 6364136223846793005UL) + this.inc;

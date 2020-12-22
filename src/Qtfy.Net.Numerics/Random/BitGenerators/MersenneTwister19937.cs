@@ -44,7 +44,7 @@ namespace Qtfy.Net.Numerics.Random.BitGenerators
     /// <see href="http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/emt19937ar.html" />.
     /// </summary>
     [CLSCompliant(false)]
-    public sealed partial class MersenneTwister19937 : IRandomBitGenerator<uint>
+    public sealed partial class MersenneTwister19937 : UniformUIntBitGenerator
     {
         private const int N = 624;
 
@@ -59,12 +59,6 @@ namespace Qtfy.Net.Numerics.Random.BitGenerators
         private readonly uint[] state;
 
         private int index = N;
-
-        private MersenneTwister19937(uint[] state)
-        {
-            this.state = state;
-            this.index = N;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MersenneTwister19937"/> class.
@@ -126,7 +120,7 @@ namespace Qtfy.Net.Numerics.Random.BitGenerators
         }
 
         /// <inheritdoc />
-        public uint GetBits()
+        public sealed override uint GetBits()
         {
             if (this.index == N)
             {

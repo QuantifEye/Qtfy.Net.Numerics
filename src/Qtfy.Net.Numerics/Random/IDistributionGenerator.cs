@@ -6,21 +6,28 @@
 
 namespace Qtfy.Net.Numerics.Random
 {
+    using Qtfy.Net.Numerics.Distributions;
+
     /// <summary>
     /// An object used to transform the values produced by a bit random generator
     /// into a random number with the desired distribution.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the random number that is generated.
+    /// <typeparam name="TDomain">
+    /// The type of the generated values.
     /// </typeparam>
-    public interface IDistributionGenerator<T>
+    public interface IDistributionGenerator<TDomain>
     {
+        /// <summary>
+        /// Gets the distribution that describes the random number that will be generated.
+        /// </summary>
+        IDistribution<TDomain> Distribution { get; }
+
         /// <summary>
         /// Gets the next random number.
         /// </summary>
         /// <returns>
         /// The next random number.
         /// </returns>
-        T GetNext();
+        TDomain GetNext();
     }
 }
