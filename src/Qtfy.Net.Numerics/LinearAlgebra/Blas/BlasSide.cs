@@ -9,6 +9,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
     public enum BlasSide
     {
         Left = 141,
+
         Right = 142,
     }
 }

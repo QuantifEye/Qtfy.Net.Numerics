@@ -6,6 +6,7 @@
 
 namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
 {
+    using System;
     using System.Numerics;
 
     internal static partial class CsBlasLevel1
@@ -18,20 +19,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
             nint incy,
             Complex* output)
         {
-            AssertValid(n);
-            Complex result = default;
-            while (true)
-            {
-                result += *y * Complex.Conjugate(*x);
-                if (--n == 0)
-                {
-                    *output = result;
-                    return;
-                }
-
-                x += incx;
-                y += incy;
-            }
+            throw new NotImplementedException();
         }
     }
 }

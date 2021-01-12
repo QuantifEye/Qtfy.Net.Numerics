@@ -6,6 +6,7 @@
 
 namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
 {
+    using System;
     using System.Numerics;
 
     internal static partial class CsBlasLevel1
@@ -18,18 +19,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
             double* y,
             nint incy)
         {
-            AssertValid(n, incx, incy);
-            while (true)
-            {
-                *y = (*x * a) + *y;
-                if (--n == 0)
-                {
-                    return;
-                }
-
-                x += incx;
-                y += incy;
-            }
+            throw new NotImplementedException();
         }
 
         public static unsafe void zaxpy(
@@ -40,18 +30,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
             Complex* y,
             nint incy)
         {
-            AssertValid(n);
-            while (true)
-            {
-                *y = (*x * a) + *y;
-                if (--n == 0)
-                {
-                    return;
-                }
-
-                x += incx;
-                y += incy;
-            }
+            throw new NotImplementedException();
         }
     }
 }

@@ -5,11 +5,5 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 
 [assembly: CLSCompliant(false)]
-[assembly: SuppressMessage(
-    "Naming Rules",
-    "SA1300",
-    Justification = "names stick as closely as possible to native blas methods",
-    Target = "~N:Qtfy.Net.Numerics.LinearAlgebra.Blas")]

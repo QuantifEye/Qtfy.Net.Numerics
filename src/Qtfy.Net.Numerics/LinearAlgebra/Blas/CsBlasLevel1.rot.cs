@@ -6,6 +6,7 @@
 
 namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
 {
+    using System;
     using System.Numerics;
 
     internal static partial class CsBlasLevel1
@@ -19,21 +20,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
             double c,
             double s)
         {
-            AssertValid(n);
-            while (true)
-            {
-                var xTemp = *x;
-                var yTemp = *y;
-                *x = (c * xTemp) + (s * yTemp);
-                *y = (c * yTemp) + (s * xTemp);
-                if (--n == 0)
-                {
-                    return;
-                }
-
-                x += incx;
-                y += incy;
-            }
+            throw new NotImplementedException();
         }
 
         public static unsafe void zrot(
@@ -45,21 +32,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
             double c,
             double s)
         {
-            AssertValid(n);
-            while (true)
-            {
-                var xTemp = *x;
-                var yTemp = *y;
-                *x = (c * xTemp) + (s * yTemp);
-                *y = (c * yTemp) + (s * xTemp);
-                if (--n == 0)
-                {
-                    return;
-                }
-
-                x += incx;
-                y += incy;
-            }
+            throw new NotImplementedException();
         }
     }
 }

@@ -13,36 +13,12 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
     {
         public static unsafe double snrm2(nint n, double* x, nint incx)
         {
-            AssertValid(n);
-            double result = default;
-            while (true)
-            {
-                result += *x * *x;
-                if (--n == 0)
-                {
-                    return Math.Sqrt(result);
-                }
-
-                x += incx;
-            }
+            throw new NotImplementedException();
         }
 
         public static unsafe double snrm2(nint n, Complex* x, nint incx)
         {
-            AssertValid(n);
-            double result = default;
-            double abs;
-            while (true)
-            {
-                abs = (*x).Magnitude;
-                result += abs * abs;
-                if (--n == 0)
-                {
-                    return Math.Sqrt(result);
-                }
-
-                x += incx;
-            }
+            throw new NotImplementedException();
         }
     }
 }

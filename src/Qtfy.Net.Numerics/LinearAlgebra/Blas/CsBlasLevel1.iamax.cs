@@ -4,10 +4,9 @@
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-using System;
-
 namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
 {
+    using System;
     using System.Numerics;
 
     internal static partial class CsBlasLevel1

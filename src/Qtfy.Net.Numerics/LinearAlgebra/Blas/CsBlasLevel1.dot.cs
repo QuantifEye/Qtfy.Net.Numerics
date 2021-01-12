@@ -6,6 +6,8 @@
 
 namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
 {
+    using System;
+
     internal static partial class CsBlasLevel1
     {
         public static unsafe double ddot(
@@ -15,19 +17,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Blas
             double* y,
             nint incy)
         {
-            AssertValid(n);
-            var result = 0d;
-            while (true)
-            {
-                result += *y * *x;
-                if (--n == 0)
-                {
-                    return result;
-                }
-
-                x += incx;
-                y += incy;
-            }
+            throw new NotImplementedException();
         }
     }
 }
