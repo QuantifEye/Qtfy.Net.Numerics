@@ -1,4 +1,4 @@
-// <copyright file="Matrix.cs" company="QuantifEye">
+// <copyright file="Vector.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
@@ -7,111 +7,194 @@
 namespace Qtfy.Net.Numerics.LinearAlgebra
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
 
-    public sealed class Vector<T> : IVector<T>
-        where T : struct
+    /// <summary>
+    /// A linear algebra vector that is stored contiguously.
+    /// </summary>
+    public sealed partial class Vector : IVector
     {
-        internal T[] data;
+        /// <summary>
+        /// The data of the vector.
+        /// </summary>
+        private readonly double[] data;
 
-        internal Vector(T[] data)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Vector"/> class.
+        /// </summary>
+        /// <param name="data">
+        /// The data of the vector.
+        /// </param>
+        internal Vector(double[] data)
         {
+            if (data.Length == 0)
+            {
+                throw new LinearAlgebraException();
+            }
+
             this.data = data;
         }
 
-        public IEnumerator<T> GetEnumerator()
+        internal double[] Data
         {
-            return data.AsEnumerable().GetEnumerator();
+            get => this.data;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <inheritdoc />
+        public int Length
         {
-            return this.GetEnumerator();
+            get => this.data.Length;
         }
 
-        public T this[int i] => this.data[i];
-
-        public int Length => this.data.Length;
-    }
-
-    public sealed class VectorView<T> : IVector<T>
-    {
-        internal readonly T[] data;
-
-        internal readonly int offset;
-
-        internal readonly int stride;
-
-        internal readonly int length;
-
-        public T this[int i] => this.data[this.offset + this.stride * i];
-
-        public VectorView(T[] data, int offset, int stride, int length)
+        /// <inheritdoc />
+        public double this[int i]
         {
-            this.data = data;
-            this.offset = offset;
-            this.stride = stride;
-            this.length = length;
+            get => this.data[i];
         }
 
-        internal ref T GetPinnableReference()
+        /// <summary>
+        /// Multiplies a vector with a vector. Producing the euclidean dot product.
+        /// </summary>
+        /// <param name="left">
+        /// The left vector to multiply.
+        /// </param>
+        /// <param name="right">
+        /// The right vector to multiply.
+        /// </param>
+        /// <returns>
+        /// The euclidean inner product.
+        /// </returns>
+        public static double operator *(Vector left, Vector right)
         {
-            return ref this.data[this.offset];
+            throw new NotImplementedException();
         }
 
-
-        public IEnumerator<T> GetEnumerator()
+        /// <summary>
+        /// Scales a vector by a constant.
+        /// </summary>
+        /// <param name="left">
+        /// The vector to scale.
+        /// </param>
+        /// <param name="right">
+        /// The scaling factor.
+        /// </param>
+        /// <returns>
+        /// A new scaled vector.
+        /// </returns>
+        public static Vector operator *(Vector left, double right)
         {
-            var index = this.offset;
-            var length = this.length;
-            var data = this.data;
-            var stride = this.stride;
-            if (length != 0)
-            {
-                do
-                {
-                    yield return data[index];
-                    index += stride;
-                }
-                while (--length != 0);
-            }
+            throw new NotImplementedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// Multiplies each element in right by the <paramref name="left"/> value.
+        /// </summary>
+        /// <param name="left">
+        /// The factor to multiply each element in <paramref name="right"/> by.
+        /// </param>
+        /// <param name="right">
+        /// The vector to multiply.
+        /// </param>
+        /// <returns>
+        /// A new vector where each element has been multiplied by <paramref name="left"/>.
+        /// </returns>
+        public static Vector operator *(double left, Vector right)
         {
-            return this.GetEnumerator();
+            return right * left;
         }
-    }
 
-    public static class VectorExtensions
-    {
-        public static double AbsoluteSum(Vector<double> v)
+        /// <summary>
+        /// Performs vector addition of <paramref name="left"/> and <paramref name="right"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The left vector to add.
+        /// </param>
+        /// <param name="right">
+        /// The right vector to add.
+        /// </param>
+        /// <returns>
+        /// The sum of <paramref name="left"/> and <paramref name="right"/>.
+        /// </returns>
+        public static Vector operator +(Vector left, Vector right)
         {
-            return ArrayMath.AbsoluteSum(v.data);
+            return new (ArrayMath.Add(left.data, right.data));
         }
 
-        public static double AbsoluteSum(VectorView<double> v)
+        /// <summary>
+        /// Adds the scalar <paramref name="right"/> to each element in <paramref name="right"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The left vector to add.
+        /// </param>
+        /// <param name="right">
+        /// The right vector to add.
+        /// </param>
+        /// <returns>
+        /// A new vector that is the result of adding
+        /// <paramref name="right"/> to each element in <paramref name="left"/>.
+        /// </returns>
+        public static Vector operator +(Vector left, double right)
         {
-            unsafe
-            {
-                var stride = v.stride;
-                var length = v.length;
-                fixed (double* pin = v)
-                {
-                    var ptr = pin;
-                    var last = ptr + length * stride;
-                    var total = 0d;
-                    do
-                    {
-                        total += Math.Abs(*ptr);
-                        ptr += stride;
-                    }
-                    while (ptr != last);
-                    return total + Math.Abs(*ptr);
-                }
-            }
+            return new (ArrayMath.Add(left.data, right));
+        }
+
+        /// <summary>
+        /// Adds the scalar <paramref name="left"/> to each element in <paramref name="right"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The scalar to add.
+        /// </param>
+        /// <param name="right">
+        /// The vector to add.
+        /// </param>
+        /// <returns>
+        /// A new vector that is the result of adding
+        /// <paramref name="left"/> to each element in <paramref name="right"/>.
+        /// </returns>
+        public static Vector operator +(double left, Vector right)
+        {
+            // TODO: should this exist?
+            return right + left;
+        }
+
+        /// <summary>
+        /// Subtracts each element in <paramref name="right"/> from each element in <paramref name="left"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The vector to subtract from.
+        /// </param>
+        /// <param name="right">
+        /// The vector to subtract.
+        /// </param>
+        /// <returns>
+        /// A new vector where each element in <paramref name="right"/> has been subtracted from each element in
+        /// <paramref name="left."/>.
+        /// </returns>
+        public static Vector operator -(Vector left, Vector right)
+        {
+            return new (ArrayMath.Subtract(left.data, right.data));
+        }
+
+        /// <summary>
+        /// Subtracts  <paramref name="right"/> from each element in <paramref name="left"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The vector to subtract from.
+        /// </param>
+        /// <param name="right">
+        /// The value to subtract from each element in <paramref name="left"/>.
+        /// </param>
+        /// <returns>
+        /// A new vector where <paramref name="right"/> has been subtracted from each element in
+        /// <paramref name="left"/>.
+        /// </returns>
+        public static Vector operator -(Vector left, double right)
+        {
+            return left + (-right);
+        }
+
+        public static Vector operator -(double left, Vector right)
+        {
+            throw new NotImplementedException("Should this exist?");
         }
     }
 }

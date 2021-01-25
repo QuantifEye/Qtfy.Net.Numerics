@@ -1,4 +1,4 @@
-// <copyright file="Matrix.cs" company="QuantifEye">
+// <copyright file="ArrayMath.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
@@ -7,159 +7,190 @@
 namespace Qtfy.Net.Numerics
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Numerics;
 
+    /// <summary>
+    /// A collection of methods that facilitate arithmetic using arrays.
+    /// </summary>
     public static class ArrayMath
     {
-        public static double AbsoluteSum(this IEnumerable<double> v)
+        /// <summary>
+        /// Copies an array.
+        /// </summary>
+        /// <param name="self">
+        /// The array to copy.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of the elements in the array.
+        /// </typeparam>
+        /// <returns>
+        /// A copy of the array.
+        /// </returns>
+        public static T[] Copy<T>(this T[] self)
         {
-            return v.Select(Math.Abs).Sum();
+            return (T[])self.Clone();
         }
 
-        public static double AbsoluteSum(this double[] self)
+        /// <summary>
+        /// Adds <paramref name="right"/> to each element in <paramref name="left"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The array to add to.
+        /// </param>
+        /// <param name="right">
+        /// The value to add.
+        /// </param>
+        /// <returns>
+        /// A new array that is teh result of adding <paramref name="right"/> to each element in
+        /// <paramref name="left"/>.
+        /// </returns>
+        public static double[] Add(double[] left, double right)
         {
-            var total = 0d;
-            for (int i = 0; i < self.Length; i++)
+            var result = left.Copy();
+            for (int i = 0; i < result.Length; ++i)
             {
-                total += Math.Abs(self[i]);
+                result[i] += right;
             }
 
-            return total;
+            return result;
         }
 
-        public static double Sum(this double[] self)
-        {
-            var total = 0d;
-            for (int i = 0; i < self.Length; i++)
-            {
-                total += self[i];
-            }
-
-            return total;
-        }
-
-        public static double Max(this double[] self)
-        {
-            var max = double.NegativeInfinity;
-            for (int i = 0; i < self.Length; i++)
-            {
-                max = Math.Max(max, self[i]);
-            }
-
-            return max;
-        }
-
-        public static double AbsoluteMax(this double[] self)
-        {
-            var max = 0d;
-            for (int i = 0; i < self.Length; i++)
-            {
-                var current = Math.Abs(self[i]);
-                if (double.IsNaN(current) || current > max)
-                {
-                    max = current;
-                }
-            }
-
-            return max;
-        }
-
-        public static int AbsoluteMaxIndex(this double[] self)
-        {
-            if (self.Length == 0)
-            {
-                throw new ArgumentException();
-            }
-
-            var max = 0d;
-            int index = 0;
-            for (int i = 0; i < self.Length; i++)
-            {
-                var current = Math.Abs(self[i]);
-                if (double.IsNaN(current))
-                {
-                    return i;
-                }
-                else if (current > max)
-                {
-                    max = current;
-                    index = i;
-                }
-            }
-
-            return index;
-        }
-
-
-        public static int AbsoluteMinIndex(this double[] self)
-        {
-            if (self.Length == 0)
-            {
-                throw new ArgumentException();
-            }
-
-            var max = double.PositiveInfinity;
-            int index = 0;
-            for (int i = 0; i < self.Length; i++)
-            {
-                var current = Math.Abs(self[i]);
-                if (double.IsNaN(current))
-                {
-                    return i;
-                }
-                else if (current < max)
-                {
-                    max = current;
-                    index = i;
-                }
-            }
-
-            return index;
-        }
-
-        public static double InnerProduct(double[] left, double[] right)
+        /// <summary>
+        /// Adds each element in <paramref name="left"/> to each element in <paramref name="right"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The left array to add.
+        /// </param>
+        /// <param name="right">
+        /// The right array to add.
+        /// </param>
+        /// <returns>
+        /// A new array that os the result of adding each element in <paramref name="left"/> to each element in
+        /// <paramref name="right"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="left"/> is not the same length as <paramref name="right"/>.
+        /// </exception>
+        public static double[] Add(double[] left, double[] right)
         {
             if (left.Length != right.Length)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentException("Arrays must have same length");
             }
 
-            var total = 0d;
-            for (int i = 0; i < left.Length; i++)
+            var result = left.Copy();
+            for (int i = 0; i < result.Length; ++i)
             {
-                total += left[i] * right[i];
+                result[i] += right[i];
             }
 
-            return total;
+            return result;
         }
 
-        public static double EuclidianNorm(this double[] self)
+        /// <summary>
+        /// Subtracts <paramref name="right"/> from each element in left.
+        /// </summary>
+        /// <param name="left">
+        /// The array to subtract from.
+        /// </param>
+        /// <param name="right">
+        /// The value to subtract.
+        /// </param>
+        /// <returns>
+        /// A new array that is the result of subtracting <paramref name="right"/> from each element in
+        /// <paramref name="left"/>.
+        /// </returns>
+        public static double[] Subtract(double[] left, double right)
         {
-            var total = 0d;
-            for (int i = 0; i < self.Length; i++)
+            var result = left.Copy();
+            for (int i = 0; i < result.Length; ++i)
             {
-                var temp = self[i];
-                total += temp * temp;
+                result[i] -= right;
             }
 
-            return Math.Sqrt(total);
+            return result;
         }
 
-        public static void ScaleInplace(this double[] self, double scalar)
+        /// <summary>
+        /// Subtracts each element in <paramref name="right"/> from each element in <paramref name="left"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The array to subtract from.
+        /// </param>
+        /// <param name="right">
+        /// The array to subtract.
+        /// </param>
+        /// <returns>
+        /// A new array that is the result of subtracting <paramref name="right"/> from <paramref name="left"/>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="left"/> is not the same length as <paramref name="right"/>.
+        /// </exception>
+        public static double[] Subtract(double[] left, double[] right)
         {
-            for (int i = 0; i < self.Length; i++)
+            if (left.Length != right.Length)
             {
-                self[i] *= scalar;
+                throw new ArgumentException("Arrays must have same length");
             }
+
+            var result = left.Copy();
+            for (int i = 0; i < result.Length; ++i)
+            {
+                result[i] -= right[i];
+            }
+
+            return result;
         }
 
-        public static double[] Scale(this double[] self, double scalar)
+        /// <summary>
+        /// Multiplies each element in <paramref name="left"/> by <paramref name="right"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The array to multiply.
+        /// </param>
+        /// <param name="right">
+        /// The value to multiply with.
+        /// </param>
+        /// <returns>
+        /// A new array that is the result of multiplying each element in <paramref name="left"/>
+        /// with <paramref name="right"/>.
+        /// </returns>
+        public static double[] Multiply(double[] left, double right)
         {
-            var result = new double[self.Length];
-            result.ScaleInplace(scalar);
+            var result = new double[left.Length];
+            for (int i = 0; i < left.Length; ++i)
+            {
+                result[i] *= right;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Multiplies each element in <paramref name="left"/> by each element in <paramref name="right"/>.
+        /// </summary>
+        /// <param name="left">
+        /// The array to multiply.
+        /// </param>
+        /// <param name="right">
+        /// The array to multiply with.
+        /// </param>
+        /// <returns>
+        /// A new array that is the result of multiplying each element in <paramref name="left"/>
+        /// with <paramref name="right"/>.
+        /// </returns>
+        public static double[] Multiply(double[] left, double[] right)
+        {
+            if (left.Length != right.Length)
+            {
+                throw new ArgumentException("Arrays must have same length");
+            }
+
+            var result = new double[left.Length];
+            for (int i = 0; i < left.Length; ++i)
+            {
+                result[i] *= right[i];
+            }
+
             return result;
         }
     }
