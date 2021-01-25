@@ -5,5 +5,7 @@
 // </copyright>
 
 using System;
+using System.Runtime.CompilerServices;
 
 [assembly: CLSCompliant(false)]
+[assembly: InternalsVisibleTo("Qtfy.Net.Numerics.Tests")]
