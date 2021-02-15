@@ -26,7 +26,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         private CovarianceMatrix(double[] data, int order)
             : base(data, order, order)
         {
-            throw new LinearAlgebraException("do square root here");
+            throw new LinearAlgebraException("do square root and inverse here?");
         }
 
         /// <summary>
@@ -34,5 +34,15 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// of the covariance matrix.
         /// </summary>
         public LowerTriangular SquareRoot { get; }
+
+        /// <summary>
+        /// Gets the determinant of the correlation matrix.
+        /// </summary>
+        public double Determinant { get; }
+
+        /// <summary>
+        /// Gets the inverse of the correlation matrix.
+        /// </summary>
+        public Matrix Inverse { get; }
     }
 }

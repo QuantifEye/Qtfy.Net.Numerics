@@ -68,7 +68,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                     }
                     else
                     {
-                        return this.data[Index(r, c)];
+                        return this.Data[Index(r, c)];
                     }
                 }
 
@@ -80,7 +80,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                         throw new LinearAlgebraException();
                     }
 
-                    this.data[Index(r, c)] = value;
+                    this.Data[Index(r, c)] = value;
                 }
             }
 
@@ -104,8 +104,8 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
             }
 
             /// <summary>
-            /// Checks if the provided indexes are valid matrix indexes. Throws an excpetion if
-            /// The indexs are not valid.
+            /// Checks if the provided indexes are valid matrix indexes. Throws an exception if
+            /// The indexes are not valid.
             /// </summary>
             /// <param name="r">
             /// The row index.

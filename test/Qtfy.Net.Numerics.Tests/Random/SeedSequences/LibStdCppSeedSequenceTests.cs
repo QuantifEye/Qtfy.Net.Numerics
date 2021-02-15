@@ -13,16 +13,16 @@ namespace Qtfy.Net.Numerics.Tests.Random.SeedSequences
 
     public class LibStdCppSeedSequenceTests
     {
-        [TestCaseSource(typeof(Cases))]
-        public void TestGenerate(uint[] seeds, uint[] expected)
+        [TestCaseSource(typeof(UIntCases))]
+        public void TestUIntGenerate(uint[] seeds, uint[] expectedUInts)
         {
-            var ss = new LibStdCppSeedSequence(seeds);
-            var actual = ss.Generate(expected.Length);
-            Assert.AreEqual(expected, actual);
+            var actualUInts = new uint[expectedUInts.Length];
+            new LibStdCppSeedSequence(seeds).Generate(actualUInts);
+            Assert.AreEqual(expectedUInts, actualUInts);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1812", Justification = "class is instantiated by unit testing")]
-        private class Cases : IEnumerable
+        private class UIntCases : IEnumerable
         {
             private static object[] Case(uint[] seeds, uint[] expected)
                 => new object[] { seeds, expected };
@@ -43,7 +43,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.SeedSequences
                         4168267496U,
                         2286043007U,
                         1924303767U,
-                        770742192U,
+                        770742192U
                     });
                 yield return Case(
                     seeds,

@@ -142,24 +142,24 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <summary>
-        /// Multiplies each element in <paramref name="left"/> by <paramref name="right"/>.
+        /// Multiplies each element in <paramref name="left"/> by <paramref name="constant"/>.
         /// </summary>
         /// <param name="left">
         /// The array to multiply.
         /// </param>
-        /// <param name="right">
+        /// <param name="constant">
         /// The value to multiply with.
         /// </param>
         /// <returns>
         /// A new array that is the result of multiplying each element in <paramref name="left"/>
-        /// with <paramref name="right"/>.
+        /// with <paramref name="constant"/>.
         /// </returns>
-        public static double[] Multiply(double[] left, double right)
+        public static double[] Multiply(double[] left, double constant)
         {
             var result = new double[left.Length];
             for (int i = 0; i < left.Length; ++i)
             {
-                result[i] *= right;
+                result[i] = left[i] * constant;
             }
 
             return result;
@@ -188,7 +188,7 @@ namespace Qtfy.Net.Numerics
             var result = new double[left.Length];
             for (int i = 0; i < left.Length; ++i)
             {
-                result[i] *= right[i];
+                result[i] = left[i] * right[i];
             }
 
             return result;

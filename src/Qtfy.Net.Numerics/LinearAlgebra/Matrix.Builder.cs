@@ -50,14 +50,14 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
             /// </param>
             public double this[int i, int j]
             {
-                get => this.data[this.Index(i, j)];
-                set => this.data[this.Index(i, j)] = value;
+                get => this.Data[this.Index(i, j)];
+                set => this.Data[this.Index(i, j)] = value;
             }
 
             /// <inheritdoc/>
             private protected override Matrix Factory(double[] data)
             {
-                return new (this.data, this.RowCount, this.ColumnCount);
+                return new (this.Data, this.RowCount, this.ColumnCount);
             }
 
             private static double[] MakeData(int rowCount, int columnCount)

@@ -7,28 +7,36 @@
 namespace Qtfy.Net.Numerics.Random
 {
     /// <summary>
-    /// A seed sequence is constructed from integer based values and produces a requested number of
-    /// integer based values.
-    /// The produced values are well distributed even if the consumed values are not.
-    /// It provides a way for random bit generators to set their initial state when their initial state is large
-    /// and little entropy is provided to initialise that state.
+    /// A seed sequence is constructed with integer-valued data and produces a requested number of unsigned integer values i, [0, 2^32)
+    /// based on the data provided to the constructor data.
+    /// The produced values are distributed over the entire 32-bit range even if the provided seed values are close.
+    /// It provides a way to seed a large number of random number engines or to seed a generator that requires a lot of entropy,
+    /// given a small seed or a poorly distributed initial seed sequence.
     /// </summary>
-    /// <typeparam name="T">
-    /// The type of the values in the generated array.
-    /// </typeparam>
-    public interface ISeedSequence<T>
+    public interface ISeedSequence
     {
         /// <summary>
-        /// Creates an array with size <paramref name="resultSize"/>
-        /// based on the data that the seed sequence was constructed from.
+        /// Fills the provided buffer with integer values in [0, 2^32) based on the original data provided in the
+        /// constructor. The produced values are distributed over the entire range of unsigned 32 bit integers
+        /// even if initial values were strongly biased.
         /// </summary>
-        /// <param name="resultSize">
-        /// The size of the array to return.
+        /// <param name="buffer">
+        /// The buffer to seed/initialize.
         /// </param>
-        /// <returns>
-        /// An array with size <paramref name="resultSize"/>
-        /// based on the data that the seed sequence was constructed from.
-        /// </returns>
-        T[] Generate(int resultSize);
+        void Generate(uint[] buffer);
+
+        /// <summary>
+        /// Fills the provided buffer with integer values in [0, 2^32) based on the original data provided in the
+        /// constructor. The produced values are distributed over the entire range of unsigned 32 bit integers
+        /// even if initial values were strongly biased.
+        /// </summary>
+        /// <param name="buffer">
+        /// The buffer to seed/initialize.
+        /// </param>
+        /// <remarks>
+        /// This method shares an implementation with <see cref="Generate(uint[])"/> and casts values to
+        /// generated to ulong.
+        /// </remarks>
+        void Generate(ulong[] buffer);
     }
 }

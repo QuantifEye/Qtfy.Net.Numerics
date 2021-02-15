@@ -54,7 +54,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                         throw new IndexOutOfRangeException();
                     }
 
-                    return this.data[(r * size) + c];
+                    return this.Data[(r * size) + c];
                 }
 
                 set
@@ -65,8 +65,8 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                         throw new IndexOutOfRangeException();
                     }
 
-                    this.data[(r * size) + c] = value;
-                    this.data[(c * size) + r] = value;
+                    this.Data[(r * size) + c] = value;
+                    this.Data[(c * size) + r] = value;
                 }
             }
 

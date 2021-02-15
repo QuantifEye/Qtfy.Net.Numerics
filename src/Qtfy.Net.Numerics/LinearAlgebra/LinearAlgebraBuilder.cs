@@ -17,7 +17,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// <summary>
         /// The linear algebra object data.
         /// </summary>
-        private protected double[] data;
+        private double[] data;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinearAlgebraBuilder{TResult}"/> class.
@@ -28,6 +28,14 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         private protected LinearAlgebraBuilder(double[] data)
         {
             this.data = data;
+        }
+
+        /// <summary>
+        /// Gets the linear algebra object data.
+        /// </summary>
+        internal double[] Data
+        {
+            get => this.data;
         }
 
         /// <summary>

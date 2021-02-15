@@ -23,7 +23,3 @@ dotnet_diagnostic.SA1118.severity = silent
 
 # validate parameter parameter is non-null before using it
 dotnet_diagnostic.CA1062.severity = silent
-
-
-
-

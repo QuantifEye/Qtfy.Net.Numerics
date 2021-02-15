@@ -34,6 +34,9 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
             this.data = data;
         }
 
+        /// <summary>
+        /// Gets the data of the vector.
+        /// </summary>
         internal double[] Data
         {
             get => this.data;
@@ -86,23 +89,6 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         }
 
         /// <summary>
-        /// Multiplies each element in right by the <paramref name="left"/> value.
-        /// </summary>
-        /// <param name="left">
-        /// The factor to multiply each element in <paramref name="right"/> by.
-        /// </param>
-        /// <param name="right">
-        /// The vector to multiply.
-        /// </param>
-        /// <returns>
-        /// A new vector where each element has been multiplied by <paramref name="left"/>.
-        /// </returns>
-        public static Vector operator *(double left, Vector right)
-        {
-            return right * left;
-        }
-
-        /// <summary>
         /// Performs vector addition of <paramref name="left"/> and <paramref name="right"/>.
         /// </summary>
         /// <param name="left">
@@ -135,25 +121,6 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         public static Vector operator +(Vector left, double right)
         {
             return new (ArrayMath.Add(left.data, right));
-        }
-
-        /// <summary>
-        /// Adds the scalar <paramref name="left"/> to each element in <paramref name="right"/>.
-        /// </summary>
-        /// <param name="left">
-        /// The scalar to add.
-        /// </param>
-        /// <param name="right">
-        /// The vector to add.
-        /// </param>
-        /// <returns>
-        /// A new vector that is the result of adding
-        /// <paramref name="left"/> to each element in <paramref name="right"/>.
-        /// </returns>
-        public static Vector operator +(double left, Vector right)
-        {
-            // TODO: should this exist?
-            return right + left;
         }
 
         /// <summary>
@@ -190,11 +157,6 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         public static Vector operator -(Vector left, double right)
         {
             return left + (-right);
-        }
-
-        public static Vector operator -(double left, Vector right)
-        {
-            throw new NotImplementedException("Should this exist?");
         }
     }
 }

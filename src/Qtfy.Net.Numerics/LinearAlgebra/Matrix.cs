@@ -8,6 +8,9 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
 {
     using System;
 
+    /// <summary>
+    /// A matrix that where all elements are stored contiguously in row major order.
+    /// </summary>
     public partial class Matrix : IMatrix
     {
         /// <summary>
@@ -79,6 +82,16 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </exception>
         public static Matrix operator +(Matrix left, Matrix right)
         {
+            if (left is null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right is null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
             var rows = left.RowCount;
             var columns = left.ColumnCount;
             if (rows != right.RowCount || columns != right.ColumnCount)
@@ -86,7 +99,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                 throw new LinearAlgebraException();
             }
 
-            return new (ArrayMath.Add(left.data, right.data), rows, columns);
+            return new Matrix(ArrayMath.Add(left.data, right.data), rows, columns);
         }
 
         /// <summary>
@@ -103,24 +116,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </returns>
         public static Matrix operator +(Matrix matrix, double scalar)
         {
-            return new (ArrayMath.Add(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
-        }
-
-        /// <summary>
-        /// Adds a scaler to each element in a matrix.
-        /// </summary>
-        /// <param name="scalar">
-        /// A scaler.
-        /// </param>
-        /// <param name="matrix">
-        /// A <see cref="Matrix"/>.
-        /// </param>
-        /// <returns>
-        /// A new matrix that is the result of adding a scalar to each element in <paramref name="matrix"/>.
-        /// </returns>
-        public static Matrix operator +(double scalar, Matrix matrix)
-        {
-            throw new NotImplementedException();
+            return new Matrix(ArrayMath.Add(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
         }
 
         /// <summary>
@@ -164,7 +160,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </returns>
         public static Matrix operator -(Matrix left, double right)
         {
-            return new (ArrayMath.Subtract(left.data, right), left.RowCount, left.ColumnCount);
+            return new Matrix(ArrayMath.Subtract(left.data, right), left.RowCount, left.ColumnCount);
         }
 
         /// <summary>
@@ -182,7 +178,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </returns>
         public static Matrix operator *(Matrix matrix, double scalar)
         {
-            return new (ArrayMath.Multiply(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
+            return new Matrix(ArrayMath.Multiply(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
         }
 
         /// <summary>
@@ -317,11 +313,6 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </exception>
         public static Matrix Create(double[,] array)
         {
-            if (array.GetLowerBound(0) != 0 || array.GetLowerBound(1) != 0)
-            {
-                throw new ArgumentException();
-            }
-
             var rows = array.GetLength(0);
             var columns = array.GetLength(1);
             if (rows < 1 || columns < 1)
@@ -329,7 +320,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                 throw new ArgumentException("Array must not be empty.");
             }
 
-            var data = new double[rows * columns];
+            var data = new double[array.Length];
             int index = 0;
             foreach (var value in array)
             {
@@ -402,8 +393,26 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// If the number of elements in left does not equal the number of rows in <paramref name="middle"/>, or if the
         /// number of elements in right does not equal the number of columns in <paramref name="middle"/>.
         /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// If any of the parameters are null.
+        /// </exception>
         public static double FusedProduct(Vector left, Matrix middle, Vector right)
         {
+            if (left is null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (middle is null)
+            {
+                throw new ArgumentNullException(nameof(middle));
+            }
+
+            if (right is null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
             unsafe
             {
                 var lData = left.Data;

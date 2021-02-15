@@ -11,10 +11,9 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
     using System.Linq;
 
     /// <summary>
-    /// a <see cref="uint"/> seed sequence. <see cref="ISeedSequence{T}"/>.
+    /// a <see cref="uint"/> seed sequence. <see cref="ISeedSequence"/>.
     /// </summary>
-    [CLSCompliant(false)]
-    public class LibStdCppSeedSequence : ISeedSequence<uint>
+    public class LibStdCppSeedSequence : ISeedSequence
     {
         private readonly uint[] entropy;
 
@@ -50,83 +49,90 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
         }
 
         /// <inheritdoc />
-        public uint[] Generate(int resultSize)
+        public void Generate(uint[] buffer)
+        {
+            unsafe
+            {
+                fixed (uint* bufferPin = buffer, seedsPin = this.entropy)
+                {
+                    GenerateImpl(bufferPin, (uint)buffer.Length, seedsPin, (uint)this.entropy.Length);
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public void Generate(ulong[] buffer)
+        {
+            unsafe
+            {
+                fixed (ulong* bufferPin = buffer)
+                fixed (uint* seedsPin = this.entropy)
+                {
+                    GenerateImpl((uint*)bufferPin, (uint)buffer.Length * 2U, seedsPin, (uint)this.entropy.Length);
+                }
+            }
+        }
+
+        private static unsafe void GenerateImpl(uint* buffer, uint bufferLenght, uint* seeds, uint seedSize)
         {
             unchecked
             {
-                if (resultSize < 0)
+                for (var i = 0U; i < bufferLenght; ++i)
                 {
-                    throw new ArgumentException($"{nameof(resultSize)} must be positive");
+                    buffer[i] = 0x8b8b8b8bu;
                 }
 
-                if (resultSize == 0)
-                {
-                    return Array.Empty<uint>();
-                }
-
-                var r = (uint)resultSize;
-                var seeds = this.entropy;
-                var seedSize = (uint)seeds.Length;
-
-                var result = new uint[r];
-                for (var i = 0; i < result.Length; ++i)
-                {
-                    result[i] = 0x8b8b8b8bu;
-                }
-
-                var t = (r >= 623U) ? 11U
-                    : (r >= 68U) ? 7U
-                    : (r >= 39U) ? 5U
-                    : (r >= 7U) ? 3U
-                    : (r - 1U) / 2U;
-                var p = (r - t) / 2U;
+                var t = (bufferLenght >= 623U) ? 11U
+                    : (bufferLenght >= 68U) ? 7U
+                    : (bufferLenght >= 39U) ? 5U
+                    : (bufferLenght >= 7U) ? 3U
+                    : (bufferLenght - 1U) / 2U;
+                var p = (bufferLenght - t) / 2U;
                 var q = p + t;
 
                 // k == 0
-                var a = result[(0U - 1U) % r] ^ result[0U] ^ result[p % r];
+                var a = buffer[(0U - 1U) % bufferLenght] ^ buffer[0U] ^ buffer[p % bufferLenght];
                 var r1 = (a ^ (a >> 27)) * 1664525U;
                 var r2 = r1 + seedSize;
-                result[p % r] += r1;
-                result[q % r] += r2;
-                result[0U] = r2;
+                buffer[p % bufferLenght] += r1;
+                buffer[q % bufferLenght] += r2;
+                buffer[0U] = r2;
 
                 // k <= seedSize
                 var k = 1u;
                 for (; k <= seedSize; ++k)
                 {
-                    a = result[(k - 1U) % r] ^ result[k % r] ^ result[(k + p) % r];
+                    a = buffer[(k - 1U) % bufferLenght] ^ buffer[k % bufferLenght] ^ buffer[(k + p) % bufferLenght];
                     r1 = (a ^ (a >> 27)) * 1664525U;
-                    r2 = r1 + ((k % r) + seeds[k - 1U]);
-                    result[(k + p) % r] += r1;
-                    result[(k + q) % r] += r2;
-                    result[k % r] = r2;
+                    r2 = r1 + ((k % bufferLenght) + seeds[k - 1U]);
+                    buffer[(k + p) % bufferLenght] += r1;
+                    buffer[(k + q) % bufferLenght] += r2;
+                    buffer[k % bufferLenght] = r2;
                 }
 
                 // k < maxSize
-                var m = Math.Max(seedSize + 1U, r);
+                var m = Math.Max(seedSize + 1U, bufferLenght);
                 for (; k < m; ++k)
                 {
-                    a = result[(k - 1U) % r] ^ result[k % r] ^ result[(k + p) % r];
+                    a = buffer[(k - 1U) % bufferLenght] ^ buffer[k % bufferLenght] ^ buffer[(k + p) % bufferLenght];
                     r1 = (a ^ (a >> 27)) * 1664525U;
-                    r2 = r1 + (k % r);
-                    result[(k + p) % r] += r1;
-                    result[(k + q) % r] += r2;
-                    result[k % r] = r2;
+                    r2 = r1 + (k % bufferLenght);
+                    buffer[(k + p) % bufferLenght] += r1;
+                    buffer[(k + q) % bufferLenght] += r2;
+                    buffer[k % bufferLenght] = r2;
                 }
 
                 // k < m + resultSize
-                m = m + r;
+                m = m + bufferLenght;
                 for (; k < m; ++k)
                 {
-                    a = result[(k - 1U) % r] + result[k % r] + result[(k + p) % r];
+                    a = buffer[(k - 1U) % bufferLenght] + buffer[k % bufferLenght] + buffer[(k + p) % bufferLenght];
                     r1 = (a ^ (a >> 27)) * 1566083941U;
-                    r2 = r1 - (k % r);
-                    result[(k + p) % r] ^= r1;
-                    result[(k + q) % r] ^= r2;
-                    result[k % r] = r2;
+                    r2 = r1 - (k % bufferLenght);
+                    buffer[(k + p) % bufferLenght] ^= r1;
+                    buffer[(k + q) % bufferLenght] ^= r2;
+                    buffer[k % bufferLenght] = r2;
                 }
-
-                return result;
             }
         }
     }

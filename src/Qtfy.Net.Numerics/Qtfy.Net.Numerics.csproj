@@ -2,7 +2,4 @@
   <PropertyGroup>
     <TargetFramework>$(QtfyTargetFramework)</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="LinearAlgebra" />
-  </ItemGroup>
 </Project>

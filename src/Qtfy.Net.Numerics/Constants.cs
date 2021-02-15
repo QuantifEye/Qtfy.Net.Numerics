@@ -12,7 +12,7 @@ namespace Qtfy.Net.Numerics
     public static class Constants
     {
         /// <summary>
-        /// The Pi mathematical constant.
+        /// The mathematical constant PI.
         /// </summary>
         public const double Pi = 3.14159265358979323846d;
 
@@ -20,5 +20,15 @@ namespace Qtfy.Net.Numerics
         /// The mathematical constant Pi, multiplied by two.
         /// </summary>
         public const double TwoPi = Pi * 2d;
+
+        /// <summary>
+        /// The natural logarithm of two.
+        /// </summary>
+        public const double LnTwo = 0.69314718055994530941723212145818;
+
+        /// <summary>
+        /// The natural logarithm of two multiplied by two.
+        /// </summary>
+        public const double TwoLnTwo = LnTwo * 2d;
     }
 }

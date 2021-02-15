@@ -29,7 +29,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
             /// </summary>
             public int Length
             {
-                get => this.data.Length;
+                get => this.Data.Length;
             }
 
             /// <summary>
@@ -40,8 +40,8 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
             /// </param>
             public double this[int i]
             {
-                get => this.data[i];
-                set => this.data[i] = value;
+                get => this.Data[i];
+                set => this.Data[i] = value;
             }
 
             /// <inheritdoc/>
