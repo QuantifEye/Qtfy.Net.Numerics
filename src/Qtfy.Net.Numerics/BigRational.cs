@@ -19,17 +19,17 @@ namespace Qtfy.Net.Numerics
         /// <summary>
         /// A value representing 1/1.
         /// </summary>
-        public static readonly BigRational One = new BigRational(1);
+        public static readonly BigRational One = new (1);
 
         /// <summary>
         /// A value representing 0/1.
         /// </summary>
-        public static readonly BigRational Zero = new BigRational(0);
+        public static readonly BigRational Zero = new (0);
 
         /// <summary>
         /// A value representing -1/1.
         /// </summary>
-        public static readonly BigRational MinusOne = new BigRational(-1);
+        public static readonly BigRational MinusOne = new (-1);
 
         /// <summary>
         /// The denominator value of this <see cref="BigRational"/>.
@@ -372,7 +372,7 @@ namespace Qtfy.Net.Numerics
         /// </exception>
         public BigRational Reciprocal()
         {
-            return new BigRational(this.denominator, this.numerator);
+            return new(this.denominator, this.numerator);
         }
 
         /// <inheritdoc/>

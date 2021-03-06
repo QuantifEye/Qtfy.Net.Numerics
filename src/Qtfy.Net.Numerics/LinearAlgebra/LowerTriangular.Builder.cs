@@ -100,7 +100,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
             /// </returns>
             private static int Index(int r, int c)
             {
-                return (r * (r + 1) / 2) + c;
+                return r * (r + 1) / 2 + c;
             }
 
             /// <summary>
@@ -138,7 +138,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                     throw new LinearAlgebraException("Cannot construct empty matrix");
                 }
 
-                return new double[(order * (order + 1)) / 2];
+                return new double[order * (order + 1) / 2];
             }
         }
     }

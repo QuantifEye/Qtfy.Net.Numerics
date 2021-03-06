@@ -78,7 +78,7 @@ namespace Qtfy.Net.Numerics
             }
 
             var n = 1 / (x - 1);
-            var factor = 1 / ((2 * n) + 1);
+            var factor = 1 / (2 * n + 1);
             var factorSquared = factor * factor;
             var total = factor;
             for (int term = 1, power = 3; term < terms; ++term, power += 2)

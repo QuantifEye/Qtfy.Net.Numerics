@@ -114,7 +114,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             Assert.Warn("test me");
         }
 
-
         [Test]
         public void TestConstructWithNullSeedSequence()
         {
@@ -225,7 +224,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
                 for (mti = 1; mti < N; mti++)
                 {
                     mt[mti] =
-                        (1812433253UL * (mt[mti - 1] ^ (mt[mti - 1] >> 30)) + (ulong) mti);
+                        1812433253UL * (mt[mti - 1] ^ (mt[mti - 1] >> 30)) + (ulong) mti;
                     /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
                     /* In the previous versions, MSBs of the seed affect   */
                     /* only MSBs of the array mt[].                        */
@@ -246,7 +245,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
                 init_genrand(19650218UL);
                 i = 1;
                 j = 0;
-                k = (N > key_length ? N : key_length);
+                k = N > key_length ? N : key_length;
                 for (; k != 0; k--)
                 {
                     mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 30)) * 1664525UL))
@@ -315,10 +314,10 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
                 y = mt[mti++];
 
                 /* Tempering */
-                y ^= (y >> 11);
+                y ^= y >> 11;
                 y ^= (y << 7) & 0x9d2c5680UL;
                 y ^= (y << 15) & 0xefc60000UL;
-                y ^= (y >> 18);
+                y ^= y >> 18;
 
                 return y;
             }

@@ -31,6 +31,29 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <summary>
+        /// Copies the first <paramref name="count"/> elements from <paramref name="self"/> to
+        /// a new array.
+        /// </summary>
+        /// <param name="self">
+        /// The array to copy from.
+        /// </param>
+        /// <param name="count">
+        /// The number of elements to copy.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of the elements to copy.
+        /// </typeparam>
+        /// <returns>
+        /// A new array that contains the first <paramref name="count"/> elements in <paramref name="self"/>.
+        /// </returns>
+        public static T[] Copy<T>(this T[] self, int count)
+        {
+            var result = new T[count];
+            Array.Copy(self, result, count);
+            return result;
+        }
+
+        /// <summary>
         /// Adds <paramref name="right"/> to each element in <paramref name="left"/>.
         /// </summary>
         /// <param name="left">

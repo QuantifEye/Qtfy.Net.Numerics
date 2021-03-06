@@ -7,28 +7,18 @@
 namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
 {
     using System;
-    using System.Diagnostics;
 
     /// <summary>
     /// A base class for all random bit generators that generate uniformly distributed values.
     /// </summary>
-    public abstract class ULongRandomNumberEngine : RandomNumberEngineBase
+    public abstract class ULongRandomNumberEngine : IRandomNumberEngine
     {
         /// <inheritdoc />
-        public sealed override long NextLong()
-        {
-            unchecked
-            {
-                return long.MinValue + (long)this.NextULong();
-            }
-        }
+        public abstract ulong NextULong();
 
         /// <inheritdoc />
-        public sealed override uint NextUInt()
+        public uint NextUInt()
         {
-            // TODO: check if this can be replaces with
-            // return (uint)(this.NextUlong() >> 32)
-            // This will break gcc compatibility, but could be significantly faster
             unchecked
             {
                 const ulong range = (ulong)uint.MaxValue + 1UL;
@@ -45,23 +35,12 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             }
         }
 
-        /// <inheritdoc />
-        public sealed override int NextInt()
+        private ulong NextULongImpl(ulong maxExclusive)
         {
             unchecked
             {
-                return int.MinValue + (int)this.NextUInt();
-            }
-        }
-
-        private ulong NextULongImpl(ulong max)
-        {
-            Debug.Assert(max != ulong.MaxValue, "range check");
-            unchecked
-            {
-                var range = max + 1UL;
-                var scaling = ulong.MaxValue / range;
-                var last = range * scaling;
+                var scaling = ulong.MaxValue / maxExclusive;
+                var last = maxExclusive * scaling;
                 ulong result;
                 do
                 {
@@ -74,80 +53,60 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         }
 
         /// <inheritdoc />
-        public sealed override ulong NextULong(ulong max)
+        public ulong NextULong(ulong max)
         {
-            return max == ulong.MaxValue
-                ? this.NextULong()
-                : this.NextULongImpl(max);
+            unchecked
+            {
+                return max == ulong.MaxValue
+                    ? this.NextULong()
+                    : this.NextULongImpl(max + 1UL);
+            }
         }
 
         /// <inheritdoc />
-        public sealed override long NextLong(long max)
+        public double NextCanonical()
         {
-            return max < 0L
-                ? throw new ArgumentException("max must be non negative")
-                : (long)this.NextULongImpl((ulong)max);
+            return RandomFunctions.Canonical(this.NextULong());
+        }
+
+        /// <inheritdoc />
+        public double NextIncrementedCanonical()
+        {
+            return RandomFunctions.IncrementedCanonical(this.NextULong());
+        }
+
+        /// <inheritdoc />
+        public double NextSignedCanonical()
+        {
+            return RandomFunctions.SignedCanonical(this.NextULong());
+        }
+
+        /// <inheritdoc />
+        public double NextStandardUniform()
+        {
+            unchecked
+            {
+                const ulong maxInclusive = 1UL << 53;
+                const ulong maxExclusive = maxInclusive + 1UL;
+                const ulong scaling = ulong.MaxValue / maxExclusive;
+                const ulong last = maxExclusive * scaling;
+                ulong result;
+                do
+                {
+                    result = this.NextULong();
+                }
+                while (result >= last);
+
+                return Math.ScaleB(result / scaling, -53);
+            }
         }
 
         /// <inheritdoc/>
-        public sealed override uint NextUInt(uint max)
-        {
-            return (uint)this.NextULongImpl(max);
-        }
-
-
-        /// <inheritdoc />
-        public sealed override int NextInt(int max)
+        public uint NextUInt(uint max)
         {
             unchecked
             {
-                return max < 0L
-                    ? throw new ArgumentException("max must be non-negative")
-                    : (int)this.NextULongImpl((ulong)max);
-            }
-        }
-
-        /// <inheritdoc />
-        public sealed override ulong NextULong(ulong min, ulong max)
-        {
-            unchecked
-            {
-                return max < min
-                    ? throw new ArgumentException("min must be less than or equal to max", nameof(min))
-                    : min + this.NextULong(max - min);
-            }
-        }
-
-        /// <inheritdoc />
-        public sealed override long NextLong(long min, long max)
-        {
-            unchecked
-            {
-                return max < min
-                    ? throw new ArgumentException("min must be less than or equal to max", nameof(min))
-                    : min + (long)this.NextULong((ulong)(max - min));
-            }
-        }
-
-        /// <inheritdoc />
-        public sealed override uint NextUInt(uint min, uint max)
-        {
-            unchecked
-            {
-                return max < min
-                    ? throw new ArgumentException("min must be less than or equal to max", nameof(min))
-                    : min + (uint)this.NextULongImpl(max - min);
-            }
-        }
-
-        /// <inheritdoc />
-        public sealed override int NextInt(int min, int max)
-        {
-            unchecked
-            {
-                return max < min
-                    ? throw new ArgumentException("min must be less than or equal to max", nameof(min))
-                    : (int)((ulong)min + this.NextULongImpl((ulong)max - (ulong)min));
+                return (uint)this.NextULongImpl(max + 1UL);
             }
         }
     }

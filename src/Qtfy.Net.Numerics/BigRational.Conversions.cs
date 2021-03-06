@@ -85,7 +85,7 @@ namespace Qtfy.Net.Numerics
             x = (x >> extraBits) - (1L << fractionBits);
             Debug.Assert(x <= fractionBitsMask, "1 <= x 2 ^ -52 < 2");
 
-            if ((extra >> (extraBits - 1) == 1) && ((extra > (1 << (extraBits - 1))) || ((x & 1) == 1)))
+            if (extra >> (extraBits - 1) == 1 && (extra > 1 << (extraBits - 1) || (x & 1) == 1))
             {
                 ++x;
             }
@@ -222,7 +222,7 @@ namespace Qtfy.Net.Numerics
             var scaledFraction = (value - rationalWhole) * rationalScale;
             var scaledRounded = RoundToInt(scaledFraction, MidpointRoundingMode.ToEven);
 
-            return ((decimal)scaledRounded / (decimal)rationalScale) + (decimal)rationalWhole;
+            return (decimal)scaledRounded / (decimal)rationalScale + (decimal)rationalWhole;
 
             static int Digits(BigInteger number)
             {
@@ -252,7 +252,7 @@ namespace Qtfy.Net.Numerics
         /// </param>
         public static implicit operator BigRational(BigInteger value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static implicit operator BigRational(ulong value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace Qtfy.Net.Numerics
         /// </param>
         public static implicit operator BigRational(long value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static implicit operator BigRational(uint value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -298,7 +298,7 @@ namespace Qtfy.Net.Numerics
         /// </param>
         public static implicit operator BigRational(int value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static implicit operator BigRational(ushort value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace Qtfy.Net.Numerics
         /// </param>
         public static implicit operator BigRational(short value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace Qtfy.Net.Numerics
         /// </param>
         public static implicit operator BigRational(byte value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static implicit operator BigRational(sbyte value)
         {
-            return new BigRational(value);
+            return new(value);
         }
 
         /// <summary>

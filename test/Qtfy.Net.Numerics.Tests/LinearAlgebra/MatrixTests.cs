@@ -4,7 +4,7 @@
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-namespace Qtfy.Net.Numerics.LinearAlgebra.Tests
+namespace Qtfy.Net.Numerics.Tests.LinearAlgebra
 {
     using NUnit.Framework;
     using Qtfy.Net.Numerics.LinearAlgebra;
@@ -30,7 +30,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra.Tests
         public void TestEmptyMatrix(int rows, int columns)
         {
             Assert.Throws<LinearAlgebraException>(
-                () => new Matrix.Builder(rows, columns));
+                () => _ = new Matrix.Builder(rows, columns));
         }
 
         [TestCase(1, 1)]

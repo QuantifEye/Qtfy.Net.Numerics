@@ -66,10 +66,10 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             unchecked
             {
                 var oldState = this.state;
-                this.state = (oldState * 6364136223846793005UL) + this.inc;
+                this.state = oldState * 6364136223846793005UL + this.inc;
                 var xorShifted = (uint)(((oldState >> 18) ^ oldState) >> 27);
                 var rot = (int)(oldState >> 59);
-                return (xorShifted >> rot) | (xorShifted << ((-rot) & 31));
+                return (xorShifted >> rot) | (xorShifted << (-rot & 31));
             }
         }
     }

@@ -13,11 +13,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </summary>
     public class NormalSampler : ISampler<double>
     {
-        private readonly StandardNormalSampler standardNormalSampler;
-
-        private readonly double mu;
-
-        private readonly double sigma;
+        private StandardNormalSampler standardNormalSampler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NormalSampler"/> class.
@@ -33,15 +29,40 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </param>
         public NormalSampler(IRandomNumberEngine generator, double mu, double sigma)
         {
+            if (generator is null)
+            {
+                throw new ArgumentNullException(nameof(generator));
+            }
+
+            if (!double.IsFinite(mu))
+            {
+                throw new ArgumentException("Value must not be null of infinity", nameof(mu));
+            }
+
+            if (!double.IsFinite(sigma))
+            {
+                throw new ArgumentException("Value must not be null of infinity", nameof(sigma));
+            }
+
             this.standardNormalSampler = new StandardNormalSampler(generator);
-            this.mu = mu;
-            this.sigma = sigma;
+            this.Mu = mu;
+            this.Sigma = sigma;
         }
+
+        /// <summary>
+        /// Gets the mean parameter of the distribution.
+        /// </summary>
+        public double Mu { get; }
+
+        /// <summary>
+        /// Gets the standard deviation of the distribution.
+        /// </summary>
+        public double Sigma { get; }
 
         /// <inheritdoc/>
         public double GetNext()
         {
-            return Math.FusedMultiplyAdd(this.standardNormalSampler.GetNext(), this.sigma, this.mu);
+            return Math.FusedMultiplyAdd(this.standardNormalSampler.GetNext(), this.Sigma, this.Mu);
         }
     }
 }

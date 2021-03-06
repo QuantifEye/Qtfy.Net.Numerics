@@ -25,7 +25,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational operator -(BigRational value)
         {
-            return new BigRational(-value.Numerator, value.Denominator);
+            return new(-value.Numerator, value.Denominator);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Qtfy.Net.Numerics
         {
             var leftDen = augend.Denominator;
             var rightDen = addend.Denominator;
-            return new BigRational((augend.Numerator * rightDen) + (addend.Numerator * leftDen), leftDen * rightDen);
+            return new BigRational(augend.Numerator * rightDen + addend.Numerator * leftDen, leftDen * rightDen);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator +(BigRational augend, BigInteger addend)
         {
             var leftDen = augend.Denominator;
-            return new BigRational(augend.Numerator + (addend * leftDen), leftDen);
+            return new BigRational(augend.Numerator + addend * leftDen, leftDen);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator +(BigInteger augend, BigRational addend)
         {
             var rightDen = addend.Denominator;
-            return new BigRational((augend * rightDen) + addend.Numerator, rightDen);
+            return new BigRational(augend * rightDen + addend.Numerator, rightDen);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator +(BigRational augend, ulong addend)
         {
             var leftDen = augend.Denominator;
-            return new BigRational(augend.Numerator + (addend * leftDen), leftDen);
+            return new BigRational(augend.Numerator + addend * leftDen, leftDen);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator +(ulong augend, BigRational addend)
         {
             var rightDen = addend.Denominator;
-            return new BigRational((augend * rightDen) + addend.Numerator, rightDen);
+            return new BigRational(augend * rightDen + addend.Numerator, rightDen);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator +(BigRational augend, long addend)
         {
             var leftDen = augend.Denominator;
-            return new BigRational(augend.Numerator + (addend * leftDen), leftDen);
+            return new BigRational(augend.Numerator + addend * leftDen, leftDen);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator +(long augend, BigRational addend)
         {
             var rightDen = addend.Denominator;
-            return new BigRational((augend * rightDen) + addend.Numerator, rightDen);
+            return new BigRational(augend * rightDen + addend.Numerator, rightDen);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Qtfy.Net.Numerics
         {
             var leftDen = minuend.Denominator;
             var rightDen = subtrahend.Denominator;
-            return new BigRational((minuend.Numerator * rightDen) - (subtrahend.Numerator * leftDen), leftDen * rightDen);
+            return new BigRational(minuend.Numerator * rightDen - subtrahend.Numerator * leftDen, leftDen * rightDen);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator -(BigRational minuend, BigInteger subtrahend)
         {
             var leftDen = minuend.Denominator;
-            return new BigRational(minuend.Numerator - (subtrahend * leftDen), leftDen);
+            return new BigRational(minuend.Numerator - subtrahend * leftDen, leftDen);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator -(BigInteger minuend, BigRational subtrahend)
         {
             var rightDen = subtrahend.Denominator;
-            return new BigRational((minuend * rightDen) - subtrahend.Numerator, rightDen);
+            return new BigRational(minuend * rightDen - subtrahend.Numerator, rightDen);
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator -(BigRational minuend, ulong subtrahend)
         {
             var leftDen = minuend.Denominator;
-            return new BigRational(minuend.Numerator - (subtrahend * leftDen), leftDen);
+            return new BigRational(minuend.Numerator - subtrahend * leftDen, leftDen);
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator -(ulong minuend, BigRational subtrahend)
         {
             var rightDen = subtrahend.Denominator;
-            return new BigRational((minuend * rightDen) - subtrahend.Numerator, rightDen);
+            return new BigRational(minuend * rightDen - subtrahend.Numerator, rightDen);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator -(BigRational minuend, long subtrahend)
         {
             var leftDen = minuend.Denominator;
-            return new BigRational(minuend.Numerator - (subtrahend * leftDen), leftDen);
+            return new BigRational(minuend.Numerator - subtrahend * leftDen, leftDen);
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator -(long minuend, BigRational subtrahend)
         {
             var rightDen = subtrahend.Denominator;
-            return new BigRational((minuend * rightDen) - subtrahend.Numerator, rightDen);
+            return new BigRational(minuend * rightDen - subtrahend.Numerator, rightDen);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static BigRational operator *(BigRational multiplicand, BigRational multiplier)
         {
-            return new BigRational(
+            return new(
                 multiplicand.Numerator * multiplier.Numerator,
                 multiplicand.Denominator * multiplier.Denominator);
         }
@@ -365,7 +365,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational operator *(BigRational multiplicand, BigInteger multiplier)
         {
-            return new BigRational(multiplicand.Numerator * multiplier, multiplicand.Denominator);
+            return new(multiplicand.Numerator * multiplier, multiplicand.Denominator);
         }
 
         /// <summary>
@@ -382,7 +382,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational operator *(BigInteger multiplicand, BigRational multiplier)
         {
-            return new BigRational(multiplicand * multiplier.Numerator, multiplier.Denominator);
+            return new(multiplicand * multiplier.Numerator, multiplier.Denominator);
         }
 
         /// <summary>
@@ -400,7 +400,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static BigRational operator *(BigRational multiplicand, ulong multiplier)
         {
-            return new BigRational(multiplicand.Numerator * multiplier, multiplicand.Denominator);
+            return new(multiplicand.Numerator * multiplier, multiplicand.Denominator);
         }
 
         /// <summary>
@@ -418,7 +418,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static BigRational operator *(ulong multiplicand, BigRational multiplier)
         {
-            return new BigRational(multiplicand * multiplier.Numerator, multiplier.Denominator);
+            return new(multiplicand * multiplier.Numerator, multiplier.Denominator);
         }
 
         /// <summary>
@@ -435,7 +435,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational operator *(BigRational multiplicand, long multiplier)
         {
-            return new BigRational(multiplicand.Numerator * multiplier, multiplicand.Denominator);
+            return new(multiplicand.Numerator * multiplier, multiplicand.Denominator);
         }
 
         /// <summary>
@@ -452,7 +452,7 @@ namespace Qtfy.Net.Numerics
         /// </returns>
         public static BigRational operator *(long multiplicand, BigRational multiplier)
         {
-            return new BigRational(multiplicand * multiplier.Numerator, multiplier.Denominator);
+            return new(multiplicand * multiplier.Numerator, multiplier.Denominator);
         }
 
         /// <summary>
@@ -472,7 +472,7 @@ namespace Qtfy.Net.Numerics
         /// </exception>
         public static BigRational operator /(BigRational dividend, BigRational divisor)
         {
-            return new BigRational(dividend.Numerator * divisor.Denominator, dividend.Denominator * divisor.Numerator);
+            return new(dividend.Numerator * divisor.Denominator, dividend.Denominator * divisor.Numerator);
         }
 
         /// <summary>
@@ -492,7 +492,7 @@ namespace Qtfy.Net.Numerics
         /// </exception>
         public static BigRational operator /(BigRational dividend, BigInteger divisor)
         {
-            return new BigRational(dividend.Numerator, dividend.Denominator * divisor);
+            return new(dividend.Numerator, dividend.Denominator * divisor);
         }
 
         /// <summary>
@@ -512,7 +512,7 @@ namespace Qtfy.Net.Numerics
         /// </exception>
         public static BigRational operator /(BigInteger dividend, BigRational divisor)
         {
-            return new BigRational(dividend * divisor.Denominator, divisor.Numerator);
+            return new(dividend * divisor.Denominator, divisor.Numerator);
         }
 
         /// <summary>
@@ -533,7 +533,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static BigRational operator /(BigRational dividend, ulong divisor)
         {
-            return new BigRational(dividend.Numerator, dividend.Denominator * divisor);
+            return new(dividend.Numerator, dividend.Denominator * divisor);
         }
 
         /// <summary>
@@ -554,7 +554,7 @@ namespace Qtfy.Net.Numerics
         [CLSCompliant(false)]
         public static BigRational operator /(ulong dividend, BigRational divisor)
         {
-            return new BigRational(dividend * divisor.Denominator, divisor.Numerator);
+            return new(dividend * divisor.Denominator, divisor.Numerator);
         }
 
         /// <summary>
@@ -574,7 +574,7 @@ namespace Qtfy.Net.Numerics
         /// </exception>
         public static BigRational operator /(BigRational dividend, long divisor)
         {
-            return new BigRational(dividend.Numerator, dividend.Denominator * divisor);
+            return new(dividend.Numerator, dividend.Denominator * divisor);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace Qtfy.Net.Numerics
         /// </exception>
         public static BigRational operator /(long dividend, BigRational divisor)
         {
-            return new BigRational(dividend * divisor.Denominator, divisor.Numerator);
+            return new(dividend * divisor.Denominator, divisor.Numerator);
         }
 
         /// <summary>
@@ -615,7 +615,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator %(BigRational dividend, BigRational divisor)
         {
             var temp = dividend / divisor;
-            return dividend - ((temp.Numerator / temp.Denominator) * divisor);
+            return dividend - temp.Numerator / temp.Denominator * divisor;
         }
 
         /// <summary>
@@ -636,7 +636,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator %(BigRational dividend, BigInteger divisor)
         {
             var temp = dividend / divisor;
-            return dividend - ((temp.Numerator / temp.Denominator) * divisor);
+            return dividend - temp.Numerator / temp.Denominator * divisor;
         }
 
         /// <summary>
@@ -657,7 +657,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator %(BigInteger dividend, BigRational divisor)
         {
             var temp = dividend / divisor;
-            return dividend - ((temp.Numerator / temp.Denominator) * divisor);
+            return dividend - temp.Numerator / temp.Denominator * divisor;
         }
 
         /// <summary>
@@ -679,7 +679,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator %(BigRational dividend, ulong divisor)
         {
             var temp = dividend / divisor;
-            return dividend - ((temp.Numerator / temp.Denominator) * divisor);
+            return dividend - temp.Numerator / temp.Denominator * divisor;
         }
 
         /// <summary>
@@ -701,7 +701,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator %(ulong dividend, BigRational divisor)
         {
             var temp = dividend / divisor;
-            return dividend - ((temp.Numerator / temp.Denominator) * divisor);
+            return dividend - temp.Numerator / temp.Denominator * divisor;
         }
 
         /// <summary>
@@ -723,7 +723,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator %(BigRational dividend, long divisor)
         {
             var temp = dividend / divisor;
-            return dividend - ((temp.Numerator / temp.Denominator) * divisor);
+            return dividend - temp.Numerator / temp.Denominator * divisor;
         }
 
         /// <summary>
@@ -744,7 +744,7 @@ namespace Qtfy.Net.Numerics
         public static BigRational operator %(long dividend, BigRational divisor)
         {
             var temp = dividend / divisor;
-            return dividend - ((temp.Numerator / temp.Denominator) * divisor);
+            return dividend - temp.Numerator / temp.Denominator * divisor;
         }
     }
 }

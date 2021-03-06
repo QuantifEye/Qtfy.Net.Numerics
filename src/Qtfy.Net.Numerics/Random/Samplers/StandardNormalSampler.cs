@@ -6,6 +6,7 @@
 
 namespace Qtfy.Net.Numerics.Random.Samplers
 {
+    using System;
     using static System.Math;
 
     /// <summary>
@@ -37,7 +38,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </param>
         public StandardNormalSampler(IRandomNumberEngine engine)
         {
-            this.engine = engine;
+            this.engine = engine ?? throw new ArgumentNullException(nameof(engine));
         }
 
         /// <inheritdoc />
@@ -60,7 +61,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 }
                 while (s >= 1d || u == 0d || v == 0d);
 
-                if (s > 1E-4d)
+                if (s > 1e-4)
                 {
                     logS = Log(s);
                 }

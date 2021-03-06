@@ -67,7 +67,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
 {
     using System;
     using NUnit.Framework;
-    using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
 
     public class MersenneTwister64Bit19937Tests
@@ -127,7 +126,8 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         [Test]
         public void TestConstructWithNullSeedSequence()
         {
-            Assert.Throws<ArgumentNullException>(() => new MersenneTwister64Bit19937((ISeedSequence)null));
+            Assert.Throws<ArgumentNullException>(
+                () => _ = new MersenneTwister64Bit19937(null));
         }
 
         private static ulong[] GetRandomValues(MersenneTwister64Bit19937 generator, int size)
@@ -245,7 +245,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             {
                 mt[0] = seed;
                 for (mti = 1; mti < NN; mti++)
-                    mt[mti] = (6364136223846793005UL * (mt[mti - 1] ^ (mt[mti - 1] >> 62)) + mti);
+                    mt[mti] = 6364136223846793005UL * (mt[mti - 1] ^ (mt[mti - 1] >> 62)) + mti;
             }
 
             /* initialize by an array with array-length */
@@ -257,7 +257,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
                 init_genrand64(19650218UL);
                 i = 1;
                 j = 0;
-                k = (NN > key_length ? NN : key_length);
+                k = NN > key_length ? NN : key_length;
                 for (; k != 0; k--)
                 {
                     mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 62)) * 3935559000370003845UL))
@@ -327,7 +327,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
                 x ^= (x >> 29) & 0x5555555555555555UL;
                 x ^= (x << 17) & 0x71D67FFFEDA60000UL;
                 x ^= (x << 37) & 0xFFF7EEE000000000UL;
-                x ^= (x >> 43);
+                x ^= x >> 43;
 
                 return x;
             }

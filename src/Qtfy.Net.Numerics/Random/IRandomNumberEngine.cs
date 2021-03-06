@@ -34,59 +34,6 @@ namespace Qtfy.Net.Numerics.Random
         uint NextUInt(uint max);
 
         /// <summary>
-        /// Generates a <see cref="uint"/> that is uniformly distributed in the interval
-        /// [<paramref name="min"/>, <paramref name="max"/>].
-        /// </summary>
-        /// <param name="min">
-        /// The smallest number that will be generated.
-        /// </param>
-        /// <param name="max">
-        /// The greatest number that will be generated.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ulong"/> that is uniformly distributed in the interval [0, <paramref name="max"/>].
-        /// </returns>
-        uint NextUInt(uint min, uint max);
-
-        /// <summary>
-        /// Generates an <see cref="int"/> that is uniformly distributed across all possible <see cref="int"/> values,
-        /// this is [-2^31, 2^31).
-        /// </summary>
-        /// <returns>
-        /// An <see cref="int"/> that is uniformly distributed across all possible <see cref="int"/> values.
-        /// </returns>
-        int NextInt();
-
-        /// <summary>
-        /// Generates a <see cref="int"/> that is uniformly distributed across all possible <see cref="int"/> values,
-        /// this is [0, max].
-        /// </summary>
-        /// <param name="max">
-        /// The largest possible number that will be returned.
-        /// </param>
-        /// <returns>
-        /// A <see cref="int"/> that is uniformly distributed across all possible <see cref="int"/> values,
-        /// this is [0, max].
-        /// </returns>
-        int NextInt(int max);
-
-        /// <summary>
-        /// Generates a <see cref="int"/> that is uniformly distributed in the interval
-        /// [<paramref name="min"/>, <paramref name="max"/>].
-        /// </summary>
-        /// <param name="min">
-        /// The smallest number that will be generated.
-        /// </param>
-        /// <param name="max">
-        /// The greatest number that will be generated.
-        /// </param>
-        /// <returns>
-        /// A <see cref="int"/> that is uniformly distributed in the interval
-        /// [<paramref name="min"/>, <paramref name="max"/>].
-        /// </returns>
-        int NextInt(int min, int max);
-
-        /// <summary>
         /// Generates an <see cref="ulong"/> that is uniformly distributed across all possible <see cref="ulong"/> values,
         /// this is [0, 2^64).
         /// </summary>
@@ -109,61 +56,8 @@ namespace Qtfy.Net.Numerics.Random
         ulong NextULong(ulong max);
 
         /// <summary>
-        /// Generates a <see cref="ulong"/> that is uniformly distributed in the interval
-        /// [<paramref name="min"/>, <paramref name="max"/>].
-        /// </summary>
-        /// <param name="min">
-        /// The smallest number that will be generated.
-        /// </param>
-        /// <param name="max">
-        /// The greatest number that will be generated.
-        /// </param>
-        /// <returns>
-        /// A <see cref="ulong"/> that is uniformly distributed in the interval
-        /// [<paramref name="min"/>, <paramref name="max"/>].
-        /// </returns>
-        ulong NextULong(ulong min, ulong max);
-
-        /// <summary>
-        /// Generates a <see cref="long"/> that is uniformly distributed across all possible <see cref="long"/> values,
-        /// this is [-(2^63), 2^63).
-        /// </summary>
-        /// <returns>
-        /// An <see cref="long"/> that is uniformly distributed across all possible <see cref="long"/> values.
-        /// </returns>
-        long NextLong();
-
-        /// <summary>
-        /// Generates a <see cref="long"/> that is uniformly distributed across all possible <see cref="long"/> values,
-        /// this is [0, max].
-        /// </summary>
-        /// <param name="max">
-        /// The largest possible number that will be returned.
-        /// </param>
-        /// <returns>
-        /// A <see cref="long"/> that is uniformly distributed across all possible <see cref="long"/> values,
-        /// this is [0, max].
-        /// </returns>
-        long NextLong(long max);
-
-        /// <summary>
-        /// Generates a <see cref="long"/> that is uniformly distributed in the interval
-        /// [<paramref name="min"/>, <paramref name="max"/>].
-        /// </summary>
-        /// <param name="min">
-        /// The smallest number that will be generated.
-        /// </param>
-        /// <param name="max">
-        /// The greatest number that will be generated.
-        /// </param>
-        /// <returns>
-        /// A <see cref="long"/> that is uniformly distributed in the interval
-        /// [<paramref name="min"/>, <paramref name="max"/>].
-        /// </returns>
-        long NextLong(long min, long max);
-
-        /// <summary>
-        /// Generates a standard real uniform random variable distributed on the interval [0, 1).
+        /// Generates a standard real uniform random variable distributed on the interval [0, 1),
+        /// rounded to the nearest multiple of 2^-53.
         /// </summary>
         /// <returns>
         /// A standard real uniform random variable distributed on the interval [0, 1).
@@ -171,19 +65,30 @@ namespace Qtfy.Net.Numerics.Random
         double NextCanonical();
 
         /// <summary>
-        /// Generates a standard real uniform random variable distributed on the interval (0, 1].
+        /// Creates a double in the interval (0, 1] by creating an integer the range (0, 2^53],
+        /// converting this integer to a double, and dividing this number by 2^53.
         /// </summary>
         /// <returns>
-        /// A standard uniform random variable distributed on the interval [0, 1).
+        /// A double in the interval (0, 1].
         /// </returns>
-        public double NextIncrementedCanonical();
+        double NextIncrementedCanonical();
 
         /// <summary>
-        /// Generates a standard real uniform random variable distributed on the interval (-1, 1).
+        /// Generates a standard real uniform random variable distributed on the interval (-1, 1),
+        /// rounded to the nearest multiple of 2^-53.
         /// </summary>
         /// <returns>
         /// A standard uniform random variable distributed on the interval (-1, 1).
         /// </returns>
-        public double NextSymmetricCanonical();
+        public double NextSignedCanonical();
+
+        /// <summary>
+        /// Generates a standard real uniform random variable distributed on the interval [0, 1],
+        /// rounded to the nearest multiple of 2^-53.
+        /// </summary>
+        /// <returns>
+        /// A double in the interval [0, 1].
+        /// </returns>
+        public double NextStandardUniform();
     }
 }

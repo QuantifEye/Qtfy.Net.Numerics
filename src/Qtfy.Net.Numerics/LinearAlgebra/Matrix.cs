@@ -61,7 +61,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                     throw new IndexOutOfRangeException();
                 }
 
-                return this.data[(r * this.ColumnCount) + c];
+                return this.data[r * this.ColumnCount + c];
             }
         }
 
@@ -116,7 +116,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </returns>
         public static Matrix operator +(Matrix matrix, double scalar)
         {
-            return new Matrix(ArrayMath.Add(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
+            return new (ArrayMath.Add(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </returns>
         public static Matrix operator -(Matrix left, double right)
         {
-            return new Matrix(ArrayMath.Subtract(left.data, right), left.RowCount, left.ColumnCount);
+            return new(ArrayMath.Subtract(left.data, right), left.RowCount, left.ColumnCount);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </returns>
         public static Matrix operator *(Matrix matrix, double scalar)
         {
-            return new Matrix(ArrayMath.Multiply(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
+            return new(ArrayMath.Multiply(matrix.data, scalar), matrix.RowCount, matrix.ColumnCount);
         }
 
         /// <summary>

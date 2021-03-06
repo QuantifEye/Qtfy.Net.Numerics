@@ -156,7 +156,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
         /// </returns>
         public static Vector operator -(Vector left, double right)
         {
-            return left + (-right);
+            return left + -right;
         }
     }
 }

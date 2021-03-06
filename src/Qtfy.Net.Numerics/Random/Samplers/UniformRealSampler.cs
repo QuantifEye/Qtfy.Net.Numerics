@@ -29,7 +29,22 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </param>
         public UniformRealSampler(IRandomNumberEngine generator, double min, double max)
         {
-            this.generator = generator;
+            if (!double.IsFinite(min))
+            {
+                throw new ArgumentException("min must be finite");
+            }
+
+            if (!double.IsFinite(max))
+            {
+                throw new ArgumentException("max must be finite");
+            }
+
+            if (max < min)
+            {
+                throw new ArgumentException("min must be less that or equal to max");
+            }
+
+            this.generator = generator ?? throw new ArgumentNullException(nameof(generator));
             this.Min = min;
             this.Max = max;
         }
@@ -47,7 +62,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// <inheritdoc/>
         public double GetNext()
         {
-            return Math.FusedMultiplyAdd(this.generator.NextCanonical(), this.Max - this.Min, this.Min);
+            return Math.FusedMultiplyAdd(this.generator.NextStandardUniform(), this.Max - this.Min, this.Min);
         }
     }
 }

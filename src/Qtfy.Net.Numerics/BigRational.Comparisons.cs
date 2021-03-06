@@ -771,7 +771,7 @@ namespace Qtfy.Net.Numerics
         {
             unchecked
             {
-                return (this.Numerator.GetHashCode() * 137) + this.Denominator.GetHashCode();
+                return this.Numerator.GetHashCode() * 137 + this.Denominator.GetHashCode();
             }
         }
 

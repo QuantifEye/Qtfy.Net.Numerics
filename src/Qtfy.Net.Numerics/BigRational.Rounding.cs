@@ -15,7 +15,7 @@ namespace Qtfy.Net.Numerics
     /// </summary>
     public partial struct BigRational
     {
-        private static readonly BigInteger BigIntegerTwo = new BigInteger(2);
+        private static readonly BigInteger BigIntegerTwo = new(2);
 
         /// <summary>
         /// Returns the smallest integral value that is greater than or equal to the specified
@@ -216,7 +216,7 @@ namespace Qtfy.Net.Numerics
                 return value.Numerator / value.Denominator;
             }
 
-            return (value.Numerator / value.Denominator) - BigInteger.One;
+            return value.Numerator / value.Denominator - BigInteger.One;
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Qtfy.Net.Numerics
                 return value.Numerator / value.Denominator;
             }
 
-            return (value.Numerator / value.Denominator) + BigInteger.One;
+            return value.Numerator / value.Denominator + BigInteger.One;
         }
 
         /// <summary>

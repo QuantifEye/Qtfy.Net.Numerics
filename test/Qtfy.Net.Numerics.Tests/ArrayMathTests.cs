@@ -40,7 +40,6 @@ namespace Qtfy.Net.Numerics.Tests
                 left.Zip(right).Select(p => p.First + p.Second).ToArray());
         }
 
-
         [Test]
         public void TestAddArraysInvalidLength()
         {
@@ -75,7 +74,6 @@ namespace Qtfy.Net.Numerics.Tests
             double[] right = { 23, 5467 };
             Assert.Throws<ArgumentException>(() => ArrayMath.Subtract(left, right));
         }
-
 
         [TestCase(2d)]
         public void TestMultiplyConstant(double constant)

@@ -28,10 +28,10 @@ namespace Qtfy.Net.Numerics.Tests
                 1 + power,
                 BigRational.Exp(power, 2));
             Assert.AreEqual(
-                1 + power + ((power * power) / 2),
+                1 + power + power * power / 2,
                 BigRational.Exp(power, 3));
             Assert.AreEqual(
-                1 + power + ((power * power) / 2) + ((power * power * power) / 6),
+                1 + power + power * power / 2 + power * power * power / 6,
                 BigRational.Exp(power, 4));
         }
 

@@ -1,4 +1,4 @@
-// <copyright file="LibStdCppSeedSequence.cs" company="QuantifEye">
+// <copyright file="SeedSequence.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
@@ -13,17 +13,17 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
     /// <summary>
     /// a <see cref="uint"/> seed sequence. <see cref="ISeedSequence"/>.
     /// </summary>
-    public class LibStdCppSeedSequence : ISeedSequence
+    public class SeedSequence : ISeedSequence
     {
         private readonly uint[] entropy;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibStdCppSeedSequence"/> class.
+        /// Initializes a new instance of the <see cref="SeedSequence"/> class.
         /// </summary>
         /// <param name="seeds">
         /// The seeds to construct the seed sequence with.
         /// </param>
-        public LibStdCppSeedSequence(IEnumerable<uint> seeds)
+        public SeedSequence(IEnumerable<uint> seeds)
         {
             if (seeds is null)
             {
@@ -38,12 +38,12 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LibStdCppSeedSequence"/> class.
+        /// Initializes a new instance of the <see cref="SeedSequence"/> class.
         /// </summary>
         /// <param name="seeds">
         /// The seeds to construct the seed sequence with.
         /// </param>
-        public LibStdCppSeedSequence(params uint[] seeds)
+        public SeedSequence(params uint[] seeds)
             : this(seeds.AsEnumerable())
         {
         }
@@ -51,6 +51,11 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
         /// <inheritdoc />
         public void Generate(uint[] buffer)
         {
+            if (buffer is null)
+            {
+                throw new ArgumentNullException(nameof(buffer));
+            }
+
             unsafe
             {
                 fixed (uint* bufferPin = buffer, seedsPin = this.entropy)
@@ -63,6 +68,11 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
         /// <inheritdoc />
         public void Generate(ulong[] buffer)
         {
+            if (buffer is null)
+            {
+                throw new ArgumentNullException(nameof(buffer));
+            }
+
             unsafe
             {
                 fixed (ulong* bufferPin = buffer)
@@ -82,10 +92,10 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
                     buffer[i] = 0x8b8b8b8bu;
                 }
 
-                var t = (bufferLenght >= 623U) ? 11U
-                    : (bufferLenght >= 68U) ? 7U
-                    : (bufferLenght >= 39U) ? 5U
-                    : (bufferLenght >= 7U) ? 3U
+                var t = bufferLenght >= 623U ? 11U
+                    : bufferLenght >= 68U ? 7U
+                    : bufferLenght >= 39U ? 5U
+                    : bufferLenght >= 7U ? 3U
                     : (bufferLenght - 1U) / 2U;
                 var p = (bufferLenght - t) / 2U;
                 var q = p + t;
@@ -104,7 +114,7 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
                 {
                     a = buffer[(k - 1U) % bufferLenght] ^ buffer[k % bufferLenght] ^ buffer[(k + p) % bufferLenght];
                     r1 = (a ^ (a >> 27)) * 1664525U;
-                    r2 = r1 + ((k % bufferLenght) + seeds[k - 1U]);
+                    r2 = r1 + k % bufferLenght + seeds[k - 1U];
                     buffer[(k + p) % bufferLenght] += r1;
                     buffer[(k + q) % bufferLenght] += r2;
                     buffer[k % bufferLenght] = r2;
@@ -116,7 +126,7 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
                 {
                     a = buffer[(k - 1U) % bufferLenght] ^ buffer[k % bufferLenght] ^ buffer[(k + p) % bufferLenght];
                     r1 = (a ^ (a >> 27)) * 1664525U;
-                    r2 = r1 + (k % bufferLenght);
+                    r2 = r1 + k % bufferLenght;
                     buffer[(k + p) % bufferLenght] += r1;
                     buffer[(k + q) % bufferLenght] += r2;
                     buffer[k % bufferLenght] = r2;
@@ -128,7 +138,7 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
                 {
                     a = buffer[(k - 1U) % bufferLenght] + buffer[k % bufferLenght] + buffer[(k + p) % bufferLenght];
                     r1 = (a ^ (a >> 27)) * 1566083941U;
-                    r2 = r1 - (k % bufferLenght);
+                    r2 = r1 - k % bufferLenght;
                     buffer[(k + p) % bufferLenght] ^= r1;
                     buffer[(k + q) % bufferLenght] ^= r2;
                     buffer[k % bufferLenght] = r2;

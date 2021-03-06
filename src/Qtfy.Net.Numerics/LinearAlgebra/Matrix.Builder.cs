@@ -77,7 +77,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                     throw new LinearAlgebraException();
                 }
 
-                return (i * this.ColumnCount) + j;
+                return i * this.ColumnCount + j;
             }
         }
     }

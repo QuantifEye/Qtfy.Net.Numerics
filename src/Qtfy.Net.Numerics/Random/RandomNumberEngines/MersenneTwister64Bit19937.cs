@@ -60,8 +60,6 @@ http://www.math.hiroshima-u.ac.jp/~m-mat/MT/emt.html
 email: m-mat @ math.sci.hiroshima-u.ac.jp (remove spaces)
 */
 
-using System.Runtime.InteropServices;
-
 namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
 {
     using System;
@@ -74,55 +72,14 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
     {
         private const int N = 312;
 
-        private const int M = 156;
+        private readonly ulong[] state;
 
-        private readonly unsafe ulong* begin;
-
-        private readonly unsafe ulong* end;
-
-        private unsafe ulong* current;
-
-        private readonly ulong[] originalState;
-
-        private readonly int index;
-
-        private readonly nint resource;
+        private int index;
 
         private MersenneTwister64Bit19937(ulong[] state, int index)
         {
-            unsafe
-            {
-                if (index < 0 || index > state.Length)
-                {
-                    throw new ArgumentException("index cannot be greater than length of state, or smaller than zero");
-                }
-
-                this.originalState = state;
-                this.resource = Marshal.AllocHGlobal(sizeof(ulong) * N);
-                var p = (ulong*)this.resource;
-                if (p is null)
-                {
-                    throw new OutOfMemoryException("could not allocate");
-                }
-
-                this.begin = p;
-                this.current = p + index;
-                this.end = p + N;
-                this.index = index;
-
-                for (int i = 0; i < state.Length; ++i)
-                {
-                    p[i] = state[i];
-                }
-            }
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the <see cref="MersenneTwister64Bit19937"/> class.
-        /// </summary>
-        ~MersenneTwister64Bit19937()
-        {
-            Marshal.FreeHGlobal(this.resource);
+            this.state = state ?? throw new ArgumentNullException(nameof(state));
+            this.index = index;
         }
 
         /// <summary>
@@ -207,7 +164,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         {
             if (seeds is null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(seeds));
             }
 
             unsafe
@@ -264,20 +221,16 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         {
             unchecked
             {
-                unsafe
+                if (this.index == N)
                 {
-                    if (this.current == this.end)
-                    {
-                        this.UpdateState();
-                    }
-
-                    var y = *this.current;
-                    ++this.current;
-                    y ^= (y >> 29) & 0x5555555555555555UL;
-                    y ^= (y << 17) & 0x71D67FFFEDA60000UL;
-                    y ^= (y << 37) & 0xFFF7EEE000000000UL;
-                    return y ^ (y >> 43);
+                    this.UpdateState();
                 }
+
+                var y = this.state[this.index++];
+                y ^= (y >> 29) & 0x5555555555555555UL;
+                y ^= (y << 17) & 0x71D67FFFEDA60000UL;
+                y ^= (y << 37) & 0xFFF7EEE000000000UL;
+                return y ^ (y >> 43);
             }
         }
 
@@ -289,6 +242,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         /// </param>
         private static unsafe void UpdateStateImpl(ulong* mt)
         {
+            const int m = 156;
             const ulong matrixA = 0xB5026F5AA96619E9UL;
             const ulong upperMask = 0xFFFFFFFF80000000UL;
             const ulong lowerMask = 0x7FFFFFFFUL;
@@ -296,7 +250,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             {
                 var p0 = mt;
                 var p1 = mt + 1;
-                var p2 = mt + M;
+                var p2 = mt + m;
                 var end = mt + N;
                 ulong y;
 
@@ -335,8 +289,11 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         {
             unsafe
             {
-                UpdateStateImpl(this.begin);
-                this.current = this.begin;
+                fixed (ulong* mt = this.state)
+                {
+                    UpdateStateImpl(mt);
+                    this.index = 0;
+                }
             }
         }
     }

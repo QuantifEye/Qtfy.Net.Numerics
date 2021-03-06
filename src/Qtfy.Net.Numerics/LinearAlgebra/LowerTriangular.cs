@@ -61,7 +61,7 @@ namespace Qtfy.Net.Numerics.LinearAlgebra
                     throw new IndexOutOfRangeException();
                 }
 
-                return this.data[((r * (r + 1)) / 2) + c];
+                return this.data[r * (r + 1) / 2 + c];
             }
         }
     }

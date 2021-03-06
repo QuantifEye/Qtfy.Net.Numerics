@@ -47,15 +47,13 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
     {
         private const int N = 624;
 
-        private const int M = 397;
+        private readonly uint[] state;
 
-        private readonly uint[] state = new uint[N];
-
-        private int index = N;
+        private int index;
 
         private MersenneTwister32Bit19937(uint[] state, int index)
         {
-            this.state = state;
+            this.state = state ?? throw new ArgumentNullException(nameof(state));
             this.index = index;
         }
 
@@ -72,7 +70,10 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                 throw new ArgumentNullException(nameof(seedSequence));
             }
 
-            seedSequence.Generate(this.state);
+            var temp = new uint[N];
+            seedSequence.Generate(temp);
+            this.state = temp;
+            this.index = N;
         }
 
         /// <inheritdoc />
@@ -82,21 +83,15 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             {
                 if (this.index == N)
                 {
-                    UpdateState(this.state);
-                    this.index = 0;
+                    this.UpdateState();
                 }
 
-                return Temper(this.state[this.index++]);
+                var y = this.state[this.index++];
+                y ^= y >> 11;
+                y ^= (y << 7) & 0x9d2c5680U;
+                y ^= (y << 15) & 0xefc60000U;
+                return y ^ (y >> 18);
             }
-        }
-
-        private static uint Temper(uint y)
-        {
-            y ^= y >> 11;
-            y ^= (y << 7) & 0x9d2c5680U;
-            y ^= (y << 15) & 0xefc60000U;
-            y ^= y >> 18;
-            return y;
         }
 
         /// <summary>
@@ -107,6 +102,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         /// </param>
         private static unsafe void UpdateStateImpl(uint* mt)
         {
+            const int m = 397;
             const uint matrixA = 0x9908b0dfU;
             const uint upperMask = 0x80000000U;
             const uint lowerMask = 0x7fffffffU;
@@ -114,7 +110,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             {
                 var p0 = mt;
                 var p1 = mt + 1U;
-                var p2 = mt + M;
+                var p2 = mt + m;
                 var end = mt + N;
                 uint y;
 
@@ -149,16 +145,14 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         /// Advances the state by recalculating the state. This is used when the end of the state has been reached in
         /// order to update state values.
         /// </summary>
-        /// <param name="state">
-        /// The state array to update.
-        /// </param>
-        private static void UpdateState(uint[] state)
+        private void UpdateState()
         {
             unsafe
             {
-                fixed (uint* s = state)
+                fixed (uint* s = this.state)
                 {
                     UpdateStateImpl(s);
+                    this.index = 0;
                 }
             }
         }
@@ -196,9 +190,11 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             unchecked
             {
                 mt[0] = seed;
+                var t = seed;
                 for (uint mti = 1; mti < N; mti++)
                 {
-                    mt[mti] = (1812433253U * (mt[mti - 1] ^ (mt[mti - 1] >> 30))) + mti;
+                    t = 1812433253U * (t ^ (t >> 30)) + mti;
+                    mt[mti] = t;
                 }
             }
         }
@@ -217,7 +213,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         /// c code.
         /// <see href="http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/CODES/mt19937ar.c" />.
         /// </remarks>
-        public static MersenneTwister32Bit19937 InitByArray(uint[] seeds)
+        public static MersenneTwister32Bit19937 InitByArray(params uint[] seeds)
         {
             if (seeds is null)
             {
