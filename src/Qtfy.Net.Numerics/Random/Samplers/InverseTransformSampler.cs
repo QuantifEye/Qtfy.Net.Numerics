@@ -6,6 +6,8 @@
 
 namespace Qtfy.Net.Numerics.Random.Samplers
 {
+    using System;
+
     /// <summary>
     /// An inverse transform random number generator.
     /// </summary>
@@ -27,8 +29,8 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </param>
         public InverseTransformSampler(IDistribution<T> distribution, IRandomNumberEngine engine)
         {
-            this.engine = engine;
-            this.Distribution = distribution;
+            this.engine = engine ?? throw new ArgumentNullException(nameof(engine));
+            this.Distribution = distribution ?? throw new ArgumentNullException(nameof(distribution));
         }
 
         /// <summary>

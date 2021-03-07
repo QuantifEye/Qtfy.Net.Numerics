@@ -1,25 +1,25 @@
-// <copyright file="UniformDiscreteSamplerTests.cs" company="QuantifEye">
+// <copyright file="UniformIntSamplerTests.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
-
-using Qtfy.Net.Numerics.Distributions;
-using Qtfy.Net.Numerics.Random;
 
 namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
     using System.Linq;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.Distributions;
+    using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
     using Qtfy.Net.Numerics.Random.SeedSequences;
 
-    public class UniformDiscreteSamplerTests : IntSamplerTester
+    public class UniformIntSamplerTests : IntSamplerTester
     {
-        const int Min = 7;
-        const int Max = 12;
+        private const int Min = 7;
+
+        private const int Max = 12;
 
         public override ISampler<int> GetSampler()
         {
@@ -39,7 +39,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
         private static UniformIntSampler GetSampler(int min, int max)
         {
-            return new(min, max, GetEngine());
+            return new (min, max, GetEngine());
         }
 
         [Test]
@@ -47,6 +47,9 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
         {
             Assert.Throws<ArgumentException>(
                 () => _ = GetSampler(12, 7));
+
+            Assert.Throws<ArgumentNullException>(
+                () => _ = new UniformIntSampler(1, 2, null));
         }
 
         [Test]

@@ -11,7 +11,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
     using Qtfy.Net.Numerics.Distributions;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
-    using Qtfy.Net.Numerics.Tests.TestUtilities.TestCases;
 
     public class UniformRealSamplerTests : DoubleSamplerTester
     {
@@ -21,12 +20,12 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
         public override UniformRealSampler GetSampler()
         {
-            return new (MersenneTwister32Bit19937.InitGenRand(1), Min, Max);
+            return new(MersenneTwister32Bit19937.InitGenRand(1), Min, Max);
         }
 
         public override UniformRealDistribution GetReferenceDistribution()
         {
-            return new (Min, Max);
+            return new(Min, Max);
         }
 
         private static UniformRealSampler GetSampler(double min, double max)
@@ -56,15 +55,17 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
                 () => _ = new UniformRealSampler(null, 5d, 10d));
         }
 
-        private void TestInvalidConstruction<TException>(double min, double max)
+        private static void TestInvalidConstruction<TException>(double min, double max)
             where TException : Exception
             => Assert.Throws<TException>(() => _ = GetSampler(min, max));
 
-        [TestCaseSource(typeof(NonFiniteDoubles))]
+        [TestCase(double.NegativeInfinity)]
+        [TestCase(double.PositiveInfinity)]
+        [TestCase(double.NaN)]
         public void TestInvalidDoubleInput(double invalidValue)
         {
-            this.TestInvalidConstruction<ArgumentException>(invalidValue, double.MaxValue);
-            this.TestInvalidConstruction<ArgumentException>(double.MaxValue, invalidValue);
+            TestInvalidConstruction<ArgumentException>(invalidValue, 1d);
+            TestInvalidConstruction<ArgumentException>(1d, invalidValue);
         }
 
         [Test]

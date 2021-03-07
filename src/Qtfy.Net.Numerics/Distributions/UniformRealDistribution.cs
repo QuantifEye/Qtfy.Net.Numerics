@@ -27,14 +27,19 @@ namespace Qtfy.Net.Numerics.Distributions
         public UniformRealDistribution(double min, double max)
         {
             var range = max - min;
+            if (!double.IsFinite(min))
+            {
+                throw new ArgumentException("value must be finite and not NaN", nameof(min));
+            }
+
+            if (!double.IsFinite(max))
+            {
+                throw new ArgumentException("value must be finite and not NaN", nameof(max));
+            }
+
             if (max <= min)
             {
                 throw new ArgumentException("min must be less than max");
-            }
-
-            if (range == 0d)
-            {
-                throw new ArgumentException("underflow error");
             }
 
             var variance = range * range / 12d;
@@ -98,12 +103,12 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double Quantile(double probability)
         {
-            if (probability < 0d || probability > 1d)
+            if (probability >= 0d && probability <= 1d)
             {
-                throw new ArgumentException();
+                return Math.FusedMultiplyAdd(this.Max - this.Min, probability, this.Min);
             }
 
-            return Math.FusedMultiplyAdd(this.Max - this.Min, probability, this.Min);
+            throw new ArgumentException("Invalid probability", nameof(probability));
         }
     }
 }

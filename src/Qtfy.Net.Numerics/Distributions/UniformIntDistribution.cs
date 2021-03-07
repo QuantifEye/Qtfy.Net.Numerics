@@ -42,7 +42,6 @@ namespace Qtfy.Net.Numerics.Distributions
             this.n = n;
             this.m = 1d - min;
 
-            // TODO: investigate boosting the precision of the variance calculation.
             this.Variance = (n * n - 1UL) / 12d;
             this.Mean = ((double)max + min) / 2d;
             this.Min = min;

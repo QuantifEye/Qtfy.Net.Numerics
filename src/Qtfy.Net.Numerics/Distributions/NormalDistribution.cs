@@ -28,14 +28,18 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </exception>
         public NormalDistribution(double mu, double sigma)
         {
-            if (!double.IsFinite(sigma) || sigma <= 0d)
-            {
-                throw new ArgumentException("sigma must be finite and greater than zero.");
-            }
-
             if (!double.IsFinite(mu))
             {
-                throw new ArgumentException("mu must be finite.");
+                throw new ArgumentException(
+                    $"{nameof(mu)} must not be infinite or NaN",
+                    nameof(mu));
+            }
+
+            if (!double.IsFinite(sigma) || sigma <= 0d)
+            {
+                throw new ArgumentException(
+                    $"{nameof(sigma)} must not be greater than zero and not or NaN",
+                    nameof(sigma));
             }
 
             this.Mu = mu;
@@ -80,8 +84,13 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double Quantile(double probability)
         {
-            var erfInv = SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
-            return this.Mu + this.Sigma * Constants.SqrtTwo * erfInv;
+            if (probability >= 0d && probability <= 1d)
+            {
+                var erfInv = SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
+                return this.Mu + this.Sigma * Constants.SqrtTwo * erfInv;
+            }
+
+            throw new ArgumentException("invalid probability", nameof(probability));
         }
 
         /// <inheritdoc />

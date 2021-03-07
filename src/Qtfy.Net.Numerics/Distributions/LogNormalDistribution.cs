@@ -24,6 +24,20 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </param>
         public LogNormalDistribution(double mu, double sigma)
         {
+            if (!double.IsFinite(mu))
+            {
+                throw new ArgumentException(
+                    $"{nameof(mu)} must not be infinite or NaN",
+                    nameof(mu));
+            }
+
+            if (!double.IsFinite(sigma) || sigma <= 0d)
+            {
+                throw new ArgumentException(
+                    $"{nameof(sigma)} must not be greater than zero and not or NaN",
+                    nameof(sigma));
+            }
+
             this.Mu = mu;
             this.Sigma = sigma;
         }
@@ -61,10 +75,15 @@ namespace Qtfy.Net.Numerics.Distributions
         }
 
         /// <inheritdoc />
-        public double Quantile(double p)
+        public double Quantile(double probability)
         {
-            var erfInv = SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, p, -1d));
-            return Math.Exp(this.Mu + Constants.SqrtTwo * this.Sigma * erfInv);
+            if (probability >= 0d && probability <= 1d)
+            {
+                var erfInv = SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
+                return Math.Exp(this.Mu + Constants.SqrtTwo * this.Sigma * erfInv);
+            }
+
+            throw new ArgumentException("invalid probability", nameof(probability));
         }
 
         /// <inheritdoc />
@@ -84,8 +103,8 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double CumulativeDistribution(double x)
         {
-            var erf = SpecialFunctions.Erf((x - this.Mu) / (this.Sigma * Constants.SqrtTwo));
-            return Math.FusedMultiplyAdd(erf, 0.5d, 0.5d);
+            var z = (Math.Log(x) - this.Mu) / (Constants.SqrtTwo * this.Sigma);
+            return Math.FusedMultiplyAdd(SpecialFunctions.Erf(z), 0.5d, 0.5d);
         }
     }
 }

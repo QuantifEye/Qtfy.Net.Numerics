@@ -78,7 +78,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
 
         private MersenneTwister64Bit19937(ulong[] state, int index)
         {
-            this.state = state ?? throw new ArgumentNullException(nameof(state));
+            this.state = state;
             this.index = index;
         }
 

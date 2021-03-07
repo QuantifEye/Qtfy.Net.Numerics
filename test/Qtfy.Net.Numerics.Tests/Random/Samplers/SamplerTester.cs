@@ -4,7 +4,6 @@
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-
 namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System.Collections.Generic;
