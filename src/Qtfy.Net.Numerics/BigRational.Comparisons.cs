@@ -761,7 +761,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <inheritdoc />
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             return obj is BigRational bigRational && this.Equals(bigRational);
         }

@@ -213,7 +213,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         /// c code.
         /// <see href="http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/CODES/mt19937ar.c" />.
         /// </remarks>
-        public static MersenneTwister32Bit19937 InitByArray(params uint[] seeds)
+        public static MersenneTwister32Bit19937 InitByArray(uint[] seeds)
         {
             if (seeds is null)
             {

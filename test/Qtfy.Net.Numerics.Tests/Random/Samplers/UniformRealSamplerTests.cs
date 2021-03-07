@@ -20,12 +20,12 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
         public override UniformRealSampler GetSampler()
         {
-            return new(MersenneTwister32Bit19937.InitGenRand(1), Min, Max);
+            return new (MersenneTwister32Bit19937.InitGenRand(1), Min, Max);
         }
 
         public override UniformRealDistribution GetReferenceDistribution()
         {
-            return new(Min, Max);
+            return new (Min, Max);
         }
 
         private static UniformRealSampler GetSampler(double min, double max)
