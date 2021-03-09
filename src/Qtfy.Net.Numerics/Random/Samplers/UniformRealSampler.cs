@@ -11,7 +11,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// <summary>
     /// A distribution that generates continuous uniform values.
     /// </summary>
-    public class UniformRealSampler : ISampler<double>
+    public sealed class UniformRealSampler : ISampler<double>
     {
         private readonly IRandomNumberEngine generator;
 

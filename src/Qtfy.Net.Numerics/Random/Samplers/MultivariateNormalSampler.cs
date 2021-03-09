@@ -9,7 +9,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// <summary>
     /// A multivariate normal (gaussian) sampler.
     /// </summary>
-    public partial class MultivariateNormalSampler : ISampler<double[]>
+    public sealed partial class MultivariateNormalSampler : ISampler<double[]>
     {
         private readonly double[] mean;
 
@@ -46,14 +46,14 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 fixed (double* squareRootPin = this.squareRoot)
                 fixed (double* meanPin = this.mean)
                 {
-                    GetNextImpl(standardNormalsPin, meanPin, squareRootPin, resultPin, resultPin + this.order);
+                    MultiplyAdd(standardNormalsPin, meanPin, squareRootPin, resultPin, resultPin + this.order);
                 }
             }
 
             return result;
         }
 
-        private static unsafe void GetNextImpl(
+        private static unsafe void MultiplyAdd(
             double* standardNormals,
             double* mean,
             double* squareRoot,

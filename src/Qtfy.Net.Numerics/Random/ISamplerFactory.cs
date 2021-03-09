@@ -24,6 +24,6 @@ namespace Qtfy.Net.Numerics.Random
         /// <returns>
         /// A new sampler.
         /// </returns>
-        TSampler Create(IRandomNumberEngine engine);
+        TSampler Build(IRandomNumberEngine engine);
     }
 }

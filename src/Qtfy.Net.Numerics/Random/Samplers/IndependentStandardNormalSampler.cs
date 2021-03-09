@@ -9,7 +9,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// <summary>
     /// A sampler that generates arrays of uncorrelated standard normal variables.
     /// </summary>
-    public class IndependentStandardNormalSampler : ISampler<double[]>
+    public sealed class IndependentStandardNormalSampler : ISampler<double[]>
     {
         private readonly StandardNormalSampler standardNormalSampler;
 

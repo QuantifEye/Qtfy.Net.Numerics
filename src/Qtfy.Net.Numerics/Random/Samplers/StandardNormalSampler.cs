@@ -12,7 +12,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// <summary>
     /// The simple form box muller transform.
     /// </summary>
-    public class StandardNormalSampler : ISampler<double>
+    public sealed class StandardNormalSampler : ISampler<double>
     {
         /// <summary>
         /// The underlying random number generator.

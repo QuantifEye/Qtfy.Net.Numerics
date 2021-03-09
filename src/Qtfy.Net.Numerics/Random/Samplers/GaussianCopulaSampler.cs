@@ -12,7 +12,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// A gaussian copula sampler. That is a sampler that uses a correlation matrix
     /// to generate correlated uniform[0, 1] variables.
     /// </summary>
-    public partial class GaussianCopulaSampler : ISampler<double[]>
+    public sealed partial class GaussianCopulaSampler : ISampler<double[]>
     {
         private readonly double[] choleskyFactor;
 
@@ -43,7 +43,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 fixed (double* factorPin = this.choleskyFactor)
                 {
                     var resultEnd = resultPin + this.order;
-                    GetNextImpl(standardNormalsPin, factorPin, resultPin, resultEnd);
+                    Multiply(standardNormalsPin, factorPin, resultPin, resultEnd);
                     StandardNormalCdfInPlace(resultPin, resultEnd);
                 }
             }
@@ -51,11 +51,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             return result;
         }
 
-        private static unsafe void GetNextImpl(
-            double* standardNormals,
-            double* factor,
-            double* result,
-            double* resultEnd)
+        private static unsafe void Multiply(double* standardNormals, double* factor, double* result, double* resultEnd)
         {
             double* z;
             double* zEnd = standardNormals;

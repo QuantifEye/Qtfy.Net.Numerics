@@ -11,7 +11,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// <summary>
     /// A random distribution that generates normally distributed values.
     /// </summary>
-    public class NormalSampler : ISampler<double>
+    public sealed class NormalSampler : ISampler<double>
     {
         private readonly StandardNormalSampler standardNormalSampler;
 

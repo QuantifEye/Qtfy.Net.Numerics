@@ -1,4 +1,4 @@
-// <copyright file="MultivariateNormalSampler.Factory.cs" company="QuantifEye">
+// <copyright file="MultivariateNormalSampler.Builder.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
@@ -8,20 +8,20 @@ namespace Qtfy.Net.Numerics.Random.Samplers
 {
     using System;
 
-    public partial class MultivariateNormalSampler
+    public sealed partial class MultivariateNormalSampler
     {
         /// <summary>
         /// An object that is able to create <see cref="MultivariateNormalSampler"/>s with the
         /// same mean vector and covariance matrix, but with different <see cref="IRandomNumberEngine"/>s.
         /// </summary>
-        public class Factory : ISamplerFactory<MultivariateNormalSampler>
+        public sealed class Builder : ISamplerFactory<MultivariateNormalSampler>
         {
             private readonly double[] mean;
 
             private readonly double[] choleskyFactor;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Factory"/> class.
+            /// Initializes a new instance of the <see cref="Builder"/> class.
             /// </summary>
             /// <param name="mean">
             /// The mean vector of the reference multivariate normal distribution.
@@ -35,7 +35,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             /// <exception cref="ArgumentException">
             /// If <paramref name="covarianceMatrix"/> is null.
             /// </exception>
-            public Factory(double[] mean, double[,] covarianceMatrix)
+            public Builder(double[] mean, double[,] covarianceMatrix)
             {
                 var factor = Impl.PackedCholeskyFactor(covarianceMatrix);
 
@@ -46,7 +46,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
 
                 if (mean.Length != factor.GetLength(0))
                 {
-                    throw new ArgumentException("mean must have length equal to number of rows of square covariance");
+                    throw new ArgumentException("mean must have length equal to number of rows of square covariance matrix");
                 }
 
                 this.choleskyFactor = factor;
@@ -54,7 +54,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             }
 
             /// <inheritdoc />
-            public MultivariateNormalSampler Create(IRandomNumberEngine engine)
+            public MultivariateNormalSampler Build(IRandomNumberEngine engine)
             {
                 return new (engine, this.mean, this.choleskyFactor);
             }

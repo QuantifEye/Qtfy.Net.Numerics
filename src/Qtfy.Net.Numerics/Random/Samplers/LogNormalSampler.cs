@@ -11,7 +11,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// <summary>
     /// A log normal random distribution.
     /// </summary>
-    public class LogNormalSampler : ISampler<double>
+    public sealed class LogNormalSampler : ISampler<double>
     {
         private readonly StandardNormalSampler standardNormalSampler;
 

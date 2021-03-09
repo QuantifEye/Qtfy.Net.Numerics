@@ -23,7 +23,7 @@ namespace Qtfy.Net.Numerics
         /// <returns>
         /// A copy of the provided array.
         /// </returns>
-        public static T[] Copy<T>(this T[] self)
+        internal static T[] Copy<T>(this T[] self)
         {
             return (T[])self.Clone();
         }

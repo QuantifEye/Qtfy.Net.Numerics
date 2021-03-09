@@ -13,7 +13,7 @@ namespace Qtfy.Net.Numerics.Random.SeedSequences
     /// <summary>
     /// a <see cref="uint"/> seed sequence. <see cref="ISeedSequence"/>.
     /// </summary>
-    public class SeedSequence : ISeedSequence
+    public sealed class SeedSequence : ISeedSequence
     {
         private readonly uint[] entropy;
 

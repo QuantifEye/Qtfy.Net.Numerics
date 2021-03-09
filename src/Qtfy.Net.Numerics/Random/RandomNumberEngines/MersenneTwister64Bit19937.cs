@@ -183,6 +183,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         {
             unchecked
             {
+                const ulong mostSignificantBit = 1UL << 63;
                 InitGenRandImpl(mt, 19650218UL);
                 var i = 1UL;
                 var j = 0UL;
@@ -212,7 +213,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                     }
                 }
 
-                mt[0] = 1UL << 63;
+                mt[0] = mostSignificantBit;
             }
         }
 
