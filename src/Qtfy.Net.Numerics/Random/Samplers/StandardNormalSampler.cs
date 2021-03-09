@@ -17,7 +17,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// <summary>
         /// The underlying random number generator.
         /// </summary>
-        private IRandomNumberEngine engine;
+        private readonly IRandomNumberEngine engine;
 
         /// <summary>
         /// Get algorithm generates two values at a time. One is cached in this variable.
@@ -78,6 +78,25 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 this.spare = f * v;
                 this.hasSpare = true;
                 return f * u;
+            }
+        }
+
+        /// <summary>
+        /// Fills the provided array with independent standard normal values.
+        /// </summary>
+        /// <param name="buffer">
+        /// Fills the buffer.
+        /// </param>
+        public void Fill(Span<double> buffer)
+        {
+            if (buffer.Length == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < buffer.Length; ++i)
+            {
+                buffer[i] = this.GetNext();
             }
         }
     }

@@ -5,7 +5,4 @@
   <ItemGroup>
     <ProjectReference Include="../../src/Qtfy.Net.Numerics/Qtfy.Net.Numerics.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestUtilities" />
-  </ItemGroup>
 </Project>

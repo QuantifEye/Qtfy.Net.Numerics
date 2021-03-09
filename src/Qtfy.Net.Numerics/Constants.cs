@@ -28,6 +28,12 @@ namespace Qtfy.Net.Numerics
             2.506628274631000502415765284811045253006986740609938316629923576342293654607841974946595838378057266;
 
         /// <summary>
+        /// The log of the square root of two pi. That is <c>Math.Log(Math.Sqrt(2d * Math.PI))</c>.
+        /// </summary>
+        public const double LogSqrtTwoPi =
+            9.189385332046727417803297364056176398613974736377834128171515404827656959272603976947432986359541976e-1;
+
+        /// <summary>
         /// The square root of two. That is <c>Math.Sqrt(2d)</c>.
         /// </summary>
         public const double SqrtTwo =

@@ -13,7 +13,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </summary>
     public class NormalSampler : ISampler<double>
     {
-        private StandardNormalSampler standardNormalSampler;
+        private readonly StandardNormalSampler standardNormalSampler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NormalSampler"/> class.
