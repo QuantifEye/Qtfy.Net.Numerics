@@ -37,16 +37,30 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             /// </exception>
             public Builder(double[] mean, double[,] covarianceMatrix)
             {
-                var factor = Impl.PackedCholeskyFactor(covarianceMatrix);
-
                 if (mean is null)
                 {
                     throw new ArgumentNullException(nameof(mean));
                 }
 
-                if (mean.Length != factor.GetLength(0))
+                if (covarianceMatrix is null)
                 {
-                    throw new ArgumentException("mean must have length equal to number of rows of square covariance matrix");
+                    throw new ArgumentNullException(nameof(covarianceMatrix));
+                }
+
+                var factor = Impl.PackedCholeskyFactorCovarianceMatrix(covarianceMatrix);
+
+                foreach (var t in mean)
+                {
+                    if (!double.IsFinite(t))
+                    {
+                        throw new ArgumentException("Mean values must be finite and not NaN");
+                    }
+                }
+
+                if (mean.Length != covarianceMatrix.GetLength(0))
+                {
+                    throw new ArgumentException(
+                        "mean must have length equal to number of rows of square covariance matrix");
                 }
 
                 this.choleskyFactor = factor;
@@ -56,7 +70,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             /// <inheritdoc />
             public MultivariateNormalSampler Build(IRandomNumberEngine engine)
             {
-                return new (engine, this.mean, this.choleskyFactor);
+                return new MultivariateNormalSampler(engine, this.mean, this.choleskyFactor);
             }
         }
     }

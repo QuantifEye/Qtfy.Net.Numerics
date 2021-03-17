@@ -21,16 +21,14 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
             var engine = MersenneTwister32Bit19937.InitGenRand(1);
             var distribution = new NormalDistribution(1, 1);
             Assert.Throws<ArgumentNullException>(
-                () => _ = new InverseTransformSampler<double>(null, engine));
+                () => _ = new InverseTransformSampler<double>(engine, null));
             Assert.Throws<ArgumentNullException>(
-                () => _ = new InverseTransformSampler<double>(distribution, null));
+                () => _ = new InverseTransformSampler<double>(null, distribution));
         }
 
         public override ISampler<double> GetSampler()
         {
-            return new InverseTransformSampler<double>(
-                new NormalDistribution(1, 1),
-                MersenneTwister32Bit19937.InitGenRand(1));
+            return new InverseTransformSampler<double>(MersenneTwister32Bit19937.InitGenRand(1), new NormalDistribution(1, 1));
         }
 
         public override IDistribution GetReferenceDistribution()

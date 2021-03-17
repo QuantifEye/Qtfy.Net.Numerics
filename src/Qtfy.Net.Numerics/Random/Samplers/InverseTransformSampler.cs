@@ -21,13 +21,13 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// <summary>
         /// Initializes a new instance of the <see cref="InverseTransformSampler{T}"/> class.
         /// </summary>
-        /// <param name="distribution">
-        /// The reference distribution.
-        /// </param>
         /// <param name="engine">
         /// The random number engine.
         /// </param>
-        public InverseTransformSampler(IDistribution<T> distribution, IRandomNumberEngine engine)
+        /// <param name="distribution">
+        /// The reference distribution.
+        /// </param>
+        public InverseTransformSampler(IRandomNumberEngine engine, IDistribution<T> distribution)
         {
             this.engine = engine ?? throw new ArgumentNullException(nameof(engine));
             this.Distribution = distribution ?? throw new ArgumentNullException(nameof(distribution));

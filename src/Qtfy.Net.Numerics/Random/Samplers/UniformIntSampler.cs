@@ -22,19 +22,19 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// <summary>
         /// Initializes a new instance of the <see cref="UniformIntSampler"/> class.
         /// </summary>
+        /// <param name="engine">
+        ///     The random number engine to use as a source of entropy.
+        /// </param>
         /// <param name="min">
-        /// The smallest number that will be generated.
+        ///     The smallest number that will be generated.
         /// </param>
         /// <param name="max">
-        /// The greatest number that will be generated.
-        /// </param>
-        /// <param name="engine">
-        /// The random number engine to use as a source of entropy.
+        ///     The greatest number that will be generated.
         /// </param>
         /// <exception cref="ArgumentException">
         /// If <paramref name="min"/> is greater than <paramref name="max"/>.
         /// </exception>
-        public UniformIntSampler(int min, int max, IRandomNumberEngine engine)
+        public UniformIntSampler(IRandomNumberEngine engine, int min, int max)
         {
             unchecked
             {

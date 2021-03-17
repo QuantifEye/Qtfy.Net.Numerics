@@ -15,38 +15,36 @@ namespace Qtfy.Net.Numerics.Random.Samplers
 
         private readonly double[] buffer;
 
-        private readonly double[] squareRoot;
+        private readonly double[] choleskyFactor;
 
         private readonly StandardNormalSampler standardNormalSampler;
 
-        private readonly int order;
-
-        private MultivariateNormalSampler(
-            IRandomNumberEngine engine,
-            double[] mean,
-            double[] squareRoot)
+        private MultivariateNormalSampler(IRandomNumberEngine engine, double[] mean, double[] choleskyFactor)
         {
-            this.order = mean.Length;
+            this.Length = mean.Length;
             this.mean = mean;
-            this.squareRoot = squareRoot;
+            this.choleskyFactor = choleskyFactor;
             this.standardNormalSampler = new StandardNormalSampler(engine);
             this.buffer = new double[this.mean.Length];
         }
 
+        /// <summary>
+        /// Gets the length of the arrays <see cref="GetNext"/> returns.
+        /// </summary>
+        public int Length { get; }
+
         /// <inheritdoc />
         public double[] GetNext()
         {
-            var result = new double[this.order];
-            var standardNormals = this.buffer;
-            this.standardNormalSampler.Fill(standardNormals);
+            var size = this.Length;
+            var result = new double[size];
+            var normals = this.buffer;
+            this.standardNormalSampler.Fill(normals);
             unsafe
             {
-                fixed (double* resultPin = result)
-                fixed (double* standardNormalsPin = standardNormals)
-                fixed (double* squareRootPin = this.squareRoot)
-                fixed (double* meanPin = this.mean)
+                fixed (double* fPin = this.choleskyFactor, nPin = normals, mPin = this.mean, rPin = result)
                 {
-                    MultiplyAdd(standardNormalsPin, meanPin, squareRootPin, resultPin, resultPin + this.order);
+                    MultiplyAdd(fPin, nPin, mPin, rPin, rPin + size);
                 }
             }
 
@@ -54,24 +52,25 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         }
 
         private static unsafe void MultiplyAdd(
-            double* standardNormals,
+            double* factor,
+            double* normals,
             double* mean,
-            double* squareRoot,
             double* result,
             double* resultEnd)
         {
             double* z;
-            double* zEnd = standardNormals;
+            double* zEnd = normals;
             double total;
             do
             {
-                z = standardNormals;
+                z = normals;
                 ++zEnd;
-                total = *z * *squareRoot;
+                total = *z * *factor;
+                ++factor;
                 while (++z != zEnd)
                 {
-                    ++squareRoot;
-                    total += *z * *squareRoot;
+                    total += *z * *factor;
+                    ++factor;
                 }
 
                 *result = total + *mean;

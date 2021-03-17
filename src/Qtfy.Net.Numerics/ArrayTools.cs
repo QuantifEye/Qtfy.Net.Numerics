@@ -1,4 +1,4 @@
-// <copyright file="ArrayExtension.cs" company="QuantifEye">
+// <copyright file="ArrayTools.cs" company="QuantifEye">
 // Copyright (c) QuantifEye. All rights reserved.
 // Licensed under the Apache 2.0 license.
 // See LICENSE.txt file in the project root for full license information.
@@ -26,17 +26,6 @@ namespace Qtfy.Net.Numerics
         internal static T[] Copy<T>(this T[] self)
         {
             return (T[])self.Clone();
-        }
-
-        public static double Mean(this double[] self)
-        {
-            var result = 0d;
-            for (int i = 0; i < self.Length; ++i)
-            {
-                result += self[i];
-            }
-
-            return result / self.Length;
         }
     }
 }

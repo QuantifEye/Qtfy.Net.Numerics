@@ -7,7 +7,9 @@
 namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
+    using System.Linq;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
 
     public class StandardNormalSamplerTests
@@ -23,6 +25,19 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
         {
             Assert.Throws<ArgumentNullException>(
                 () => _ = new StandardNormalSampler(null));
+        }
+
+        [Test]
+        public void TestFill()
+        {
+            var sampler1 = new StandardNormalSampler(MersenneTwister32Bit19937.InitGenRand(1));
+            var actual = Enumerable.Repeat(sampler1, 10).Select(x => x.GetNext()).ToArray();
+
+            var sampler2 = new StandardNormalSampler(MersenneTwister32Bit19937.InitGenRand(1));
+            var expected = new double[10];
+            sampler2.Fill(expected);
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

@@ -40,21 +40,30 @@ namespace Qtfy.Net.Numerics.Distributions
             get => 1d;
         }
 
-        /// <inheritdoc />
-        public double CumulativeDistribution(double x)
+        /// <summary>
+        /// Calculates the probability that a standard normal random variable is less than <paramref name="x"/>.
+        /// </summary>
+        /// <param name="x">
+        /// The value at which to evaluate the standard normal CDF.
+        /// </param>
+        /// <returns>
+        /// A double in the range [0.0, 1.0].
+        /// </returns>
+        public static double CumulativeDistributionFunction(double x)
         {
             return Math.FusedMultiplyAdd(SpecialFunctions.Erf(x / Constants.SqrtTwo), 0.5d, 0.5d);
         }
 
         /// <inheritdoc />
+        public double CumulativeDistribution(double x)
+        {
+            return CumulativeDistributionFunction(x);
+        }
+
+        /// <inheritdoc />
         public double Quantile(double probability)
         {
-            if (probability >= 0d && probability <= 1d)
-            {
-                return Constants.SqrtTwo * SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
-            }
-
-            throw new ArgumentException("invalid probability", nameof(probability));
+            return Constants.SqrtTwo * SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
         }
 
         /// <inheritdoc />

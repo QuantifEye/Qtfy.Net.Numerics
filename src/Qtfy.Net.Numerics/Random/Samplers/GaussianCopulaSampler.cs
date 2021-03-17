@@ -18,66 +18,68 @@ namespace Qtfy.Net.Numerics.Random.Samplers
 
         private readonly double[] buffer;
 
-        private readonly int order;
-
         private readonly StandardNormalSampler standardNormalSampler;
 
         private GaussianCopulaSampler(IRandomNumberEngine engine, double[] choleskyFactor, int order)
         {
             this.buffer = new double[order];
-            this.order = order;
+            this.Length = order;
             this.choleskyFactor = choleskyFactor;
             this.standardNormalSampler = new StandardNormalSampler(engine);
         }
 
+        /// <summary>
+        /// Gets the length of the arrays <see cref="GetNext"/> returns.
+        /// </summary>
+        public int Length { get; }
+
         /// <inheritdoc />
         public double[] GetNext()
         {
-            var result = new double[this.order];
-            var standardNormals = this.buffer;
-            this.standardNormalSampler.Fill(standardNormals);
+            var resultSize = this.Length;
+            var result = new double[resultSize];
+            var normals = this.buffer;
+            this.standardNormalSampler.Fill(normals);
             unsafe
             {
-                fixed (double* resultPin = result)
-                fixed (double* standardNormalsPin = standardNormals)
-                fixed (double* factorPin = this.choleskyFactor)
+                fixed (double* fPin = this.choleskyFactor, nPin = normals, rPin = result)
                 {
-                    var resultEnd = resultPin + this.order;
-                    Multiply(standardNormalsPin, factorPin, resultPin, resultEnd);
-                    StandardNormalCdfInPlace(resultPin, resultEnd);
+                    var r = rPin;
+                    var rEnd = rPin + resultSize;
+                    Multiply(fPin, nPin, rPin, rEnd);
+                    do
+                    {
+                        *r = StandardNormalDistribution.CumulativeDistributionFunction(*r);
+                    }
+                    while (++r != rEnd);
                 }
             }
 
             return result;
         }
 
-        private static unsafe void Multiply(double* standardNormals, double* factor, double* result, double* resultEnd)
+        private static unsafe void Multiply(
+            double* factor,
+            double* normals,
+            double* result,
+            double* resultEnd)
         {
             double* z;
-            double* zEnd = standardNormals;
+            double* zEnd = normals;
             double total;
             do
             {
-                z = standardNormals;
+                z = normals;
                 ++zEnd;
                 total = *z * *factor;
+                ++factor;
                 while (++z != zEnd)
                 {
-                    ++factor;
                     total += *z * *factor;
+                    ++factor;
                 }
 
                 *result = total;
-            }
-            while (++result != resultEnd);
-        }
-
-        private static unsafe void StandardNormalCdfInPlace(double* result, double* resultEnd)
-        {
-            var standardNormalDist = StandardNormalDistribution.Instance;
-            do
-            {
-                *result = standardNormalDist.CumulativeDistribution(*result);
             }
             while (++result != resultEnd);
         }

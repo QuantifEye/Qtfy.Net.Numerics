@@ -39,7 +39,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 throw new ArgumentException("max must be finite");
             }
 
-            if (max < min)
+            if (max <= min)
             {
                 throw new ArgumentException("min must be less that or equal to max");
             }

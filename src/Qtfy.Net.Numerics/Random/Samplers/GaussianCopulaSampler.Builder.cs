@@ -6,6 +6,8 @@
 
 namespace Qtfy.Net.Numerics.Random.Samplers
 {
+    using System;
+
     public sealed partial class GaussianCopulaSampler
     {
         /// <summary>
@@ -26,7 +28,12 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             /// </param>
             public Builder(double[,] correlationMatrix)
             {
-                this.choleskyFactor = Impl.PackedCholeskyFactor(correlationMatrix);
+                if (correlationMatrix is null)
+                {
+                    throw new ArgumentNullException(nameof(correlationMatrix));
+                }
+
+                this.choleskyFactor = Impl.PackedCholeskyFactorCorrelationMatrix(correlationMatrix);
                 this.order = correlationMatrix.GetLength(0);
             }
 
