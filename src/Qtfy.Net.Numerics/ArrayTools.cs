@@ -9,7 +9,7 @@ namespace Qtfy.Net.Numerics
     /// <summary>
     /// A collection of array extensions.
     /// </summary>
-    public static class ArrayExtension
+    public static class ArrayTools
     {
         /// <summary>
         /// Copies the provided array.
@@ -26,6 +26,17 @@ namespace Qtfy.Net.Numerics
         internal static T[] Copy<T>(this T[] self)
         {
             return (T[])self.Clone();
+        }
+
+        public static double Mean(this double[] self)
+        {
+            var result = 0d;
+            for (int i = 0; i < self.Length; ++i)
+            {
+                result += self[i];
+            }
+
+            return result / self.Length;
         }
     }
 }
