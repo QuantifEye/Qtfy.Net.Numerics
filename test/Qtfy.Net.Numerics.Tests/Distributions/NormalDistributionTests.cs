@@ -9,14 +9,10 @@ namespace Qtfy.Net.Numerics.Tests.Distributions
     using System;
     using NUnit.Framework;
     using Qtfy.Net.Numerics.Distributions;
+    using static Tests.TestUtils;
 
     public class NormalDistributionTests
     {
-        private static void AssertClose(double expected, double actual)
-        {
-            Assert.AreEqual(1d, Math.Abs(expected / actual), 1e-15);
-        }
-
         [TestCase(2d, 0d)]
         [TestCase(2d, -1d)]
         [TestCase(2d, double.NegativeInfinity)]
@@ -39,10 +35,10 @@ namespace Qtfy.Net.Numerics.Tests.Distributions
             Assert.AreEqual(mu, distribution.Mu);
         }
 
-        [Test]
-        public void TestSigma()
+        [TestCase(1d)]
+        [TestCase(2d)]
+        public void TestSigma(double sigma)
         {
-            var sigma = 2.3;
             var distribution = new NormalDistribution(1, sigma);
             Assert.AreEqual(sigma, distribution.Sigma);
             Assert.AreEqual(sigma, distribution.StandardDeviation);
@@ -56,35 +52,49 @@ namespace Qtfy.Net.Numerics.Tests.Distributions
         }
 
         [TestCase(1.5, 1.2, 0.5, 1.5)]
+        [TestCase(1.5, 1.2, 0.0, double.NegativeInfinity)]
+        [TestCase(1.5, 1.2, 1.0, double.PositiveInfinity)]
         public void TestQuantile(double mu, double sigma, double probability, double expected)
         {
-            AssertClose(expected, new NormalDistribution(mu, sigma).Quantile(probability));
+            IsClose(expected, new NormalDistribution(mu, sigma).Quantile(probability));
         }
 
         [TestCase(0, 1, -0.1)]
         [TestCase(0, 1, 1.1)]
+        [TestCase(0, 1, double.NaN)]
         public void TestInvalidQuantile(double mu, double sigma, double expected)
         {
             Assert.Throws<ArgumentException>(
                 () => _ = new NormalDistribution(mu, sigma).Quantile(expected));
         }
 
-        [TestCase(1.5, 1.2, 2, 0.30481030534500203)]
+        [TestCase(1.5, 1.2, 2.0, 0.30481030534500203)]
+        [TestCase(1.5, 1.2, 1.0, 0.30481030534500203)]
+        [TestCase(1.5, 1.2, double.NegativeInfinity, 0d)]
+        [TestCase(1.5, 1.2, double.PositiveInfinity, 0d)]
+        [TestCase(1.5, 1.2, double.NaN, double.NaN)]
         public void TestDensity(double mu, double sigma, double x, double expected)
         {
-            AssertClose(expected, new NormalDistribution(mu, sigma).Density(x));
+            IsClose(expected, new NormalDistribution(mu, sigma).Density(x));
         }
 
         [TestCase(1.5, 1.2, 10, -26.18806564555419)]
+        [TestCase(1.5, 1.2, -7.0, -26.18806564555419)]
+        [TestCase(1.5, 1.2, double.NegativeInfinity, double.NegativeInfinity)]
+        [TestCase(1.5, 1.2, double.PositiveInfinity, double.NegativeInfinity)]
+        [TestCase(1.5, 1.2, double.NaN, double.NaN)]
         public void TestDensityLn(double mu, double sigma, double x, double expected)
         {
-            AssertClose(expected, new NormalDistribution(mu, sigma).DensityLn(x));
+            IsClose(expected, new NormalDistribution(mu, sigma).DensityLn(x));
         }
 
         [TestCase(1.5, 1.2, 2, 0.6615388804893103)]
+        [TestCase(1.5, 1.2, double.NegativeInfinity, 0d)]
+        [TestCase(1.5, 1.2, double.PositiveInfinity, 1d)]
+        [TestCase(1.5, 1.2, double.NaN, double.NaN)]
         public void TestCumulativeDistribution(double mu, double sigma, double x, double expected)
         {
-            AssertClose(expected, new NormalDistribution(mu, sigma).CumulativeDistribution(x));
+            IsClose(expected, new NormalDistribution(mu, sigma).CumulativeDistribution(x));
         }
     }
 }

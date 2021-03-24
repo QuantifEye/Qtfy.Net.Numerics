@@ -7,6 +7,8 @@
 namespace Qtfy.Net.Numerics.Distributions
 {
     using System;
+    using static System.Math;
+    using static SpecialFunctions;
 
     /// <summary>
     /// A Log-Normal statistical distribution object.
@@ -55,7 +57,7 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double Mean
         {
-            get => Math.Exp(this.Mu + this.Sigma * this.Sigma / 2d);
+            get => Exp(this.Mu + this.Sigma * this.Sigma / 2d);
         }
 
         /// <inheritdoc />
@@ -64,14 +66,14 @@ namespace Qtfy.Net.Numerics.Distributions
             get
             {
                 var v = this.Sigma * this.Sigma;
-                return (Math.Exp(v) - 1d) * Math.Exp(2d * this.Mu + v);
+                return (Exp(v) - 1d) * Exp(2d * this.Mu + v);
             }
         }
 
         /// <inheritdoc />
         public double StandardDeviation
         {
-            get => Math.Sqrt(this.Variance);
+            get => Sqrt(this.Variance);
         }
 
         /// <inheritdoc />
@@ -79,8 +81,8 @@ namespace Qtfy.Net.Numerics.Distributions
         {
             if (probability >= 0d && probability <= 1d)
             {
-                var erfInv = SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
-                return Math.Exp(this.Mu + Constants.SqrtTwo * this.Sigma * erfInv);
+                var erfInv = ErfInv(FusedMultiplyAdd(2d, probability, -1d));
+                return Exp(this.Mu + Constants.SqrtTwo * this.Sigma * erfInv);
             }
 
             throw new ArgumentException("invalid probability", nameof(probability));
@@ -89,22 +91,37 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double Density(double x)
         {
-            var z = Math.Log(x) - this.Mu;
-            return Math.Exp(z * z / (-2d * this.Sigma * this.Sigma)) / (x * this.Sigma * Constants.SqrtTwoPi);
+            if (x <= 0d)
+            {
+                return 0d;
+            }
+            else
+            {
+                var z = (Log(x) - this.Mu) / this.Sigma;
+                return Exp(-0.5 * z * z) / (x * this.Sigma * Constants.SqrtTwoPi);
+            }
         }
 
         /// <inheritdoc />
         public double DensityLn(double x)
         {
-            var z = (Math.Log(x) - this.Mu) / this.Sigma;
-            return -0.5 * z * z - Math.Log(x * this.Sigma * Constants.SqrtTwoPi);
+            if (x <= 0d)
+            {
+                return double.NegativeInfinity;
+            }
+            else
+            {
+                var z = (Log(x) - this.Mu) / this.Sigma;
+                return -0.5 * z * z - Log(x * this.Sigma * Constants.SqrtTwoPi);
+            }
         }
 
         /// <inheritdoc />
         public double CumulativeDistribution(double x)
         {
-            var z = (Math.Log(x) - this.Mu) / (Constants.SqrtTwo * this.Sigma);
-            return Math.FusedMultiplyAdd(SpecialFunctions.Erf(z), 0.5d, 0.5d);
+            return x <= 0d
+                ? 0d
+                : FusedMultiplyAdd(Erf((Log(x) - this.Mu) / (Constants.SqrtTwo * this.Sigma)), 0.5, 0.5);
         }
     }
 }

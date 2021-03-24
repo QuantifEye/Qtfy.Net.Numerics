@@ -30,22 +30,24 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </param>
         public UniformIntDistribution(int min, int max)
         {
-            if (min > max)
+            if (min < max)
+            {
+                ulong range = (uint)max - (uint)min;
+                var n = range + 1UL;
+
+                this.pmf = 1d / n;
+                this.n = n;
+                this.m = 1d - min;
+
+                this.Variance = (n * n - 1UL) / 12d;
+                this.Mean = ((double)max + min) / 2d;
+                this.Min = min;
+                this.Max = max;
+            }
+            else
             {
                 throw new ArgumentException("min must be less than or equal to max");
             }
-
-            ulong range = (uint)max - (uint)min;
-            var n = range + 1UL;
-
-            this.pmf = 1d / n;
-            this.n = n;
-            this.m = 1d - min;
-
-            this.Variance = (n * n - 1UL) / 12d;
-            this.Mean = ((double)max + min) / 2d;
-            this.Min = min;
-            this.Max = max;
         }
 
         /// <summary>
@@ -73,13 +75,28 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double CumulativeDistribution(double x)
         {
+            if (x < this.Min)
+            {
+                return 0d;
+            }
+
+            if (x >= this.Max)
+            {
+                return 1d;
+            }
+
             return (Math.Floor(x) + this.m) / this.n;
         }
 
         /// <inheritdoc />
         public int Quantile(double probability)
         {
-            return (int)Math.Ceiling(this.n * probability);
+            if (probability >= 0 && probability <= 1d)
+            {
+                return (int)Math.Ceiling(this.n * probability);
+            }
+
+            throw new ArgumentException("Invalid probability", nameof(probability));
         }
 
         /// <inheritdoc />
@@ -91,9 +108,7 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double ProbabilityLn(int x)
         {
-            return x < this.Min || x > this.Max
-            ? double.NegativeInfinity
-            : -Math.Log(this.n);
+            return x < this.Min || x > this.Max ? double.NegativeInfinity : -Math.Log(this.n);
         }
     }
 }

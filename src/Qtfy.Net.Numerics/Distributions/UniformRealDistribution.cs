@@ -26,7 +26,6 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </param>
         public UniformRealDistribution(double min, double max)
         {
-            var range = max - min;
             if (!double.IsFinite(min))
             {
                 throw new ArgumentException("value must be finite and not NaN", nameof(min));
@@ -37,11 +36,12 @@ namespace Qtfy.Net.Numerics.Distributions
                 throw new ArgumentException("value must be finite and not NaN", nameof(max));
             }
 
-            if (max <= min)
+            if (min >= max)
             {
                 throw new ArgumentException("min must be less than max");
             }
 
+            var range = max - min;
             var variance = range * range / 12d;
             this.Mean = (max + min) / 2d;
             this.Variance = variance;
