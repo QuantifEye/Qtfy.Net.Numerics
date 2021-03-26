@@ -48,3 +48,7 @@ dotnet_diagnostic.CA1814.severity = silent
 # If this exception instance might be raised, use a different exception type, convert this property into a method,
 # or change this property's logic so that it no longer raises an exception.
 dotnet_diagnostic.CA1065.severity = silent
+
+# Readonly fields should appear before non-readonly fields
+# affects cache locality
+dotnet_diagnostic.SA1214.severity = silent
