@@ -11,7 +11,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
     /// <summary>
     /// The Philox4x32 counter based random number generator that performs 10 rounds.
     /// See the paper <see href="http://www.thesalmons.org/john/random123/papers/random123sc11.pdf"/>.
-    /// There are <see cref="ulong.MaxValue"/> possible keyed generators, each with a period of 2^130.
+    /// There are 2^64 possible keyed generators, each with a period of 2^130.
     /// </summary>
     public sealed class Philox4X32 : UIntRandomNumberEngine
     {
@@ -42,27 +42,9 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         /// The key to construct the engine with.
         /// </param>
         public Philox4X32(ulong key)
-            : this((uint)key, (uint)(key >> 32))
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Philox4X32"/> class.
-        /// </summary>
-        /// <param name="key0">
-        /// The first key to construct the engine with.
-        /// </param>
-        /// <param name="key1">
-        /// The second key to construct the engine with.
-        /// </param>
-        /// <remarks>
-        /// This is equivalent to constructing a <see cref="Philox4X32"/> object with a single ulong key of the value
-        /// key0 + key1 * 2^32.
-        /// </remarks>
-        public Philox4X32(uint key0, uint key1)
-        {
-            this.key0 = key0;
-            this.key1 = key1;
+            this.key0 = (uint)key;
+            this.key1 = (uint)(key >> 32);
             this.index = 3;
         }
 
