@@ -56,7 +56,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                         return this.spare2;
                     case 2:
                         return this.spare3;
-                    case 3:
+                    default:
                         this.index = -1;
 
                         var k0 = this.key;
@@ -163,8 +163,6 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                         this.spare3 = c3;
                         return c0;
                 }
-
-                throw new ArgumentException();
             }
         }
     }
