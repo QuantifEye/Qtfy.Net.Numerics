@@ -1,9 +1,9 @@
 # Qtfy.Net.Numerics
 
-We are currently working toward version 1.0.0. of the numerics library
+We are currently working toward version 1.0.0. of the library
 
 ## Build
-<table>
+<!-- <table>
 	<tr>
 		 <th colspan="2">Build Status.</th>
  	</tr>
@@ -15,7 +15,7 @@ We are currently working toward version 1.0.0. of the numerics library
   		<td>dev</td>
       <td><img src="https://travis-ci.com/QuantifEye/Qtfy.Net.Numerics.svg?token=4GppM9ERgowDjXBKpuH5&branch=dev" alt=""/></td>
  	</tr>
-</table>
+</table> -->
 
 ## Installation
 See "add link once released"

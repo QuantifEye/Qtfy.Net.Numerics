@@ -6,9 +6,9 @@
 
 namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
 {
+    using System.Collections.Generic;
     using System.Linq;
     using NUnit.Framework;
-    using System.Collections.Generic;
     using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
 
