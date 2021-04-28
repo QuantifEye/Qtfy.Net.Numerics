@@ -14,7 +14,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
     public class MultivariateNormalSamplerTests
     {
         [Test]
-        public void TestApproximateCovarianceMatrix()
+        public void TestGetNext()
         {
             Assert.Warn("test me");
         }

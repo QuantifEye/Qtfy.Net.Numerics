@@ -52,3 +52,6 @@ dotnet_diagnostic.CA1065.severity = silent
 # Readonly fields should appear before non-readonly fields
 # affects cache locality
 dotnet_diagnostic.SA1214.severity = silent
+
+# Some classes are implemented as stateles singletons, and require instance members.
+dotnet_diagnostic.CA1822.severity = silent

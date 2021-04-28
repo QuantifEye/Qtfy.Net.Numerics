@@ -8,25 +8,14 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
     using NUnit.Framework;
-    using Qtfy.Net.Numerics.Distributions;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
 
-    public class UniformRealSamplerTests : DoubleSamplerTester
+    public class UniformRealSamplerTests
     {
         private const double Min = 0.5;
 
         private const double Max = 1.5;
-
-        public override UniformRealSampler GetSampler()
-        {
-            return new (MersenneTwister32Bit19937.InitGenRand(1), Min, Max);
-        }
-
-        public override UniformRealDistribution GetReferenceDistribution()
-        {
-            return new (Min, Max);
-        }
 
         private static UniformRealSampler GetSampler(double min, double max)
         {
@@ -43,7 +32,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
         [Test]
         public void TestProperties()
         {
-            var sampler = this.GetSampler();
+            var sampler = new UniformRealSampler(MersenneTwister32Bit19937.InitGenRand(1), Min, Max);
             Assert.AreEqual(Min, sampler.Min);
             Assert.AreEqual(Max, sampler.Max);
         }

@@ -22,19 +22,25 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </summary>
         public static StandardNormalDistribution Instance { get; } = new ();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the mean of the distribution.
+        /// </summary>
         public double Mean
         {
             get => 0d;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the variance of the distribution.
+        /// </summary>
         public double Variance
         {
             get => 1d;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the standard deviation of the distribution.
+        /// </summary>
         public double StandardDeviation
         {
             get => 1d;
@@ -62,6 +68,20 @@ namespace Qtfy.Net.Numerics.Distributions
 
         /// <inheritdoc />
         public double Quantile(double probability)
+        {
+            return QuantileFunction(probability);
+        }
+
+        /// <summary>
+        /// Calculates the quantile of function of the distribution.
+        /// </summary>
+        /// <param name="probability">
+        /// The value at which to evaluate the function.
+        /// </param>
+        /// <returns>
+        /// The required quantile of the standard normal distribution.
+        /// </returns>
+        public static double QuantileFunction(double probability)
         {
             return Constants.SqrtTwo * SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
         }

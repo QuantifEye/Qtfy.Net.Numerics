@@ -6,8 +6,6 @@
 
 namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
 {
-    using System;
-
     /// <summary>
     /// The ReducedThreeFry4X64 counter based random number generator that performs 20 rounds.
     /// The class is similar to the <see cref="ThreeFry4X64"/> but limits the number of keys that can be used,

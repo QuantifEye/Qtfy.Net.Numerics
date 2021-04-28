@@ -60,13 +60,19 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </summary>
         public int Max { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the mean of the distribution.
+        /// </summary>
         public double Mean { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the variance of the distribution.
+        /// </summary>
         public double Variance { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the standard deviation of the distribution.
+        /// </summary>
         public double StandardDeviation
         {
             get => Math.Sqrt(this.Variance);

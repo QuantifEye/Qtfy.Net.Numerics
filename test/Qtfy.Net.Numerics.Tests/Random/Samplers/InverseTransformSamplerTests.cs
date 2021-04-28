@@ -9,11 +9,10 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
     using System;
     using NUnit.Framework;
     using Qtfy.Net.Numerics.Distributions;
-    using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
 
-    public class InverseTransformSamplerTests : DoubleSamplerTester
+    public class InverseTransformSamplerTests
     {
         [Test]
         public void TestConstructInvalid()
@@ -24,16 +23,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
                 () => _ = new InverseTransformSampler<double>(engine, null));
             Assert.Throws<ArgumentNullException>(
                 () => _ = new InverseTransformSampler<double>(null, distribution));
-        }
-
-        public override ISampler<double> GetSampler()
-        {
-            return new InverseTransformSampler<double>(MersenneTwister32Bit19937.InitGenRand(1), new NormalDistribution(1, 1));
-        }
-
-        public override IDistribution GetReferenceDistribution()
-        {
-            return new NormalDistribution(1, 1);
         }
     }
 }

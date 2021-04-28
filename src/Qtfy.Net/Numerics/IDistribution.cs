@@ -12,21 +12,6 @@ namespace Qtfy.Net.Numerics
     public interface IDistribution
     {
         /// <summary>
-        /// Gets the mean of the distribution.
-        /// </summary>
-        double Mean { get; }
-
-        /// <summary>
-        /// Gets the variance of the distribution.
-        /// </summary>
-        double Variance { get; }
-
-        /// <summary>
-        /// Gets the standard deviation of the distribution.
-        /// </summary>
-        double StandardDeviation { get; }
-
-        /// <summary>
         /// Calculates the probability that a random variable is less than or equal to <paramref name="x"/>.
         /// </summary>
         /// <param name="x">

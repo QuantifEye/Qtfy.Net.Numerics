@@ -56,19 +56,25 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </summary>
         public double Sigma { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the mean of the distribution.
+        /// </summary>
         public double Mean
         {
             get => this.Mu;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the variance of the distribution.
+        /// </summary>
         public double Variance
         {
             get => this.Sigma * this.Sigma;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the standard deviation of the distribution.
+        /// </summary>
         public double StandardDeviation
         {
             get => this.Sigma;
@@ -77,17 +83,82 @@ namespace Qtfy.Net.Numerics.Distributions
         /// <inheritdoc />
         public double CumulativeDistribution(double x)
         {
-            var erf = SpecialFunctions.Erf((x - this.Mu) / (this.Sigma * Constants.SqrtTwo));
+            return CumulativeDistributionFunctionImpl(x, this.Mu, this.Sigma);
+        }
+
+        /// <summary>
+        /// The cumulative distribution function for the normal distribution.
+        /// </summary>
+        /// <param name="x">
+        /// The point at which to evaluate the function.
+        /// </param>
+        /// <param name="mu">
+        /// The mean of the distrubution.
+        /// </param>
+        /// <param name="sigma">
+        /// The standard deviation of the distribution.
+        /// </param>
+        /// <returns>
+        /// The function evaluated at <paramref name="x"/>.
+        /// </returns>
+        public static double CumulativeDistributionFunction(double x, double mu, double sigma)
+        {
+            if (!double.IsFinite(x) || !double.IsFinite(mu) || !double.IsFinite(sigma) || sigma <= 0)
+            {
+                throw new ArgumentException("invalid value");
+            }
+
+            return CumulativeDistributionFunctionImpl(x, mu, sigma);
+        }
+
+        private static double CumulativeDistributionFunctionImpl(double x, double mu, double sigma)
+        {
+            var erf = SpecialFunctions.Erf((x - mu) / (sigma * Constants.SqrtTwo));
             return Math.FusedMultiplyAdd(erf, 0.5d, 0.5d);
         }
 
         /// <inheritdoc />
         public double Quantile(double probability)
         {
+            return QuantileImpl(probability, this.Mu, this.Sigma);
+        }
+
+        /// <summary>
+        /// Calculates the quantile function of the normal distribution.
+        /// </summary>
+        /// <param name="probability">
+        /// The point at which to evaluate the function.
+        /// </param>
+        /// <param name="mu">
+        /// The mean of the normal distribution.
+        /// </param>
+        /// <param name="sigma">
+        /// The standard deviation of the distribution.
+        /// </param>
+        /// <returns>
+        /// The quantile of the normal distribution.
+        /// </returns>
+        public static double QuantileFunction(double probability, double mu, double sigma)
+        {
+            if (!double.IsFinite(mu))
+            {
+                throw new ArgumentException("invalid mean");
+            }
+
+            if (!double.IsFinite(sigma) || sigma <= 0)
+            {
+                throw new ArgumentException("invalid sigma");
+            }
+
+            return QuantileImpl(probability, mu, sigma);
+        }
+
+        private static double QuantileImpl(double probability, double mu, double sigma)
+        {
             if (probability >= 0d && probability <= 1d)
             {
                 var erfInv = SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
-                return this.Mu + this.Sigma * Constants.SqrtTwo * erfInv;
+                return mu + sigma * Constants.SqrtTwo * erfInv;
             }
 
             throw new ArgumentException("invalid probability", nameof(probability));

@@ -8,27 +8,15 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
     using NUnit.Framework;
-    using Qtfy.Net.Numerics.Distributions;
     using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
 
-    public class NormalSamplerTests : DoubleSamplerTester
+    public class NormalSamplerTests
     {
         private const double Mu = 12d;
 
         private const double Sigma = 1d;
-
-        public override NormalSampler GetSampler()
-        {
-            var engine = MersenneTwister32Bit19937.InitGenRand(1);
-            return new NormalSampler(engine, Mu, Sigma);
-        }
-
-        public override IDistribution GetReferenceDistribution()
-        {
-            return new NormalDistribution(Mu, Sigma);
-        }
 
         [Test]
         public void TestGetNext()
@@ -39,7 +27,8 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
         [Test]
         public void TestProperties()
         {
-            var sampler = this.GetSampler();
+            var engine = MersenneTwister32Bit19937.InitGenRand(1);
+            var sampler = new NormalSampler(engine, Mu, Sigma);
             Assert.AreEqual(Mu, sampler.Mu);
             Assert.AreEqual(Sigma, sampler.Sigma);
         }

@@ -7,7 +7,6 @@
 namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
-    using MathNet.Numerics.LinearAlgebra;
     using NUnit.Framework;
     using static Qtfy.Net.Numerics.Random.Samplers.Impl;
 
@@ -23,7 +22,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
                 { 0.5, 0.5, 1.0 },
             };
 
-            var factor = Matrix<double>.Build.DenseOfArray(correlation).Cholesky().Factor;
             var actual = PackedCholeskyFactorCorrelationMatrix(correlation);
             var expected = new[]
             {

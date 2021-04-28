@@ -54,13 +54,17 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </summary>
         public double Sigma { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the mean of the distribution.
+        /// </summary>
         public double Mean
         {
             get => Exp(this.Mu + this.Sigma * this.Sigma / 2d);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the variance of the distribution.
+        /// </summary>
         public double Variance
         {
             get
@@ -70,7 +74,9 @@ namespace Qtfy.Net.Numerics.Distributions
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the standard deviation of the distribution.
+        /// </summary>
         public double StandardDeviation
         {
             get => Sqrt(this.Variance);

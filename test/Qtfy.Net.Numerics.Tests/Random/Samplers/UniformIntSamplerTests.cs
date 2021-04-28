@@ -8,27 +8,15 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
     using NUnit.Framework;
-    using Qtfy.Net.Numerics.Distributions;
-    using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
     using Qtfy.Net.Numerics.Random.SeedSequences;
 
-    public class UniformIntSamplerTests : IntSamplerTester
+    public class UniformIntSamplerTests
     {
         private const int Min = 7;
 
         private const int Max = 12;
-
-        public override ISampler<int> GetSampler()
-        {
-            return new UniformIntSampler(GetEngine(), Min, Max);
-        }
-
-        public override IDistribution GetReferenceDistribution()
-        {
-            return new UniformIntDistribution(Min, Max);
-        }
 
         private static MersenneTwister32Bit19937 GetEngine()
         {
