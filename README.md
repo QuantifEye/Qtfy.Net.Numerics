@@ -1,4 +1,4 @@
-# Qtfy.Net.Numerics
+# Qtfy.Net
 
 We are currently working toward version 1.0.0. of the library
 
