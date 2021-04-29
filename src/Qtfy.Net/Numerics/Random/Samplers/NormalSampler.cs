@@ -4,6 +4,8 @@
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
+using Qtfy.Net.Numerics.Distributions;
+
 namespace Qtfy.Net.Numerics.Random.Samplers
 {
     using System;
@@ -34,16 +36,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 throw new ArgumentNullException(nameof(generator));
             }
 
-            if (!double.IsFinite(mu))
-            {
-                throw new ArgumentException("Value must not be null of infinity", nameof(mu));
-            }
-
-            if (!double.IsFinite(sigma))
-            {
-                throw new ArgumentException("Value must not be null of infinity", nameof(sigma));
-            }
-
+            NormalDistribution.ValidateParameters(mu, sigma);
             this.standardNormalSampler = new StandardNormalSampler(generator);
             this.Mu = mu;
             this.Sigma = sigma;
