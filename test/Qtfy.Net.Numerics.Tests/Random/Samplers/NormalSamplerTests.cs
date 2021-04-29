@@ -8,6 +8,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.Distributions;
     using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
@@ -18,17 +19,20 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
         private const double Sigma = 1d;
 
-        [Test]
-        public void TestGetNext()
+        [TestCase(0.5, 0d, 1d,  0.001)]
+        [TestCase(0.0, 0d, 1d,  0.001)]
+        [TestCase(-0.5, 0d, 1d, 0.001)]
+        public void TestGetIntegrateDistribution(double x, double mean, double sigma, double error)
         {
-            Assert.Warn("test me");
+            var sampler = new NormalSampler(new ReducedThreeFry4X64(1), mean, sigma);
+            var referenceDistribution = new NormalDistribution(mean, sigma);
+            SamplerTester.TestIntegrateDistribution(x, sampler, referenceDistribution, error);
         }
 
         [Test]
         public void TestProperties()
         {
-            var engine = MersenneTwister32Bit19937.InitGenRand(1);
-            var sampler = new NormalSampler(engine, Mu, Sigma);
+            var sampler = new NormalSampler(new ReducedThreeFry4X64(1), Mu, Sigma);
             Assert.AreEqual(Mu, sampler.Mu);
             Assert.AreEqual(Sigma, sampler.Sigma);
         }
@@ -37,21 +41,21 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
             where TException : Exception
         {
             Assert.Throws<TException>(
-                () => _ = new NormalSampler(engine, mu: mu, sigma: sigma));
+                () => _ = new NormalSampler(engine, mu, sigma));
         }
 
         [Test]
         public void TestNanParameter()
         {
             var engine = MersenneTwister32Bit19937.InitGenRand(1);
-            TestInvalidThrows<ArgumentException>(engine, mu: double.NaN, sigma: 1d);
-            TestInvalidThrows<ArgumentException>(engine, mu: 1d, sigma: double.NaN);
+            TestInvalidThrows<ArgumentException>(engine, double.NaN, 1d);
+            TestInvalidThrows<ArgumentException>(engine, 1d, double.NaN);
         }
 
         [Test]
         public void TestConstructInvalidGenerator()
         {
-            TestInvalidThrows<ArgumentNullException>(null, mu: 1d, sigma: 1d);
+            TestInvalidThrows<ArgumentNullException>(null, 1d, 1d);
         }
     }
 }

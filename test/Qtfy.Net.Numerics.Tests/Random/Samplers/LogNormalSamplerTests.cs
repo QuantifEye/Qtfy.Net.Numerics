@@ -8,50 +8,52 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.Distributions;
     using Qtfy.Net.Numerics.Random;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
 
     public class LogNormalSamplerTests
     {
-        private const double Mu = 12d;
-
-        private const double Sigma = 1d;
-
-        [Test]
-        public void TestGetNext()
+        [TestCase(0.5, 0d, 1d, 0.001)]
+        [TestCase(0.0, 0d, 1d, 0.001)]
+        [TestCase(-0.5, 0d, 1d, 0.001)]
+        public void TestGetIntegrateDistribution(double x, double mean, double sigma, double error)
         {
-            Assert.Warn("test me");
+            var sampler = new LogNormalSampler(new ReducedThreeFry4X64(1), mean, sigma);
+            var referenceDistribution = new LogNormalDistribution(mean, sigma);
+            SamplerTester.TestIntegrateDistribution(x, sampler, referenceDistribution, error);
         }
 
         [Test]
         public void TestProperties()
         {
-            var engine = MersenneTwister32Bit19937.InitGenRand(1);
-            var sampler = new LogNormalSampler(engine, Mu, Sigma);
-            Assert.AreEqual(Mu, sampler.Mu);
-            Assert.AreEqual(Sigma, sampler.Sigma);
+            const double mu = 12d;
+            const double sigma = 1d;
+            var sampler = new LogNormalSampler(new ReducedThreeFry4X64(1), mu, sigma);
+            Assert.AreEqual(mu, sampler.Mu);
+            Assert.AreEqual(sigma, sampler.Sigma);
         }
 
         private static void TestInvalidThrows<TException>(IRandomNumberEngine engine, double mu, double sigma)
             where TException : Exception
         {
             Assert.Throws<TException>(
-                () => _ = new LogNormalSampler(engine, mu: mu, sigma: sigma));
+                () => _ = new LogNormalSampler(engine, mu, sigma));
         }
 
         [Test]
         public void TestNanParameter()
         {
-            var engine = MersenneTwister32Bit19937.InitGenRand(1);
-            TestInvalidThrows<ArgumentException>(engine, mu: double.NaN, sigma: 1d);
-            TestInvalidThrows<ArgumentException>(engine, mu: 1d, sigma: double.NaN);
+            var engine = new ReducedThreeFry4X64(1);
+            TestInvalidThrows<ArgumentException>(engine, double.NaN, 1d);
+            TestInvalidThrows<ArgumentException>(engine, 1d, double.NaN);
         }
 
         [Test]
         public void TestConstructInvalidGenerator()
         {
-            TestInvalidThrows<ArgumentNullException>(null, mu: 1d, sigma: 1d);
+            TestInvalidThrows<ArgumentNullException>(null, 1d, 1d);
         }
     }
 }

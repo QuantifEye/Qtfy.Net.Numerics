@@ -28,20 +28,7 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </exception>
         public NormalDistribution(double mu, double sigma)
         {
-            if (!double.IsFinite(mu))
-            {
-                throw new ArgumentException(
-                    $"{nameof(mu)} must not be infinite or NaN",
-                    nameof(mu));
-            }
-
-            if (!double.IsFinite(sigma) || sigma <= 0d)
-            {
-                throw new ArgumentException(
-                    $"{nameof(sigma)} must not be greater than zero and not or NaN",
-                    nameof(sigma));
-            }
-
+            ValidateParameters(mu, sigma);
             this.Mu = mu;
             this.Sigma = sigma;
         }
@@ -93,21 +80,17 @@ namespace Qtfy.Net.Numerics.Distributions
         /// The point at which to evaluate the function.
         /// </param>
         /// <param name="mu">
-        /// The mean of the distrubution.
+        /// The mean of the distribution.
         /// </param>
         /// <param name="sigma">
         /// The standard deviation of the distribution.
         /// </param>
         /// <returns>
-        /// The function evaluated at <paramref name="x"/>.
+        /// The probability that a random variable is less than or equal to <paramref name="x"/>.
         /// </returns>
         public static double CumulativeDistributionFunction(double x, double mu, double sigma)
         {
-            if (!double.IsFinite(x) || !double.IsFinite(mu) || !double.IsFinite(sigma) || sigma <= 0)
-            {
-                throw new ArgumentException("invalid value");
-            }
-
+            ValidateParameters(mu, sigma);
             return CumulativeDistributionFunctionImpl(x, mu, sigma);
         }
 
@@ -140,16 +123,7 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </returns>
         public static double QuantileFunction(double probability, double mu, double sigma)
         {
-            if (!double.IsFinite(mu))
-            {
-                throw new ArgumentException("invalid mean");
-            }
-
-            if (!double.IsFinite(sigma) || sigma <= 0)
-            {
-                throw new ArgumentException("invalid sigma");
-            }
-
+            ValidateParameters(mu, sigma);
             return QuantileImpl(probability, mu, sigma);
         }
 
@@ -178,6 +152,28 @@ namespace Qtfy.Net.Numerics.Distributions
             var s = this.Sigma;
             var z = (x - this.Mu) / s;
             return (z * z / -2d) - Math.Log(s * Constants.SqrtTwoPi);
+        }
+
+        /// <summary>
+        /// Checks if the parameters are valid.
+        /// </summary>
+        /// <param name="mu">
+        /// The mean, must be finite.
+        /// </param>
+        /// <param name="sigma">
+        /// The standard deviation, must be positive and finite.
+        /// </param>
+        internal static void ValidateParameters(double mu, double sigma)
+        {
+            if (!double.IsFinite(mu))
+            {
+                throw new ArgumentException("mu must be finite");
+            }
+
+            if (!double.IsFinite(sigma) || sigma <= 0d)
+            {
+                throw new ArgumentException("sigma must be positive and finite");
+            }
         }
     }
 }

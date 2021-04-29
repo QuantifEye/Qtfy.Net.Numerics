@@ -10,7 +10,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
     using NUnit.Framework;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
-    using Qtfy.Net.Numerics.Random.SeedSequences;
 
     public class UniformIntSamplerTests
     {
@@ -18,15 +17,9 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
         private const int Max = 12;
 
-        private static MersenneTwister32Bit19937 GetEngine()
-        {
-            var ss = new SeedSequence(1, 2, 3);
-            return new MersenneTwister32Bit19937(ss);
-        }
-
         private static UniformIntSampler GetSampler(int min, int max)
         {
-            return new (GetEngine(), min, max);
+            return new (new ReducedThreeFry4X64(1), min, max);
         }
 
         [Test]
@@ -46,10 +39,28 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
             Assert.AreEqual(Max, GetSampler(Min, Max).Max);
         }
 
-        [Test]
-        public void TestGetNext()
+        [TestCase(1, 3)]
+        public void IntegrateCdf(int min, int max)
         {
-            Assert.Warn("test me");
+            const int trials = 1000000;
+            const double error = 0.0005;
+            var sampler = new UniformIntSampler(new ReducedThreeFry4X64(1), min, max);
+
+            for (int x = min; x <= max; ++x)
+            {
+                var expected = (double)(x - min + 1) / (max - min + 1);
+                var success = 0;
+                for (int i = 0; i < trials; ++i)
+                {
+                    if (sampler.GetNext() <= x)
+                    {
+                        ++success;
+                    }
+                }
+
+                var actual = (double)success / trials;
+                Assert.AreEqual(expected, actual, error);
+            }
         }
     }
 }

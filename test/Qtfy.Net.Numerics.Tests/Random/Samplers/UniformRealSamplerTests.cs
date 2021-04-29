@@ -8,6 +8,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.Distributions;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
 
@@ -19,20 +20,22 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
         private static UniformRealSampler GetSampler(double min, double max)
         {
-            var engine = MersenneTwister32Bit19937.InitGenRand(1);
-            return new UniformRealSampler(engine, min, max);
+            return new (new ReducedThreeFry4X64(1), min, max);
         }
 
-        [Test]
-        public void TestGetNext()
+        [TestCase(0.5, 0.0, 1.0, 0.0001)]
+        [TestCase(0.4, 0.1, 0.5, 0.0001)]
+        public void TestGetIntegrateDistribution(double x, double min, double max, double error)
         {
-            Assert.Warn("test me");
+            var sampler = new UniformRealSampler(new ReducedThreeFry4X64(1), min, max);
+            var referenceDistribution = new UniformRealDistribution(min, max);
+            SamplerTester.TestIntegrateDistribution(x, sampler, referenceDistribution, error);
         }
 
         [Test]
         public void TestProperties()
         {
-            var sampler = new UniformRealSampler(MersenneTwister32Bit19937.InitGenRand(1), Min, Max);
+            var sampler = new UniformRealSampler(new ReducedThreeFry4X64(1), Min, Max);
             Assert.AreEqual(Min, sampler.Min);
             Assert.AreEqual(Max, sampler.Max);
         }

@@ -53,7 +53,7 @@ namespace Qtfy.Net.Numerics.Tests
         [Test]
         public void TestPowerSet()
         {
-            var actual = Combinatorics.PowerSet(new int[] { 1, 2, 3 });
+            var actual = Combinatorics.PowerSet(new[] { 1, 2, 3 });
             TestPowerSetHelper(actual.ToArray());
         }
 
@@ -61,7 +61,7 @@ namespace Qtfy.Net.Numerics.Tests
         public void TestPowerSetWithEqualityComparer()
         {
             var actual = Combinatorics.PowerSet(
-                new int[] { 1, 2, 3 },
+                new[] { 1, 2, 3 },
                 EqualityComparer<int>.Default);
             TestPowerSetHelper(actual.ToArray());
         }
@@ -69,7 +69,7 @@ namespace Qtfy.Net.Numerics.Tests
         [Test]
         public void TestPowerSetWithCompliment()
         {
-            var actual = Combinatorics.PowerSetWithCompliment(new int[] { 1, 2, 3 });
+            var actual = Combinatorics.PowerSetWithCompliment(new[] { 1, 2, 3 });
             TestPowerSetWithComplimentHelper(actual.ToArray());
         }
 
@@ -77,7 +77,7 @@ namespace Qtfy.Net.Numerics.Tests
         public void TestPowerSetWithComplimentAndEqualityComparer()
         {
             var actual = Combinatorics.PowerSetWithCompliment(
-                new int[] { 1, 2, 3 },
+                new[] { 1, 2, 3 },
                 EqualityComparer<int>.Default);
             TestPowerSetWithComplimentHelper(actual.ToArray());
         }

@@ -34,6 +34,12 @@ namespace Qtfy.Net.Numerics.Tests.Distributions
             Assert.AreEqual(Max, new UniformIntDistribution(Min, Max).Max);
         }
 
+        [TestCase(1, 3, 2d)]
+        public void TestMean(int min, int max, double expected)
+        {
+            IsClose(expected, new UniformIntDistribution(min, max).Mean);
+        }
+
         [TestCase(1, 3, 0.6666666666666666)]
         public void TestVariance(int min, int max, double variance)
         {

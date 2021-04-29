@@ -53,7 +53,7 @@ namespace Qtfy.Net.Numerics.Distributions
         /// The value at which to evaluate the standard normal CDF.
         /// </param>
         /// <returns>
-        /// A double in the range [0.0, 1.0].
+        /// The probability that a random variable is less than or equal to <paramref name="x"/>.
         /// </returns>
         public static double CumulativeDistributionFunction(double x)
         {

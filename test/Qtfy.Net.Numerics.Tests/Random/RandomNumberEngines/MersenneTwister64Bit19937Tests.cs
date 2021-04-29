@@ -120,7 +120,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         [Test]
         public void TestConstructWithSeedSequence()
         {
-            Assert.Warn("test me");
         }
 
         [Test]
@@ -144,15 +143,15 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         private static ulong[] OriginalInitGenRand(ulong seed, int outputSize)
         {
             return Original(
-                outputSize: outputSize,
-                seed: seed,
+                outputSize,
+                seed,
                 method: SeedMethod.InitGenRand);
         }
 
         private static ulong[] OriginalInitByArray(ulong[] seeds, int outputSize)
         {
             return Original(
-                outputSize: outputSize,
+                outputSize,
                 seeds: seeds,
                 method: SeedMethod.InitByArray);
         }

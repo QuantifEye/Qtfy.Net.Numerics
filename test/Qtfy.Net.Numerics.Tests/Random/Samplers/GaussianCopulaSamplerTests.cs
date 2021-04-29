@@ -7,7 +7,9 @@
 namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 {
     using System;
+    using System.Collections;
     using NUnit.Framework;
+    using Qtfy.Net.Numerics.Distributions;
     using Qtfy.Net.Numerics.Random.RandomNumberEngines;
     using Qtfy.Net.Numerics.Random.Samplers;
 
@@ -21,8 +23,8 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
                 { 1d, 0.5 },
                 { 0.5, 1d },
             };
-            var engine = MersenneTwister32Bit19937.InitGenRand(1);
-            var sampler = new GaussianCopulaSampler.Builder(sigma).Build(engine);
+
+            var sampler = new GaussianCopulaSampler.Builder(sigma).Build(new ReducedThreeFry4X64(1));
             Assert.AreEqual(2, sampler.Length);
         }
 
@@ -33,10 +35,42 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
                 () => _ = new GaussianCopulaSampler.Builder(null));
         }
 
-        [Test]
-        public void TestGetNext()
+        [TestCaseSource(typeof(IntegrateDistributionCases))]
+        public void TestIntegrateDistribution(double[] x, double[,] sigma, double expected, double error)
         {
-            Assert.Warn("test me");
+            var sampler = new GaussianCopulaSampler.Builder(sigma).Build(new ReducedThreeFry4X64(1));
+            var actual = SamplerTester.IntegrateMultivariateCdf(sampler, x, 1000000);
+            Assert.AreEqual(expected, actual, error);
+        }
+
+        private class IntegrateDistributionCases : IEnumerable
+        {
+            private static object[] Case(double[] x, double[,] corr, double expected, double error)
+                => new object[] { x, corr, expected, error };
+
+            public IEnumerator GetEnumerator()
+            {
+                const double error = 0.001;
+                var xi = StandardNormalDistribution.CumulativeDistributionFunction(0.5);
+                yield return Case(
+                    x: new[] { xi, xi },
+                    corr: new[,]
+                    {
+                        { 1d, 0.5 },
+                        { 0.5, 1d },
+                    },
+                    expected: 0.5462444438570895,
+                    error: error);
+                yield return Case(
+                    x: new[] { xi, xi },
+                    corr: new[,]
+                    {
+                        { 1d, -0.5 },
+                        { -0.5, 1d },
+                    },
+                    expected: 0.41922310903660254,
+                    error: error);
+            }
         }
     }
 }

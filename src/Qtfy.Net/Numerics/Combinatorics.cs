@@ -50,7 +50,7 @@ namespace Qtfy.Net.Numerics
             var elements = sourceElements.Distinct().ToArray();
             if (elements.Length == 0)
             {
-                return new T[][] { Array.Empty<T>() };
+                return new[] { Array.Empty<T>() };
             }
 
             var size = elements.Length;

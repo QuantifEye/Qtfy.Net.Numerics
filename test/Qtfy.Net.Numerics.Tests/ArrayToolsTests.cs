@@ -13,7 +13,7 @@ namespace Qtfy.Net.Numerics.Tests
         [Test]
         public void TestCopy()
         {
-            var source = new int[] { 456, 789, 123 };
+            var source = new[] { 456, 789, 123 };
             var copy = source.Copy();
             Assert.AreNotSame(source, copy);
             Assert.AreEqual(source, copy);

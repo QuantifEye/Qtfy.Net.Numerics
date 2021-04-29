@@ -36,6 +36,7 @@ namespace Qtfy.Net.Numerics.Tests.Distributions
         public void TestCumulativeDistributionFunction(double x, double expected)
         {
             Assert.AreEqual(expected, StandardNormalDistribution.Instance.CumulativeDistribution(x));
+            Assert.AreEqual(expected, StandardNormalDistribution.CumulativeDistributionFunction(x));
         }
 
         [TestCase(1.0, double.PositiveInfinity)]
