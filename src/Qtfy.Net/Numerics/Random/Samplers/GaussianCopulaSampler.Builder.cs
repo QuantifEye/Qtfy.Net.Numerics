@@ -14,7 +14,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// An object that is able to create <see cref="MultivariateNormalSampler"/>s with the
         /// same mean vector and covariance matrix, but with different <see cref="IRandomNumberEngine"/>s.
         /// </summary>
-        public sealed class Builder : ISamplerFactory<GaussianCopulaSampler>
+        public sealed class Builder
         {
             private readonly double[] choleskyFactor;
 
@@ -37,7 +37,15 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 this.order = correlationMatrix.GetLength(0);
             }
 
-            /// <inheritdoc />
+            /// <summary>
+            /// Builds a new instance of a gaussian copula sampler.
+            /// </summary>
+            /// <param name="engine">
+            /// The random number engine to use as a ransom source.
+            /// </param>
+            /// <returns>
+            /// A new instance of a gaussian copula sampler.
+            /// </returns>
             public GaussianCopulaSampler Build(IRandomNumberEngine engine)
             {
                 return new (engine, this.choleskyFactor, this.order);

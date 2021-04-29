@@ -14,7 +14,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// An object that is able to create <see cref="MultivariateNormalSampler"/>s with the
         /// same mean vector and covariance matrix, but with different <see cref="IRandomNumberEngine"/>s.
         /// </summary>
-        public sealed class Builder : ISamplerFactory<MultivariateNormalSampler>
+        public sealed class Builder
         {
             private readonly double[] mean;
 
@@ -67,10 +67,18 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 this.mean = mean.Copy();
             }
 
-            /// <inheritdoc />
+            /// <summary>
+            /// Builds a new instance of a multivariate normal sampler.
+            /// </summary>
+            /// <param name="engine">
+            /// The random number engine to use as a ransom source.
+            /// </param>
+            /// <returns>
+            /// A new instance of a multivariate normal sampler.
+            /// </returns>
             public MultivariateNormalSampler Build(IRandomNumberEngine engine)
             {
-                return new MultivariateNormalSampler(engine, this.mean, this.choleskyFactor);
+                return new (engine, this.mean, this.choleskyFactor);
             }
         }
     }

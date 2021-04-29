@@ -4,11 +4,10 @@
 // See LICENSE.txt file in the project root for full license information.
 // </copyright>
 
-using Qtfy.Net.Numerics.Distributions;
-
 namespace Qtfy.Net.Numerics.Random.Samplers
 {
     using System;
+    using Qtfy.Net.Numerics.Distributions;
 
     /// <summary>
     /// A random distribution that generates normally distributed values.
