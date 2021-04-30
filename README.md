@@ -2,8 +2,9 @@
 
 We are currently working toward version 1.0.0. of the library
 
+<!-- 
 ## Build
-<!-- <table>
+<table>
 	<tr>
 		 <th colspan="2">Build Status.</th>
  	</tr>
