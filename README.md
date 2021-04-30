@@ -17,9 +17,6 @@ We are currently working toward version 1.0.0. of the library
  	</tr>
 </table> -->
 
-## Installation
-See "add link once released"
-
 ## Developement
 ### Dependencies
 See `./global.json` for the required sdk.
