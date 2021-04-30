@@ -19,7 +19,7 @@ namespace Qtfy.Net.Numerics.Tests
             delegate*<double, double> expectedFunction,
             delegate*<double, double> actualFunction)
         {
-            for (double x = min; x < max; x += inc)
+            for (var x = min; x < max; x += inc)
             {
                 var expected = expectedFunction(x);
                 var actual = actualFunction(x);

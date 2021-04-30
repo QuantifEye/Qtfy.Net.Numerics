@@ -16,7 +16,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         {
             var engine = new ThreeFry4X64(0);
             var actual = new ulong[4];
-            for (int i = 0; i < actual.Length; ++i)
+            for (var i = 0; i < actual.Length; ++i)
             {
                 actual[i] = engine.NextULong();
             }

@@ -16,7 +16,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         {
             var engine = new Philox4X32(0);
             var actual = new uint[4];
-            for (int i = 0; i < actual.Length; ++i)
+            for (var i = 0; i < actual.Length; ++i)
             {
                 actual[i] = engine.NextUInt();
             }

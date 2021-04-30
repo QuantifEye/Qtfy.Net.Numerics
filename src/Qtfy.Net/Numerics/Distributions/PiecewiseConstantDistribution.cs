@@ -74,13 +74,13 @@ namespace Qtfy.Net.Numerics.Distributions
                 throw new ArgumentException("Weights must be non negative");
             }
 
-            for (int i = 1; i < cp.Length; ++i)
+            for (var i = 1; i < cp.Length; ++i)
             {
                 cp[i] = cp[i - 1] + cp[i];
             }
 
             var total = cp[^1];
-            for (int i = 0; i < cp.Length; ++i)
+            for (var i = 0; i < cp.Length; ++i)
             {
                 cp[i] /= total;
             }
@@ -95,7 +95,7 @@ namespace Qtfy.Net.Numerics.Distributions
             {
                 var domain = this.cumulativeProbabilities;
                 var range = this.boundaries;
-                int i = 0;
+                var i = 0;
                 for (; i < domain.Length; ++i)
                 {
                     if (domain[i] >= probability)
@@ -147,7 +147,7 @@ namespace Qtfy.Net.Numerics.Distributions
 
         private static bool IsStrictlyMonotonic(double[] array)
         {
-            for (int i = 1; i < array.Length; ++i)
+            for (var i = 1; i < array.Length; ++i)
             {
                 if (array[i - 1] >= array[i])
                 {

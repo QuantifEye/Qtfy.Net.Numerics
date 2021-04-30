@@ -83,7 +83,12 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </returns>
         public static double QuantileFunction(double probability)
         {
-            return Constants.SqrtTwo * SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
+            if (probability >= 0d && probability <= 1d)
+            {
+                return Constants.SqrtTwo * SpecialFunctions.ErfInv(Math.FusedMultiplyAdd(2d, probability, -1d));
+            }
+
+            throw new ArgumentException("invalid probability");
         }
 
         /// <inheritdoc />

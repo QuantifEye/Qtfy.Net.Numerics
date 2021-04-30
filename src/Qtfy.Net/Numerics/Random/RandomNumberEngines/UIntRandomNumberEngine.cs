@@ -35,16 +35,11 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         }
 
         /// <inheritdoc />
-        public double NextSignedCanonical()
-        {
-            return RandomFunctions.SignedCanonical(this.NextULong());
-        }
-
-        /// <inheritdoc />
         public double NextStandardUniform()
         {
-            const ulong max = 1UL << 53;
-            const uint upperMax = (uint)(max >> 32);
+            const ulong two32 = 1UL << 32;
+            const ulong two53 = 1UL << 53;
+            const uint upperMax = (uint)(two53 >> 32);
             const uint scaling = uint.MaxValue / (upperMax + 1U);
             const uint last = (upperMax + 1U) * scaling;
             ulong result;
@@ -57,9 +52,9 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                 }
                 while (temp >= last);
 
-                result = ((ulong)(temp / scaling) << 32) + this.NextUInt();
+                result = ((temp / scaling) * two32) + this.NextUInt();
             }
-            while (result > max);
+            while (result > two53);
 
             return Math.ScaleB(result, -53);
         }

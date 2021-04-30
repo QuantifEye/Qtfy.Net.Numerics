@@ -58,9 +58,10 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         [Test]
         public void TestNextStandardUniform()
         {
+            const ulong two53 = 1UL << 53;
             this.TestUtil(
                 e => e.NextStandardUniform(),
-                e => Math.ScaleB(e.NextULong(1UL << 53), -53));
+                e => Math.ScaleB(e.NextULong(two53), -53));
         }
 
         [Test]
@@ -77,14 +78,6 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             this.TestUtil(
                 e => e.NextIncrementedCanonical(),
                 e => RandomFunctions.IncrementedCanonical(e.NextULong()));
-        }
-
-        [Test]
-        public void TestNextSignedCanonical()
-        {
-            this.TestUtil(
-                e => e.NextSignedCanonical(),
-                e => RandomFunctions.SignedCanonical(e.NextULong()));
         }
     }
 }

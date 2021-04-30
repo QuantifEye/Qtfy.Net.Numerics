@@ -122,7 +122,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         private static uint[] GetRandomValues(MersenneTwister32Bit19937 generator, int size)
         {
             var actual = new uint[size];
-            for (int i = 0; i < actual.Length; ++i)
+            for (var i = 0; i < actual.Length; ++i)
             {
                 actual[i] = generator.NextUInt();
             }
@@ -213,8 +213,8 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             const ulong UPPER_MASK = 0x80000000UL; /* most significant w-r bits */
             const ulong LOWER_MASK = 0x7fffffffUL; /* least significant r bits */
 
-            ulong[] mt = new ulong [N]; /* the array for the state vector  */
-            int mti = N + 1; /* mti==N+1 means mt[N] is not initialized */
+            var mt = new ulong [N]; /* the array for the state vector  */
+            var mti = N + 1; /* mti==N+1 means mt[N] is not initialized */
 
             /* initializes mt[N] with a seed */
             void init_genrand(ulong s)
@@ -239,7 +239,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             /* slight change for C++, 2004/2/26 */
             void init_by_array(ulong[] init_key)
             {
-                int key_length = init_key.Length;
+                var key_length = init_key.Length;
                 int i, j, k;
                 init_genrand(19650218UL);
                 i = 1;
@@ -281,7 +281,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             ulong genrand_int32()
             {
                 ulong y;
-                ulong[] mag01 = new ulong[2] {0x0UL, MATRIX_A};
+                var mag01 = new ulong[2] {0x0UL, MATRIX_A};
                 /* mag01[x] = x * MATRIX_A  for x=0,1 */
 
                 if (mti >= N)
@@ -331,8 +331,8 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
                     break;
             }
 
-            uint[] result = new uint[outputSize];
-            for (int i = 0; i < result.Length; ++i)
+            var result = new uint[outputSize];
+            for (var i = 0; i < result.Length; ++i)
             {
                 result[i] = (uint) genrand_int32();
             }

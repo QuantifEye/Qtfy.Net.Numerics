@@ -17,7 +17,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         private static void TestGenerator(PermutedCongruentialGenerator generator, uint[] expected)
         {
             var actual = new uint[expected.Length];
-            for (int i = 0; i < actual.Length; ++i)
+            for (var i = 0; i < actual.Length; ++i)
             {
                 actual[i] = generator.NextUInt();
             }
@@ -30,7 +30,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         {
             var generator = new PermutedCongruentialGenerator(initState, initSeq);
             var actual = new uint[expected.Length];
-            for (int i = 0; i < actual.Length; ++i)
+            for (var i = 0; i < actual.Length; ++i)
             {
                 actual[i] = generator.NextUInt();
             }

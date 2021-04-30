@@ -21,7 +21,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         {
             unchecked
             {
-                const ulong range = (ulong)uint.MaxValue + 1UL;
+                const ulong range = uint.MaxValue + 1UL;
                 const ulong scaling = ulong.MaxValue / range;
                 const ulong last = range * scaling;
                 ulong result;
@@ -73,12 +73,6 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         public double NextIncrementedCanonical()
         {
             return RandomFunctions.IncrementedCanonical(this.NextULong());
-        }
-
-        /// <inheritdoc />
-        public double NextSignedCanonical()
-        {
-            return RandomFunctions.SignedCanonical(this.NextULong());
         }
 
         /// <inheritdoc />

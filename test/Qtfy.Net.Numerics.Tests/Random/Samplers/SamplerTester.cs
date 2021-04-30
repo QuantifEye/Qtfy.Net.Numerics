@@ -13,8 +13,8 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
     {
         private static double IntegrateCdf(ISampler<double> sampler, double x, int trials)
         {
-            int success = 0;
-            for (int i = 0; i < trials; i++)
+            var success = 0;
+            for (var i = 0; i < trials; i++)
             {
                 if (sampler.GetNext() <= x)
                 {
@@ -39,8 +39,8 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
         public static double IntegrateMultivariateCdf(ISampler<double[]> sampler, double[] x, int trials)
         {
-            int success = 0;
-            for (int i = 0; i < trials; i++)
+            var success = 0;
+            for (var i = 0; i < trials; i++)
             {
                 var l = sampler.GetNext();
                 if (LessThan(l, x))
@@ -53,7 +53,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
 
             static bool LessThan(double[] l, double[] r)
             {
-                for (int i = 0; i < l.Length; ++i)
+                for (var i = 0; i < l.Length; ++i)
                 {
                     if (l[i] > r[i])
                     {

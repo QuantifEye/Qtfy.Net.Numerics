@@ -59,7 +59,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             double* resultEnd)
         {
             double* z;
-            double* zEnd = normals;
+            var zEnd = normals;
             double total;
             do
             {

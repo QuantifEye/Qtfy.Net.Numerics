@@ -43,21 +43,5 @@ namespace Qtfy.Net.Numerics.Tests.Random
                 1d,
                 RandomFunctions.IncrementedCanonical(ulong.MaxValue));
         }
-
-        [Test]
-        public void TestSignedCanonicalMax()
-        {
-            Assert.AreEqual(
-                Math.BitDecrement(1d),
-                RandomFunctions.SignedCanonical(ulong.MaxValue ^ (1UL << 63)));
-        }
-
-        [Test]
-        public void TestSignedCanonicalMin()
-        {
-            Assert.AreEqual(
-                Math.BitIncrement(-1d),
-                RandomFunctions.SignedCanonical(ulong.MaxValue));
-        }
     }
 }

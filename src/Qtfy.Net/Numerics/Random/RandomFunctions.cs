@@ -34,28 +34,11 @@ namespace Qtfy.Net.Numerics.Random
         /// The bits to use as entropy.
         /// </param>
         /// <returns>
-        /// A double in the interval [0, 1), rounded to the nearest multiple of 2^-53.
+        /// A double in the interval (0, 1], rounded to the nearest multiple of 2^-53.
         /// </returns>
         public static double IncrementedCanonical(ulong bits)
         {
             return Math.ScaleB((bits >> 11) + 1UL, -53);
-        }
-
-        /// <summary>
-        /// Creates a double in the interval (-1, 1), rounded to the nearest multiple of 2^-53.
-        /// </summary>
-        /// <param name="bits">
-        /// The bits to use as entropy.
-        /// </param>
-        /// <returns>
-        /// A double in the interval (-1, 1), rounded to the nearest multiple of 2^-53.
-        /// </returns>
-        public static double SignedCanonical(ulong bits)
-        {
-            const ulong msb = 1UL << 63;
-            const ulong mask53 = (1UL << 53) - 1UL;
-            var abs = Math.ScaleB((bits >> 10) & mask53, -53);
-            return bits < msb ? abs : -abs;
         }
     }
 }

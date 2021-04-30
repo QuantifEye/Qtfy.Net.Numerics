@@ -25,10 +25,10 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         /// The state initializer.
         /// </param>
         /// <param name="streamId">
-        /// The stream id. Must be in range [0, pow(2, 63)).
+        /// The stream id. Must be in range [0, 2^63).
         /// </param>
         /// <exception cref="ArgumentException">
-        /// If <paramref name="streamId"/> is not in [0, pow(2, 63)).
+        /// If <paramref name="streamId"/> is not in [0, 2^63).
         /// </exception>
         public PermutedCongruentialGenerator(ulong stateInitializer, ulong streamId)
         {

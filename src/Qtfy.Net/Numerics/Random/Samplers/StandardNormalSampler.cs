@@ -89,7 +89,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </param>
         public void Fill(Span<double> buffer)
         {
-            for (int i = 0; i < buffer.Length; ++i)
+            for (var i = 0; i < buffer.Length; ++i)
             {
                 buffer[i] = this.GetNext();
             }

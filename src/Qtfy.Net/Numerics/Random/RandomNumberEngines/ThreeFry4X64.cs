@@ -107,25 +107,18 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                             }
                         }
 
-                        // round: 1
                         c0 += c1;
                         c1 = (c1 << 14 | c1 >> 50) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 16 | c3 >> 48) ^ c2;
-
-                        // round: 2
                         c0 += c3;
                         c3 = (c3 << 52 | c3 >> 12) ^ c0;
                         c2 += c1;
                         c1 = (c1 << 57 | c1 >> 7) ^ c2;
-
-                        // round: 3
                         c0 += c1;
                         c1 = (c1 << 23 | c1 >> 41) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 40 | c3 >> 24) ^ c2;
-
-                        // round: 4
                         c0 += c3;
                         c3 = (c3 << 5 | c3 >> 59) ^ c0;
                         c2 += c1;
@@ -134,26 +127,18 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                         c1 += k2;
                         c2 += k3;
                         c3 += k4 + 1UL;
-
-                        // round: 5
                         c0 += c1;
                         c1 = (c1 << 25 | c1 >> 39) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 33 | c3 >> 31) ^ c2;
-
-                        // round: 6
                         c0 += c3;
                         c3 = (c3 << 46 | c3 >> 18) ^ c0;
                         c2 += c1;
                         c1 = (c1 << 12 | c1 >> 52) ^ c2;
-
-                        // round: 7
                         c0 += c1;
                         c1 = (c1 << 58 | c1 >> 6) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 22 | c3 >> 42) ^ c2;
-
-                        // round: 8
                         c0 += c3;
                         c3 = (c3 << 32 | c3 >> 32) ^ c0;
                         c2 += c1;
@@ -162,26 +147,18 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                         c1 += k3;
                         c2 += k4;
                         c3 += k0 + 2UL;
-
-                        // round: 9
                         c0 += c1;
                         c1 = (c1 << 14 | c1 >> 50) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 16 | c3 >> 48) ^ c2;
-
-                        // round: 10
                         c0 += c3;
                         c3 = (c3 << 52 | c3 >> 12) ^ c0;
                         c2 += c1;
                         c1 = (c1 << 57 | c1 >> 7) ^ c2;
-
-                        // round: 11
                         c0 += c1;
                         c1 = (c1 << 23 | c1 >> 41) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 40 | c3 >> 24) ^ c2;
-
-                        // round: 12
                         c0 += c3;
                         c3 = (c3 << 5 | c3 >> 59) ^ c0;
                         c2 += c1;
@@ -190,26 +167,18 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                         c1 += k4;
                         c2 += k0;
                         c3 += k1 + 3UL;
-
-                        // round: 13
                         c0 += c1;
                         c1 = (c1 << 25 | c1 >> 39) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 33 | c3 >> 31) ^ c2;
-
-                        // round: 14
                         c0 += c3;
                         c3 = (c3 << 46 | c3 >> 18) ^ c0;
                         c2 += c1;
                         c1 = (c1 << 12 | c1 >> 52) ^ c2;
-
-                        // round: 15
                         c0 += c1;
                         c1 = (c1 << 58 | c1 >> 6) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 22 | c3 >> 42) ^ c2;
-
-                        // round: 16
                         c0 += c3;
                         c3 = (c3 << 32 | c3 >> 32) ^ c0;
                         c2 += c1;
@@ -218,26 +187,18 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
                         c1 += k0;
                         c2 += k1;
                         c3 += k2 + 4UL;
-
-                        // round: 17
                         c0 += c1;
                         c1 = (c1 << 14 | c1 >> 50) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 16 | c3 >> 48) ^ c2;
-
-                        // round: 18
                         c0 += c3;
                         c3 = (c3 << 52 | c3 >> 12) ^ c0;
                         c2 += c1;
                         c1 = (c1 << 57 | c1 >> 7) ^ c2;
-
-                        // round: 19
                         c0 += c1;
                         c1 = (c1 << 23 | c1 >> 41) ^ c0;
                         c2 += c3;
                         c3 = (c3 << 40 | c3 >> 24) ^ c2;
-
-                        // round: 20
                         c0 += c3;
                         c3 = (c3 << 5 | c3 >> 59) ^ c0;
                         c2 += c1;

@@ -46,11 +46,11 @@ namespace Qtfy.Net.Numerics.Tests.Random.Samplers
             const double error = 0.0005;
             var sampler = new UniformIntSampler(new ReducedThreeFry4X64(1), min, max);
 
-            for (int x = min; x <= max; ++x)
+            for (var x = min; x <= max; ++x)
             {
                 var expected = (double)(x - min + 1) / (max - min + 1);
                 var success = 0;
-                for (int i = 0; i < trials; ++i)
+                for (var i = 0; i < trials; ++i)
                 {
                     if (sampler.GetNext() <= x)
                     {

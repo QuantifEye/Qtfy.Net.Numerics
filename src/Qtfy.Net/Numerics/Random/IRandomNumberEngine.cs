@@ -74,15 +74,6 @@ namespace Qtfy.Net.Numerics.Random
         double NextIncrementedCanonical();
 
         /// <summary>
-        /// Generates a standard real uniform random variable distributed on the interval (-1, 1),
-        /// rounded to the nearest multiple of 2^-53.
-        /// </summary>
-        /// <returns>
-        /// A standard uniform random variable distributed on the interval (-1, 1).
-        /// </returns>
-        public double NextSignedCanonical();
-
-        /// <summary>
         /// Generates a standard real uniform random variable distributed on the interval [0, 1],
         /// rounded to the nearest multiple of 2^-53.
         /// </summary>

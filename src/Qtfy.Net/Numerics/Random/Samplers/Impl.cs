@@ -70,7 +70,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             var result = new double[(rows * (rows + 1)) / 2];
             for (int r = 0, d = 0; r < rows; ++r)
             {
-                for (int c = 0; c <= r; ++c, ++d)
+                for (var c = 0; c <= r; ++c, ++d)
                 {
                     result[d] = factor[r, c];
                 }
@@ -102,9 +102,9 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         private static void CheckCorrelationValues(double[,] matrix)
         {
             var rows = matrix.GetLength(0);
-            for (int r = 0; r < rows; ++r)
+            for (var r = 0; r < rows; ++r)
             {
-                for (int c = 0; c < r; ++c)
+                for (var c = 0; c < r; ++c)
                 {
                     var corr = matrix[r, c];
                     if (corr < -1d || corr > 1d || corr != matrix[c, r])
@@ -123,9 +123,9 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         private static void CheckCovarianceValues(double[,] matrix)
         {
             var rows = matrix.GetLength(0);
-            for (int r = 0; r < rows; ++r)
+            for (var r = 0; r < rows; ++r)
             {
-                for (int c = 0; c < r; ++c)
+                for (var c = 0; c < r; ++c)
                 {
                     if (matrix[r, c] != matrix[c, r])
                     {

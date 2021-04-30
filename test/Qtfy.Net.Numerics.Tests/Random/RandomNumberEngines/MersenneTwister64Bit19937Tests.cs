@@ -132,7 +132,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
         private static ulong[] GetRandomValues(MersenneTwister64Bit19937 generator, int size)
         {
             var actual = new ulong[size];
-            for (int i = 0; i < actual.Length; ++i)
+            for (var i = 0; i < actual.Length; ++i)
             {
                 actual[i] = generator.NextULong();
             }
@@ -234,7 +234,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             const ulong LM = 0x7FFFFFFFUL; /* Least significant 31 bits */
 
             /* The array for the state vector */
-            ulong[] mt = new ulong[NN];
+            var mt = new ulong[NN];
 
             /* mti==NN+1 means mt[NN] is not initialized */
             ulong mti = NN + 1;
@@ -343,7 +343,7 @@ namespace Qtfy.Net.Numerics.Tests.Random.RandomNumberEngines
             }
 
             var result = new ulong[outputSize];
-            for (int i = 0; i < result.Length; ++i)
+            for (var i = 0; i < result.Length; ++i)
             {
                 result[i] = genrand64_int64();
             }
