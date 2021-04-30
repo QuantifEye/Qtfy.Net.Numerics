@@ -14,7 +14,7 @@ namespace Qtfy.Net.Numerics.Tests
         /// The smallest deviation from 1.0 toward zero.
         /// That is <c>1.0 - Math.BitDecrement(1.0)</c>, or  <c>Math.ScaleB(1, -53)</c>.
         /// </summary>
-        private const double Error = 1.1102230246251565E-16;
+        public const double Error = 1.1102230246251565E-16;
 
         public static void IsClose(double expected, double actual, double error = Error * 3)
         {

@@ -55,8 +55,8 @@ namespace Qtfy.Net.Numerics.Random.Samplers
                 double s, u, v, logS;
                 do
                 {
-                    u = FusedMultiplyAdd(engine.NextCanonical(), 2d, -1d);
-                    v = FusedMultiplyAdd(engine.NextCanonical(), 2d, -1d);
+                    u = FusedMultiplyAdd(engine.NextStandardUniform(), 2d, -1d);
+                    v = FusedMultiplyAdd(engine.NextStandardUniform(), 2d, -1d);
                     s = u * u + v * v;
                 }
                 while (s >= 1d || u == 0d || v == 0d);

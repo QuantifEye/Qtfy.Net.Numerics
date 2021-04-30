@@ -7,6 +7,7 @@
 namespace Qtfy.Net.Numerics.Random.Samplers
 {
     using System;
+    using Qtfy.Net.Numerics.Distributions;
 
     /// <summary>
     /// A distribution that generates continuous uniform values.
@@ -29,21 +30,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </param>
         public UniformRealSampler(IRandomNumberEngine generator, double min, double max)
         {
-            if (!double.IsFinite(min))
-            {
-                throw new ArgumentException("min must be finite");
-            }
-
-            if (!double.IsFinite(max))
-            {
-                throw new ArgumentException("max must be finite");
-            }
-
-            if (max <= min)
-            {
-                throw new ArgumentException("min must be less that or equal to max");
-            }
-
+            UniformRealDistribution.ValidateParameters(min, max);
             this.generator = generator ?? throw new ArgumentNullException(nameof(generator));
             this.Min = min;
             this.Max = max;

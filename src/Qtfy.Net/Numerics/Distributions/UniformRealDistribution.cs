@@ -62,7 +62,20 @@ namespace Qtfy.Net.Numerics.Distributions
         /// </summary>
         public double StandardDeviation { get; }
 
-        private static void ValidateParameters(double min, double max)
+        /// <summary>
+        /// Checks that min and max are valid parameters to create a uniform continuous distribution.
+        /// </summary>
+        /// <param name="min">
+        /// The smallest value the variable can have.
+        /// </param>
+        /// <param name="max">
+        /// The greatest value the variable can have.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// if either <paramref name="min"/> or <paramref name="max"/> is not finite,
+        /// or if <paramref name="min"/> is greater-than-or-equal-to <paramref name="max"/>.
+        /// </exception>
+        internal static void ValidateParameters(double min, double max)
         {
             if (!double.IsFinite(min))
             {
