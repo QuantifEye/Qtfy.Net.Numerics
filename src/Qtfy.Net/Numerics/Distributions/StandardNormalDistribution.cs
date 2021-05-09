@@ -14,7 +14,7 @@ namespace Qtfy.Net.Numerics.Distributions
     public class StandardNormalDistribution : IContinuousDistribution
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Qtfy.Net.Numerics.Distributions.StandardNormalDistribution"/> class.
+        /// Initializes a new instance of the <see cref="StandardNormalDistribution"/> class.
         /// </summary>
         private StandardNormalDistribution()
         {

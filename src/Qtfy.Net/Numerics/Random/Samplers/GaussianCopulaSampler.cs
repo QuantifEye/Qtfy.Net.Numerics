@@ -30,7 +30,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         private readonly StandardNormalSampler standardNormalSampler;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Qtfy.Net.Numerics.Random.Samplers.GaussianCopulaSampler"/> class.
+        /// Initializes a new instance of the <see cref="GaussianCopulaSampler"/> class.
         /// </summary>
         /// <param name="engine">
         /// The random number engine.

@@ -32,8 +32,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         private readonly StandardNormalSampler standardNormalSampler;
 
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="T:Qtfy.Net.Numerics.Random.Samplers.MultivariateNormalSampler"/> class.
+        /// Initializes a new instance of the <see cref="MultivariateNormalSampler"/> class.
         /// </summary>
         /// <param name="engine">
         /// The simulation engine to be used for sampling.

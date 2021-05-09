@@ -89,8 +89,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         }
 
         /// <summary>
-        /// Checks the dimensions of a matrix and its indexation (it should start to count 
-        /// entries at zero).
+        /// Checks the dimensions of a matrix and its indexation (it should start to count entries at zero).
         /// </summary>
         /// <param name="matrix">
         /// The matrix to be checked.
@@ -116,8 +115,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         }
 
         /// <summary>
-        /// Checks the properties of a correlation matrix, i.e. whether 
-        /// it is a symmetric matrix and contains diagonal values equal to one.
+        /// Checks the properties of a correlation matrix, i.e. whether it is a symmetric matrix and contains diagonal values equal to one.
         /// </summary>
         /// <param name="matrix">
         /// The matrix to be checked.
@@ -144,7 +142,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         }
 
         /// <summary>
-        /// Checks the properties of a covariance matrix, i.e. whether 
+        /// Checks the properties of a covariance matrix, i.e. whether
         /// it is a symmetric matrix and contains positive diagonal values.
         /// </summary>
         /// <param name="matrix">

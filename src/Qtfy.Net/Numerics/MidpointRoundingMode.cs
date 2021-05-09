@@ -14,7 +14,7 @@ namespace Qtfy.Net.Numerics
         /// <summary>
         /// Indicates that if a number is not a whole number of ticks away from zero, it should be rounded
         /// to the nearest multiple of the specified tick size. If the number is exactly half way
-        /// between two such numbers, it is rounded down to the nearest even-multiple of the specified tick 
+        /// between two such numbers, it is rounded down to the nearest even-multiple of the specified tick
         /// size.
         /// </summary>
         ToEven,

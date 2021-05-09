@@ -61,8 +61,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         private int index;
 
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="T:Qtfy.Net.Numerics.Random.RandomNumberEngines.MersenneTwister32Bit19937"/> class.
+        /// Initializes a new instance of the <see cref="MersenneTwister32Bit19937"/> class.
         /// </summary>
         /// <param name="state">
         /// The initial state.

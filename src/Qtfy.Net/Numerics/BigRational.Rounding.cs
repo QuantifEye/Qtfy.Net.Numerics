@@ -319,7 +319,7 @@ namespace Qtfy.Net.Numerics
             {
                 if (fraction.IsGreaterThanOrEqualToHalf())
                 {
-                    ++floor; 
+                    ++floor;
                 }
             }
 
