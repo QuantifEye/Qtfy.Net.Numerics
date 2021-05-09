@@ -14,6 +14,9 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </summary>
     public sealed class UniformRealSampler : ISampler<double>
     {
+        /// <summary>
+        /// The random number engine used internally for sampling.
+        /// </summary>
         private readonly IRandomNumberEngine generator;
 
         /// <summary>

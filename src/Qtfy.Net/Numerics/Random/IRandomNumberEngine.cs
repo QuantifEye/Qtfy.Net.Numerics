@@ -12,7 +12,7 @@ namespace Qtfy.Net.Numerics.Random
     public interface IRandomNumberEngine
     {
         /// <summary>
-        /// Generates an <see cref="uint"/> that is uniformly distributed across all possible <see cref="uint"/> values,
+        /// Generates a <see cref="uint"/> that is uniformly distributed across all possible <see cref="uint"/> values,
         /// this is [0, 2^32).
         /// </summary>
         /// <returns>
@@ -34,7 +34,7 @@ namespace Qtfy.Net.Numerics.Random
         uint NextUInt(uint max);
 
         /// <summary>
-        /// Generates an <see cref="ulong"/> that is uniformly distributed across all possible <see cref="ulong"/> values,
+        /// Generates a <see cref="ulong"/> that is uniformly distributed across all possible <see cref="ulong"/> values,
         /// this is [0, 2^64).
         /// </summary>
         /// <returns>

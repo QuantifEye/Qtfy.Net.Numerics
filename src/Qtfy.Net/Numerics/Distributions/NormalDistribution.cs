@@ -94,6 +94,22 @@ namespace Qtfy.Net.Numerics.Distributions
             return CumulativeDistributionFunctionImpl(x, mu, sigma);
         }
 
+        /// <summary>
+        /// The cumulative distribution function for the normal distribution, private
+        /// backend to the function before.
+        /// </summary>
+        /// <param name="x">
+        /// The point at which to evaluate the function.
+        /// </param>
+        /// <param name="mu">
+        /// The mean of the distribution.
+        /// </param>
+        /// <param name="sigma">
+        /// The standard deviation of the distribution.
+        /// </param>
+        /// <returns>
+        /// The probability that a random variable is less than or equal to <paramref name="x"/>.
+        /// </returns>
         private static double CumulativeDistributionFunctionImpl(double x, double mu, double sigma)
         {
             var erf = SpecialFunctions.Erf((x - mu) / (sigma * Constants.SqrtTwo));
@@ -127,6 +143,22 @@ namespace Qtfy.Net.Numerics.Distributions
             return QuantileImpl(probability, mu, sigma);
         }
 
+        /// <summary>
+        /// Calculates the quantile function of the normal distribution, private backend to
+        /// the function before.
+        /// </summary>
+        /// <param name="probability">
+        /// The point at which to evaluate the function.
+        /// </param>
+        /// <param name="mu">
+        /// The mean of the normal distribution.
+        /// </param>
+        /// <param name="sigma">
+        /// The standard deviation of the distribution.
+        /// </param>
+        /// <returns>
+        /// The quantile of the normal distribution.
+        /// </returns>
         private static double QuantileImpl(double probability, double mu, double sigma)
         {
             if (probability >= 0d && probability <= 1d)

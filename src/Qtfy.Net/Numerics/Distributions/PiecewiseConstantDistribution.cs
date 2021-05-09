@@ -26,8 +26,14 @@ namespace Qtfy.Net.Numerics.Distributions
     /// </para>
     public class PiecewiseConstantDistribution : IDistribution<double>
     {
+        /// <summary>
+        /// Internal array of boundaries.
+        /// </summary>
         private readonly double[] boundaries;
 
+        /// <summary>
+        /// Internal array of cumulative probabilities.
+        /// </summary>
         private readonly double[] cumulativeProbabilities;
 
         private PiecewiseConstantDistribution(double[] boundaries, double[] cumulativeProbabilities)
@@ -49,10 +55,10 @@ namespace Qtfy.Net.Numerics.Distributions
         /// Returns a new <see cref="PiecewiseConstantDistribution"/>.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// if the number of elements in <paramref name="domain"/> is less than 2.
-        /// if the number of element in <paramref name="weights"/> is not one less than the number of elements in <paramref name="domain"/>.
-        /// if <paramref name="domain"/> is not sorted and unique.
-        /// if any of the values in <paramref name="weights"/> is less than zero.
+        /// If the number of elements in <paramref name="domain"/> is less than 2.
+        /// If the number of element in <paramref name="weights"/> is not one less than the number of elements in <paramref name="domain"/>.
+        /// If <paramref name="domain"/> is not sorted and unique.
+        /// If any of the values in <paramref name="weights"/> is less than zero.
         /// </exception>
         public static PiecewiseConstantDistribution Create(IEnumerable<double> domain, IEnumerable<double> weights)
         {
@@ -139,12 +145,40 @@ namespace Qtfy.Net.Numerics.Distributions
             }
         }
 
+        /// <summary>
+        /// Perform linear interpolation between two points.
+        /// </summary>
+        /// <returns>
+        /// The interpolated value.
+        /// </returns>
+        /// <param name="x0">
+        /// First coordinate of first point.
+        /// </param>
+        /// <param name="x1">
+        /// Second coordinate of first point.
+        /// </param>
+        /// <param name="y0">
+        /// First coordinate of second point.
+        /// </param>
+        /// <param name="y1">
+        /// Second coordinate of second value.
+        /// </param>
+        /// <param name="x">
+        /// First coordinate of new  point.
+        /// </param>
         private static double LinearInterpolate(double x0, double x1, double y0, double y1, double x)
         {
             var m = (y1 - y0) / (x1 - x0);
             return y0 + m * (x - x0);
         }
 
+        /// <summary>
+        /// Check whether values in array are strictly monotonic.
+        /// </summary>
+        /// <returns><c>true</c> if the values are strictly monotonic, <c>false</c> otherwise.</returns>
+        /// <param name="array">
+        /// The array to be checked.
+        /// </param>
         private static bool IsStrictlyMonotonic(double[] array)
         {
             for (var i = 1; i < array.Length; ++i)
@@ -158,6 +192,13 @@ namespace Qtfy.Net.Numerics.Distributions
             return true;
         }
 
+        /// <summary>
+        /// Check whether all entries of an array are non-negative.
+        /// </summary>
+        /// <returns><c>true</c> if all values are non-negative, <c>false</c> otherwise.</returns>
+        /// <param name="array">
+        /// The array to be checked.
+        /// </param>
         private static bool AllNonNegative(double[] array)
         {
             for (var i = 0; i < array.Length; ++i)

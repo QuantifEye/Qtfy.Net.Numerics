@@ -16,8 +16,14 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </summary>
         public sealed class Builder
         {
+            /// <summary>
+            /// Internal array of mean values.
+            /// </summary>
             private readonly double[] mean;
 
+            /// <summary>
+            /// Cholesky factorization representing the joint distribution to sample from.
+            /// </summary>
             private readonly double[] choleskyFactor;
 
             /// <summary>

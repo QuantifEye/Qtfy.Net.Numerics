@@ -48,7 +48,7 @@ namespace Qtfy.Net.Numerics
         }
 
         /// <summary>
-        /// Returns the smallest number that greater than or equal to <paramref name="value"/> that is
+        /// Returns the smallest number greater than or equal to <paramref name="value"/> that is
         /// a whole number of ticks away from zero.
         /// </summary>
         /// <param name="value">
@@ -58,7 +58,7 @@ namespace Qtfy.Net.Numerics
         /// The size of the tickSize.
         /// </param>
         /// <returns>
-        /// The smallest number that greater than or equal to <paramref name="value"/> that is
+        /// The smallest number greater than or equal to <paramref name="value"/> that is
         /// a whole number of ticks away from zero.
         /// </returns>
         /// <exception cref="ArgumentException">
@@ -319,7 +319,7 @@ namespace Qtfy.Net.Numerics
             {
                 if (fraction.IsGreaterThanOrEqualToHalf())
                 {
-                    ++floor;
+                    ++floor; 
                 }
             }
 
@@ -392,6 +392,12 @@ namespace Qtfy.Net.Numerics
             }
         }
 
+        /// <summary>
+        /// Assert a valid rational rounding.
+        /// </summary>
+        /// <param name="mode">
+        /// The midpoint rounding mode to be assessed.
+        /// </param>
         private static void AssertValidRationalRounding(MidpointRoundingMode mode)
         {
             if (!Enum.IsDefined(mode))
@@ -400,6 +406,12 @@ namespace Qtfy.Net.Numerics
             }
         }
 
+        /// <summary>
+        /// Assert a valid tick.
+        /// </summary>
+        /// <param name="tick">
+        /// The big rational to be assessed.
+        /// </param>
         private static void AssertValidTick(BigRational tick)
         {
             if (!tick.IsPositive)
@@ -408,16 +420,34 @@ namespace Qtfy.Net.Numerics
             }
         }
 
+        /// <summary>
+        /// Check whether number is greater than or equal to one half.
+        /// </summary>
+        /// <returns>
+        /// Returns <c>true</c>, if number is greater than or equal to one half, <c>false</c> otherwise.
+        /// </returns>
         private bool IsGreaterThanOrEqualToHalf()
         {
             return this.Numerator * BigIntegerTwo >= this.Denominator;
         }
 
+        /// <summary>
+        /// Check whether number is greater than one half.
+        /// </summary>
+        /// <returns>
+        /// Returns <c>true</c>, if number is greater than one half, <c>false</c> otherwise.
+        /// </returns>
         private bool IsGreaterThanHalf()
         {
             return this.Numerator * BigIntegerTwo > this.Denominator;
         }
 
+        /// <summary>
+        /// Compare number to one half.
+        /// </summary>
+        /// <returns>
+        /// Returns zero if number is equal to one half.
+        /// </returns>
         private int CompareToHalf()
         {
             return (this.Numerator * BigIntegerTwo).CompareTo(this.Denominator);

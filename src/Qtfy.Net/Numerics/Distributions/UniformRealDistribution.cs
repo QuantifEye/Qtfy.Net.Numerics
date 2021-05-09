@@ -13,6 +13,9 @@ namespace Qtfy.Net.Numerics.Distributions
     /// </summary>
     public class UniformRealDistribution : IContinuousDistribution
     {
+        /// <summary>
+        /// The density function used internally to sample from.
+        /// </summary>
         private readonly double density;
 
         /// <summary>
@@ -120,6 +123,22 @@ namespace Qtfy.Net.Numerics.Distributions
             return CumulativeDistributionFunctionImpl(x, min, max);
         }
 
+        /// <summary>
+        /// The cumulative distribution function for the continuous uniform distribution, i.e.
+        /// private backend to the function before.
+        /// </summary>
+        /// <param name="x">
+        /// The value at which to evaluate the function.
+        /// </param>
+        /// <param name="min">
+        /// The minimum parameter value of the distribution.
+        /// </param>
+        /// <param name="max">
+        /// The parameter value of the distribution.
+        /// </param>
+        /// <returns>
+        /// The probability that a random variable is less than or equal to <paramref name="x"/>.
+        /// </returns>
         private static double CumulativeDistributionFunctionImpl(double x, double min, double max)
         {
             if (x <= min)

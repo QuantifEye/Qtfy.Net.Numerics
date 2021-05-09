@@ -16,8 +16,15 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// </summary>
         public sealed class Builder
         {
+            /// <summary>
+            /// The Cholesky factorization of a matrix representing the joint
+            /// probability distribution to sample from.
+            /// </summary>
             private readonly double[] choleskyFactor;
 
+            /// <summary>
+            /// The number of variables to generate simultaneously.
+            /// </summary>
             private readonly int order;
 
             /// <summary>

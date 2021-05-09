@@ -13,32 +13,74 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
     /// </summary>
     public sealed class ThreeFry4X64 : ULongRandomNumberEngine
     {
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private const ulong Parity = 0x1BD11BDAA9FC1A22UL;
 
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private nint index = 3;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private ulong spare1;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private ulong spare2;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private ulong spare3;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private readonly ulong key0;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private readonly ulong key1;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private readonly ulong key2;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private readonly ulong key3;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private readonly ulong key4;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private ulong ctr0;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private ulong ctr1;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private ulong ctr2;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private ulong ctr3;
 
         /// <summary>

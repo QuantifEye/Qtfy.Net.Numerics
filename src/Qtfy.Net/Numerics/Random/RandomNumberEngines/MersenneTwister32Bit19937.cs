@@ -45,12 +45,31 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
     /// </summary>
     public sealed class MersenneTwister32Bit19937 : UIntRandomNumberEngine
     {
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private const int N = 624;
 
+        /// <summary>
+        /// Memory for current state of the random number generator.
+        /// </summary>
         private readonly uint[] state;
 
+        /// <summary>
+        /// Internal index variable.
+        /// </summary>
         private int index;
 
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="T:Qtfy.Net.Numerics.Random.RandomNumberEngines.MersenneTwister32Bit19937"/> class.
+        /// </summary>
+        /// <param name="state">
+        /// The initial state.
+        /// </param>
+        /// <param name="index">
+        /// The initial index.
+        /// </param>
         private MersenneTwister32Bit19937(uint[] state, int index)
         {
             this.state = state;
@@ -142,7 +161,7 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
         }
 
         /// <summary>
-        /// Advances the state by recalculating the state. This is used when the end of the state has been reached in
+        /// Advances the state by recalculating it. This is used when the end of the state has been reached in
         /// order to update state values.
         /// </summary>
         private void UpdateState()
@@ -185,6 +204,16 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             }
         }
 
+        /// <summary>
+        /// Private backend to the constructor function, i.e. the actions on the
+        /// generator's state are performed here.
+        /// </summary>
+        /// <param name="mt">
+        /// The generator state.
+        /// </param>
+        /// <param name="seed">
+        /// The seed.
+        /// </param>
         private static unsafe void InitGenRandImpl(uint* mt, uint seed)
         {
             unchecked
@@ -232,6 +261,19 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
             return new MersenneTwister32Bit19937(state, N);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MersenneTwister32Bit19937"/> class,
+        /// i.e. private backend to the function before.
+        /// </summary>
+        /// <param name="mt">
+        /// The generator's state.
+        /// </param>
+        /// <param name="initKey">
+        /// The initial key.
+        /// </param>
+        /// <param name="keyLength">
+        /// The key length.
+        /// </param>
         private static unsafe void InitByArrayImpl(uint* mt, uint* initKey, uint keyLength)
         {
             unchecked
