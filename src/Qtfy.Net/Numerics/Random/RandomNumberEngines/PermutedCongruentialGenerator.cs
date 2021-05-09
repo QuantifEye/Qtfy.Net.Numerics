@@ -14,8 +14,14 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
     /// </summary>
     public sealed class PermutedCongruentialGenerator : UIntRandomNumberEngine
     {
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private readonly ulong inc;
 
+        /// <summary>
+        /// Internal state variable.
+        /// </summary>
         private ulong state;
 
         /// <summary>

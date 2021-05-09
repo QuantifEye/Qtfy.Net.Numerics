@@ -26,7 +26,7 @@ namespace Qtfy.Net.Numerics
         /// Calculates natural logarithm of the probability density function at <paramref name="x"/>.
         /// </summary>
         /// <param name="x">
-        /// The value at which to evaluate the function.
+        /// The value at which to evaluate the logarithm of the probability mass function.
         /// </param>
         /// <returns>
         /// The log of the probability density function evaluated at <paramref name="x"/>.

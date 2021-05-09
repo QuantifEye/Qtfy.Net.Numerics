@@ -13,10 +13,19 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </summary>
     public sealed class UniformIntSampler : ISampler<int>
     {
+        /// <summary>
+        /// The random number engine used internally.
+        /// </summary>
         private readonly IRandomNumberEngine engine;
 
+        /// <summary>
+        /// The unsigned value of the smallest number to be generated.
+        /// </summary>
         private readonly uint unsignedMin;
 
+        /// <summary>
+        /// The range of random numbers to be generated.
+        /// </summary>
         private readonly uint range;
 
         /// <summary>

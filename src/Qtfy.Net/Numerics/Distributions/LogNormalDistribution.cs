@@ -136,6 +136,22 @@ namespace Qtfy.Net.Numerics.Distributions
             return CumulativeDistributionFunctionImpl(x, mu, sigma);
         }
 
+        /// <summary>
+        /// The cumulative distribution function for the log-normal distribution, i.e.
+        /// private backend to function before.
+        /// </summary>
+        /// <param name="x">
+        /// The point at which to evaluate the function.
+        /// </param>
+        /// <param name="mu">
+        /// The mu parameter of the related normal distribution.
+        /// </param>
+        /// <param name="sigma">
+        /// The sigma parameter of the related normal distribution.
+        /// </param>
+        /// <returns>
+        /// The probability that a random variable is less than or equal to <paramref name="x"/>.
+        /// </returns>
         private static double CumulativeDistributionFunctionImpl(double x, double mu, double sigma)
         {
             return x <= 0d

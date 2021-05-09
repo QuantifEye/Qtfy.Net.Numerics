@@ -15,24 +15,54 @@ namespace Qtfy.Net.Numerics.Random.RandomNumberEngines
     /// </summary>
     public sealed class Philox4X32 : UIntRandomNumberEngine
     {
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private readonly uint key0;
 
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private readonly uint key1;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private nint index;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private uint spare0;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private uint spare1;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private uint spare2;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private uint ctr0;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private uint ctr1;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private uint ctr2;
 
+        /// <summary>
+        /// Internal variable.
+        /// </summary>
         private uint ctr3;
 
         /// <summary>

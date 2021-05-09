@@ -16,6 +16,9 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </typeparam>
     public sealed class InverseTransformSampler<T> : ISampler<T>
     {
+        /// <summary>
+        /// Engine internally used for sampling.
+        /// </summary>
         private readonly IRandomNumberEngine engine;
 
         /// <summary>

@@ -13,10 +13,19 @@ namespace Qtfy.Net.Numerics.Distributions
     /// </summary>
     public class UniformIntDistribution : IDiscreteDistribution
     {
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private readonly double n;
 
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private readonly double m;
 
+        /// <summary>
+        /// Internal constant.
+        /// </summary>
         private readonly double pmf;
 
         /// <summary>

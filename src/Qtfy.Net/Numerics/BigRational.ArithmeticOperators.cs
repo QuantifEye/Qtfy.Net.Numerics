@@ -79,7 +79,7 @@ namespace Qtfy.Net.Numerics
         /// The first number to add (the augend).
         /// </param>
         /// <param name="addend">
-        /// The first number to add (the addend).
+        /// The second number to add (the addend).
         /// </param>
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
@@ -98,7 +98,7 @@ namespace Qtfy.Net.Numerics
         /// The first number to add (the augend).
         /// </param>
         /// <param name="addend">
-        /// The first number to add (the addend).
+        /// The second number to add (the addend).
         /// </param>
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
@@ -116,7 +116,7 @@ namespace Qtfy.Net.Numerics
         /// The first number to add (the augend).
         /// </param>
         /// <param name="addend">
-        /// The first number to add (the addend).
+        /// The second number to add (the addend).
         /// </param>
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
@@ -134,7 +134,7 @@ namespace Qtfy.Net.Numerics
         /// The first number to add (the augend).
         /// </param>
         /// <param name="addend">
-        /// The first number to add (the addend).
+        /// The second number to add (the addend).
         /// </param>
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
@@ -153,7 +153,7 @@ namespace Qtfy.Net.Numerics
         /// The first number to add (the augend).
         /// </param>
         /// <param name="addend">
-        /// The first number to add (the addend).
+        /// The second number to add (the addend).
         /// </param>
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
@@ -172,7 +172,7 @@ namespace Qtfy.Net.Numerics
         /// The first number to add (the augend).
         /// </param>
         /// <param name="addend">
-        /// The first number to add (the addend).
+        /// The second number to add (the addend).
         /// </param>
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.
@@ -190,7 +190,7 @@ namespace Qtfy.Net.Numerics
         /// The first number to add (the augend).
         /// </param>
         /// <param name="addend">
-        /// The first number to add (the addend).
+        /// The second number to add (the addend).
         /// </param>
         /// <returns>
         /// The sum of <paramref name="augend"/> and <paramref name="addend"/>.

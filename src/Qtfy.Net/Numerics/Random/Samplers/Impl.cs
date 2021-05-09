@@ -52,7 +52,7 @@ namespace Qtfy.Net.Numerics.Random.Samplers
         /// If <paramref name="correlationMatrix"/> is null.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// if the covariance matrix is not zero indexed, if the covariance matrix is
+        /// If the covariance matrix is not zero indexed, if the covariance matrix is
         /// not symmetric, if the covariance matrix is empty, or if the matrix is not positive definite.
         /// </exception>
         internal static double[] PackedCholeskyFactorCorrelationMatrix(double[,] correlationMatrix)
@@ -62,6 +62,15 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             return FactorMatrix(correlationMatrix);
         }
 
+        /// <summary>
+        /// Performs a Cholesky decomposition.
+        /// </summary>
+        /// <returns>
+        /// The result of the Cholesky decomposition stored in a one dimensional array.
+        /// </returns>
+        /// <param name="matrix">
+        /// The matrix to be factored.
+        /// </param>
         private static double[] FactorMatrix(double[,] matrix)
         {
             var cov = Matrix<double>.Build.DenseOfArray(matrix);
@@ -79,6 +88,12 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             return result;
         }
 
+        /// <summary>
+        /// Checks the dimensions of a matrix and its indexation (it should start to count entries at zero).
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix to be checked.
+        /// </param>
         private static void CheckDimensions(double[,] matrix)
         {
             if (matrix.GetLowerBound(0) != 0 || matrix.GetLowerBound(1) != 0)
@@ -99,6 +114,12 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             }
         }
 
+        /// <summary>
+        /// Checks the properties of a correlation matrix, i.e. whether it is a symmetric matrix and contains diagonal values equal to one.
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix to be checked.
+        /// </param>
         private static void CheckCorrelationValues(double[,] matrix)
         {
             var rows = matrix.GetLength(0);
@@ -120,6 +141,13 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             }
         }
 
+        /// <summary>
+        /// Checks the properties of a covariance matrix, i.e. whether
+        /// it is a symmetric matrix and contains positive diagonal values.
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix to be checked.
+        /// </param>
         private static void CheckCovarianceValues(double[,] matrix)
         {
             var rows = matrix.GetLength(0);

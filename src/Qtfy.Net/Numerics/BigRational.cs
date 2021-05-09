@@ -352,8 +352,12 @@ namespace Qtfy.Net.Numerics
         /// <summary>
         /// Deconstructs this <see cref="BigRational"/> into a numerator and a denominator.
         /// </summary>
-        /// <param name="numerator">The numerator of this <see cref="BigRational"/>.</param>
-        /// <param name="denominator">The denominator of this <see cref="BigRational"/>.</param>
+        /// <param name="numerator">
+        /// The numerator of this <see cref="BigRational"/>.
+        /// </param>
+        /// <param name="denominator">
+        /// The denominator of this <see cref="BigRational"/>.
+        /// </param>
         public void Deconstruct(out BigInteger numerator, out BigInteger denominator)
         {
             numerator = this.Numerator;

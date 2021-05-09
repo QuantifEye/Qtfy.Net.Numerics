@@ -14,6 +14,15 @@ namespace Qtfy.Net.Numerics
     /// </summary>
     public static partial class SpecialFunctions
     {
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplA(double z)
         {
@@ -68,6 +77,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplB(double z)
         {
@@ -110,6 +128,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplC(double z)
         {
@@ -158,6 +185,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplD(double z)
         {
@@ -209,6 +245,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplE(double z)
         {
@@ -257,6 +302,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplF(double z)
         {
@@ -308,6 +362,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplG(double z)
         {
@@ -353,6 +416,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplH(double z)
         {
@@ -395,6 +467,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplI(double z)
         {
@@ -434,6 +515,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplJ(double z)
         {
@@ -470,6 +560,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplK(double z)
         {
@@ -506,6 +605,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplL(double z)
         {
@@ -542,6 +650,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplM(double z)
         {
@@ -575,6 +692,15 @@ namespace Qtfy.Net.Numerics
             return n / d;
         }
 
+        /// <summary>
+        /// Help function for approximating the error function on a certain interval, see Erf function below.
+        /// </summary>
+        /// <param name="z">
+        /// The point at which to evaluate the help function.
+        /// </param>
+        /// <returns>
+        /// A double value used in the Erf function.
+        /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
         private static double ErfImplN(double z)
         {

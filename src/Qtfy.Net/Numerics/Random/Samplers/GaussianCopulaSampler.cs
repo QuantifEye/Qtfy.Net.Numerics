@@ -14,12 +14,33 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </summary>
     public sealed partial class GaussianCopulaSampler : ISampler<double[]>
     {
+        /// <summary>
+        /// The Cholesky factorization representing the joint distribution to sample from.
+        /// </summary>
         private readonly double[] choleskyFactor;
 
+        /// <summary>
+        /// Internal buffer array.
+        /// </summary>
         private readonly double[] buffer;
 
+        /// <summary>
+        /// The standard normal sampler used internally.
+        /// </summary>
         private readonly StandardNormalSampler standardNormalSampler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GaussianCopulaSampler"/> class.
+        /// </summary>
+        /// <param name="engine">
+        /// The random number engine.
+        /// </param>
+        /// <param name="choleskyFactor">
+        /// The Cholesky factorization of the correlation matrix.
+        /// </param>
+        /// <param name="order">
+        /// The order variable.
+        /// </param>
         private GaussianCopulaSampler(IRandomNumberEngine engine, double[] choleskyFactor, int order)
         {
             this.buffer = new double[order];
@@ -58,6 +79,21 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             return result;
         }
 
+        /// <summary>
+        /// Helper function for generation of next random number.
+        /// </summary>
+        /// <param name="factor">
+        /// The factor.
+        /// </param>
+        /// <param name="normals">
+        /// The normals.
+        /// </param>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <param name="resultEnd">
+        /// The result end.
+        /// </param>
         private static unsafe void Multiply(
             double* factor,
             double* normals,

@@ -14,6 +14,9 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </summary>
     public sealed class NormalSampler : ISampler<double>
     {
+        /// <summary>
+        /// The standard normal sampler used internally in this class.
+        /// </summary>
         private readonly StandardNormalSampler standardNormalSampler;
 
         /// <summary>

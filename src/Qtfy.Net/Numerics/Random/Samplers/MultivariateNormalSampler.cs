@@ -11,14 +11,38 @@ namespace Qtfy.Net.Numerics.Random.Samplers
     /// </summary>
     public sealed partial class MultivariateNormalSampler : ISampler<double[]>
     {
+        /// <summary>
+        /// Array of mean values.
+        /// </summary>
         private readonly double[] mean;
 
+        /// <summary>
+        /// Internal array of buffer variables.
+        /// </summary>
         private readonly double[] buffer;
 
+        /// <summary>
+        /// Cholesky factorization defining joint distribution.
+        /// </summary>
         private readonly double[] choleskyFactor;
 
+        /// <summary>
+        /// The standard normal sampler used internally for sampling.
+        /// </summary>
         private readonly StandardNormalSampler standardNormalSampler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultivariateNormalSampler"/> class.
+        /// </summary>
+        /// <param name="engine">
+        /// The simulation engine to be used for sampling.
+        /// </param>
+        /// <param name="mean">
+        /// The mean values of the variables to be generated simultaneously.
+        /// </param>
+        /// <param name="choleskyFactor">
+        /// The Cholesky factorization of a matrix defining the desired joint distribution.
+        /// </param>
         private MultivariateNormalSampler(IRandomNumberEngine engine, double[] mean, double[] choleskyFactor)
         {
             this.Length = mean.Length;
@@ -51,6 +75,24 @@ namespace Qtfy.Net.Numerics.Random.Samplers
             return result;
         }
 
+        /// <summary>
+        /// Helper function for generating next random variable.
+        /// </summary>
+        /// <param name="factor">
+        /// The factor.
+        /// </param>
+        /// <param name="normals">
+        /// The normals.
+        /// </param>
+        /// <param name="mean">
+        /// The mean.
+        /// </param>
+        /// <param name="result">
+        /// The result.
+        /// </param>
+        /// <param name="resultEnd">
+        /// The result end.
+        /// </param>
         private static unsafe void MultiplyAdd(
             double* factor,
             double* normals,
